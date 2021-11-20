@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>LitExplore.Server-99362B35-02A1-49BD-BA1B-0D4B331EE9AE</UserSecretsId>
+    <UserSecretsId>LitExplore.Server-C3D329F6-772C-4D6D-95EE-BFA40D4A1734</UserSecretsId>
     <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
   </PropertyGroup>
 
