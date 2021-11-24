@@ -11,13 +11,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Change Directory
-        run: cd ../LitExplore
       - uses: actions/checkout@v2
       - name: Setup .NET
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: 6.0.x
+      - name: Change Directory
+        run: cd ../LitExplore
       - name: Install dependencies
         run: dotnet restore
       - name: Build
