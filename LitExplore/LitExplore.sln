@@ -6,8 +6,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Server", "Server
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Client", "Client\LitExplore.Client.csproj", "{28CC7AD8-6819-495E-A9A8-89B3B80B8E4B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Shared", "Shared\LitExplore.Shared.csproj", "{047327B1-07F0-4AE2-AEE2-705D77733135}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\Storage.csproj", "{48C012BA-1881-416C-8FDE-C3377DE6D0B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogic", "ApplicationLogic\ApplicationLogic.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"

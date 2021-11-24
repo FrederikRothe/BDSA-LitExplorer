@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\LitExplore.Client.csproj" />
-    <ProjectReference Include="..\Shared\LitExplore.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
