@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Change Directory
-        run: cd ./LitExplore/
+        run: cd ./LitExplore
       - uses: actions/checkout@v2
       - name: Setup .NET
         uses: actions/setup-dotnet@v1.7.2
