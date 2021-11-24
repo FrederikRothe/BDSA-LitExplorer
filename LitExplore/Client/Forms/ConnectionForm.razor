@@ -1,0 +1,34 @@
+<form>
+    <section>
+        <label for="paper1">Paper1</label><br/>
+        <input type="text" id="paper1" value=@Paper1Title disabled=@UpdateForm/>
+    </section>
+    <section>
+        <label for="paper2">Paper2</label><br/>
+        <input type="text" id="paper2" value=@Paper2Title disabled=@UpdateForm/>
+    </section>
+    <br/>
+    <section>
+        <label for="description">Description</label><br/>
+        <textarea id="description" rows="4" cols="30"/>
+    </section>
+    <input type="submit" value=@SubmitButtonLabel/>
+</form>
+
+
+@code {
+
+    [Parameter]
+    public bool UpdateForm {get; set;} = false; 
+
+    [Parameter]
+    public string Paper1Title {get;set;} = "";
+
+    [Parameter]
+    public string Paper2Title {get;set;} = "";
+    private string SubmitButtonLabel
+    {
+        get => UpdateForm? "Update Connection" : "Create Connection";
+    } 
+
+}
