@@ -1,7 +1,8 @@
-namespace LitExplore.Shared;
+namespace LitExplore.Infrastructure;
 
 public class Paper
 {
+    public int Id { get; set; }
     public ICollection<string> Authors { get; set; }
 
     public string Title { get; set; }

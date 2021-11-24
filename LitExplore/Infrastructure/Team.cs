@@ -1,4 +1,4 @@
-namespace LitExplore.Shared;
+namespace LitExplore.Infrastructure;
 
 public class Team
 {

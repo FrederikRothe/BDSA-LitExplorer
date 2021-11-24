@@ -1,7 +1,9 @@
-namespace LitExplore.Shared;
+namespace LitExplore.Infrastructure;
 
 public class Connection
 {
+    public int Id { get; set; }
+    
     public Paper Paper1 { get; set; }
 
     public Paper Paper2 { get; set; }
