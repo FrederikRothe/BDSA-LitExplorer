@@ -16,11 +16,12 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: 6.0.x
-      - name: Change Directory
-        run: cd ../LitExplore
       - name: Install dependencies
+        working-directory: ./LitExplore
         run: dotnet restore
       - name: Build
+        working-directory: ./LitExplore
         run: dotnet build --configuration Release --no-restore
       - name: Test
+        working-directory: ./LitExplore
         run: dotnet test --no-restore --verbosity normal
