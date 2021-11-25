@@ -1,9 +1,20 @@
 ﻿@page "/"
+@using LitExplore.Client.InfoViews
 
 <PageTitle>Index</PageTitle>
 
 <h1>Welcome to LitExplore!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div style="background-color:powderblue;width:10pt;height:10pt" @onmouseover="hoverOnPaper" @onmouseout="hoverOnPaper"></div>
+<div hidden=@hidePaperHoverWindow><PaperPartialInfo paper=@paper/></div>
+
+@code {
+
+    private Paper paper = TestEntities.howToGetStronk;
+    private bool hidePaperHoverWindow = true;
+    private void hoverOnPaper() {
+        hidePaperHoverWindow = !hidePaperHoverWindow;
+    }
+
+}
