@@ -1,0 +1,63 @@
+
+<section>
+    <label for="title">Paper Title:</label>
+    <h1 id="title">@Title</h1>
+</section>
+<section>
+    <label for="authors">Author(s):</label>
+    <h2 id="authors">@Authors</h2>
+</section>
+<section hidden=@hideTags>
+    <label for="tags">Tag(s):</label>
+    <h2 id="tags">@Tags</h2>
+</section>
+
+
+
+@code {
+
+    [Parameter]
+    public Paper currentPaper { get; set; }
+    private string Title { get => currentPaper.Title; }
+    private string Authors
+    {
+        get
+        {
+            var sb = new StringBuilder();
+            sb.Append("Authors: ");
+            foreach (var a in currentPaper.Authors)
+            {
+                sb.Append(a);
+                if (a != currentPaper.Authors.Last())
+                {
+                    sb.Append(',');
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString();
+        }
+    }
+    private bool hideTags { get => currentPaper.Tags == null; }
+    private string Tags
+    {
+        get
+        {
+            if (currentPaper.Tags != null) 
+            {
+                var sb = new StringBuilder();
+                sb.Append("Tags: ");
+                foreach (var t in currentPaper.Tags)
+                {
+                    sb.Append(t);
+                    if (t != currentPaper.Tags.Last())
+                    {
+                        sb.Append(',');
+                        sb.Append(' ');
+                    }
+                }
+                return sb.ToString();
+            }
+            else return "";
+        }
+    }
+}
