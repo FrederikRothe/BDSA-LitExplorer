@@ -1,0 +1,41 @@
+@page "/teamcustomisation"
+
+<section id="teamname">
+    <h1>@TeamName</h1>
+</section>
+<section id="colours">
+    <div id="colourbuttons">
+        <button id="redbutton" disabled = @isTeamOwner></button>
+        <button id="yellowbutton" disabled = @isTeamOwner></button>
+        <button id="greenbutton" disabled = @isTeamOwner></button>
+        <button id="bluebutton" disabled = @isTeamOwner></button>
+        <button id="purplebutton" disabled = @isTeamOwner></button>
+        <button id="pinkbutton" disabled = @isTeamOwner></button>
+    </div>
+</section>
+<section id="teammembers">
+    <label for="members"></label>
+    <div id="members">
+        @foreach(var user in currentTeam.Users) 
+        {
+            <div id="user" @onclick="() => removeUser(user)">@user.Id</div>
+        }
+    </div>
+</section>
+
+@code {
+    private Team currentTeam { get; set; } = TestEntities.team1;
+    private string TeamName { get => currentTeam.TeamName; }
+
+    [Parameter]
+    public bool isTeamOwner { get; set; } = false;
+
+    private void removeUser(User user) 
+    {
+        if (isTeamOwner)
+        {
+            currentTeam.Users.Remove(currentTeam.Users.Where(u => u == user).FirstOrDefault());
+        }
+    }
+
+}
