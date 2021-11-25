@@ -1,4 +1,4 @@
-namespace LitExplore.Infrastructure;
+namespace LitExplore.ApplicationLogic;
 
 public class Paper
 {

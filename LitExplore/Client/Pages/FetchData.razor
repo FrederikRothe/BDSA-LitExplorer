@@ -1,7 +1,6 @@
 ﻿@page "/fetchdata"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using LitExplore.Shared
 @attribute [Authorize]
 @inject HttpClient Http
 
@@ -30,10 +29,7 @@ else
             @foreach (var forecast in forecasts)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    
                 </tr>
             }
         </tbody>
@@ -41,13 +37,13 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private string? forecasts;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+           var i = 1+1;
         }
         catch (AccessTokenNotAvailableException exception)
         {

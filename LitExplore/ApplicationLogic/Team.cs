@@ -1,5 +1,4 @@
-namespace LitExplore.Infrastructure;
-
+namespace LitExplore.ApplicationLogic;
 public class Team
 {
     public int Id { get; set; }
