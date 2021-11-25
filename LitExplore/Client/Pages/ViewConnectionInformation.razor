@@ -11,7 +11,11 @@
 <section id="References" hidden=@hidetypeReference>
     <p>@conn.Paper1.Title references @conn.Paper2.Title</p>
 </section>
-<p visible=@hasDescription>@description</p>
+<section id="Description" hidden=@hideDescription>
+    <h2>Description</h2>
+    <p>@description</p>
+</section>
+
 
 
 
@@ -57,7 +61,7 @@
     }
 
     private bool hidetypeReference { get => true; }
-    private bool hasDescription { get => conn.Description != null; }
+    private bool hideDescription { get => conn.Description == null; }
     private string? description { get => conn.Description; }
    
 
