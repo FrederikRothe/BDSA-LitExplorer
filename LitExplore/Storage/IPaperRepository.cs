@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-
-namespace Core {
+namespace Storage {
     public interface IPaperRepository {
         Task<PaperDetailsDTO> CreateAsync(PaperCreateDTO paper);
         Task<Option<PaperDetailsDTO>> ReadAsync(int paperId);

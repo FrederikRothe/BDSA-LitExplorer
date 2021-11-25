@@ -1,6 +1,5 @@
-using Core;
+namespace Storage {
 
-namespace Infrastructure {
     public class TeamRepsitory : ITeamRepository
     {
         public Task<TeamDetailsDTO> CreateAsync(TeamCreateDTO team)

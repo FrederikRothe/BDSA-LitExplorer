@@ -1,4 +1,4 @@
-namespace Core {
+namespace Storage {
     public interface IConnectionRepository {
         Task<ConnectionDetailsDTO> CreateAsync(ConnectionCreateDTO connection);
         Task<Option<ConnectionDetailsDTO>> ReadAsync(int connectionId);

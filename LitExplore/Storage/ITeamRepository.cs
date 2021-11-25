@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-
-namespace Core {
+namespace Storage {
     public interface ITeamRepository {
         Task<TeamDetailsDTO> CreateAsync(TeamCreateDTO team);
         Task<Option<TeamDetailsDTO>> ReadAsync(int teamId);

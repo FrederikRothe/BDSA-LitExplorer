@@ -1,6 +1,4 @@
-using Core;
-
-namespace Infrastructure {
+namespace Storage {
     public class PaperRepository : IPaperRepository
     {
         public Task<PaperDetailsDTO> CreateAsync(PaperCreateDTO paper)

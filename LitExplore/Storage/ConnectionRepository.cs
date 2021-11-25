@@ -1,6 +1,4 @@
-using Core;
-
-namespace Infrastructure {
+namespace Storage {
     public class ConnectionRepository : IConnectionRepository
     {
         public Task<ConnectionDetailsDTO> CreateAsync(ConnectionCreateDTO connection)
