@@ -1,0 +1,18 @@
+@page "/viewpaperinformation"
+
+<h1>@Title</h1>
+<h2></h2>
+
+
+
+@code {
+
+    [Parameter]
+    public Paper currentPaper { get; set; } = new Paper("doc", new List<string>() { "JK ROWLING", "HAKUNA MATATA", "HJÆLP" }, "HIHIHAHA", 2012, 12, 12);
+    private string Title { get => currentPaper.Title;}
+    private string Authors { get => currentPaper.Author;}
+    private string Document { get => currentPaper.Document;}
+    private string PublishDate { get => currentPaper.PublishDate;}
+   
+
+}
