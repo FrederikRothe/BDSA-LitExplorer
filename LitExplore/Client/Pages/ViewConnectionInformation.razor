@@ -25,8 +25,8 @@
     private static Paper p2 = new Paper("file1",new List<string>{"Caspar", "Theis"}, "How to make food", 2020,4,6, new List<string>{"food", "health"});
 
     [Parameter]
-    public Connection conn { get; set; } = new Connection(p1,p2,"author", null);
-    private bool hidetypeAuthor { get => false; }
+    public Connection conn { get; set; } = new Connection(p1,p2,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Tag}, null);
+    private bool hidetypeAuthor { get => !conn.Connections.Contains(ConnectionType.Author); }
     private string authors
     {
         get 
@@ -41,7 +41,7 @@
             return result.Substring(0,result.Length-2);
         }
     }
-    private bool hidetypeTag { get => false; }
+    private bool hidetypeTag { get => !conn.Connections.Contains(ConnectionType.Tag); }
     private string tags
     {
         get 
@@ -60,7 +60,7 @@
         }
     }
 
-    private bool hidetypeReference { get => true; }
+    private bool hidetypeReference { get => !conn.Connections.Contains(ConnectionType.Reference); }
     private bool hideDescription { get => conn.Description == null; }
     private string? description { get => conn.Description; }
    
