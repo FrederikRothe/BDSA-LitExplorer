@@ -1,0 +1,64 @@
+@page "/viewconnectioninformation"
+
+<h1>@conn.Paper1.Title and @conn.Paper2.Title</h1>
+<h2>Connections</h2>
+<section id="SameAuthor" hidden=@hidetypeAuthor>
+    <p>Authors: @authors</p>
+</section>
+<section id="SameTags" hidden=@hidetypeTag>
+    <p>Tags: @tags</p>
+</section>
+<section id="References" hidden=@hidetypeReference>
+    <p>@conn.Paper1.Title references @conn.Paper2.Title</p>
+</section>
+<p visible=@hasDescription>@description</p>
+
+
+
+@code {
+
+    private static Paper p1 = new Paper("file",new List<string>{"Caspar", "Nadja", "Theis"}, "How to get stronk", 2021,5,29, new List<string>{"training", "health"});
+    private static Paper p2 = new Paper("file1",new List<string>{"Caspar", "Theis"}, "How to make food", 2020,4,6, new List<string>{"food", "health"});
+
+    [Parameter]
+    public Connection conn { get; set; } = new Connection(p1,p2,"author", null);
+    private bool hidetypeAuthor { get => false; }
+    private string authors
+    {
+        get 
+        {
+            string result = "";
+            foreach (string author in conn.Paper1.Authors) 
+            {
+                if (conn.Paper2.Authors.Contains(author)) {
+                    result += author + ", ";
+                }
+            }
+            return result.Substring(0,result.Length-2);
+        }
+    }
+    private bool hidetypeTag { get => false; }
+    private string tags
+    {
+        get 
+        {
+            if (conn.Paper1.Tags != null && conn.Paper2.Tags != null) 
+            {
+                string result = "";
+                foreach (string tag in conn.Paper1.Tags) 
+                {
+                    if (conn.Paper2.Tags.Contains(tag)) {
+                        result += tag + ", ";
+                    }
+                }
+                return result.Substring(0,result.Length-2);
+            } else return "";
+        }
+    }
+
+    private bool hidetypeReference { get => true; }
+    private bool hasDescription { get => conn.Description != null; }
+    private string? description { get => conn.Description; }
+   
+
+}
