@@ -1,0 +1,75 @@
+@page "/viewconnectioninformation"
+
+<h1>@conn.Paper1.Title and @conn.Paper2.Title</h1>
+<h2>Connections</h2>
+<section id="SameAuthor" hidden=@hidetypeAuthor>
+    <p>Author(s): @authors</p>
+</section>
+<section id="SameTags" hidden=@hidetypeTag>
+    <p>Tag(s): @tags</p>
+</section>
+<section id="References" hidden=@hidetypeReference>
+    <p>@conn.Paper1.Title references @conn.Paper2.Title</p>
+</section>
+<section id="Other" hidden=@hidetypeOther>
+    <p>You have connected these papers yourself.</p>
+</section>
+<section id="Description" hidden=@hideDescription>
+    <h2>Description</h2>
+    <p>@description</p>
+</section>
+
+
+
+
+@code {
+
+    private static Paper p1 = new Paper("file",new List<string>{"Caspar", "Nadja", "Theis"}, "How to get stronk", 2021,5,29, new List<string>{"training", "health"});
+    private static Paper p2 = new Paper("file1",new List<string>{"Caspar", "Theis"}, "How to make food", 2020,4,6, new List<string>{"food", "health"});
+
+    private static Connection testconn1 = new Connection(p1,p2,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Tag}, null);
+    private static Connection testconn2 = new Connection(p1,p2,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Other}, "Jeg har sat dem sammen fordi jeg godt kan lide dem.");
+
+    [Parameter]
+    public Connection conn { get; set; } = testconn2;
+    private bool hidetypeAuthor { get => !conn.Connections.Contains(ConnectionType.Author); }
+    private string authors
+    {
+        get 
+        {
+            string result = "";
+            foreach (string author in conn.Paper1.Authors) 
+            {
+                if (conn.Paper2.Authors.Contains(author)) {
+                    result += author + ", ";
+                }
+            }
+            return result.Substring(0,result.Length-2);
+        }
+    }
+    private bool hidetypeTag { get => !conn.Connections.Contains(ConnectionType.Tag); }
+    private string tags
+    {
+        get 
+        {
+            if (conn.Paper1.Tags != null && conn.Paper2.Tags != null) 
+            {
+                string result = "";
+                foreach (string tag in conn.Paper1.Tags) 
+                {
+                    if (conn.Paper2.Tags.Contains(tag)) {
+                        result += tag + ", ";
+                    }
+                }
+                return result.Substring(0,result.Length-2);
+            } else return "";
+        }
+    }
+
+    private bool hidetypeReference { get => !conn.Connections.Contains(ConnectionType.Reference); }
+    private bool hidetypeOther { get => !conn.Connections.Contains(ConnectionType.Other); }
+    private bool hideDescription { get => conn.Description == null; }
+    private string? description { get => conn.Description; }
+   
+
+}

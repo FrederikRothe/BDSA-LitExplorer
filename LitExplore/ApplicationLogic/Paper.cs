@@ -13,12 +13,13 @@ public class Paper
 
     public string Document { get; set; }
 
-    public Paper(string document, ICollection<string> authors, string title, int year, int month, int day)
+    public Paper(string document, ICollection<string> authors, string title, int year, int month, int day, ICollection<string>? tags)
     {
         Document = document;
         Authors = authors;
         Title = title;
         PublishDate = new DateTime(year, month, day);
+        Tags = tags;
     }
 
     public override string ToString() => $"{Title}\n{PublishDate.ToString()}\n\n{Document}";
