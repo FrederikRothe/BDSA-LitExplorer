@@ -1,9 +1,9 @@
 using LitExplore.ApplicationLogic;
 using Microsoft.EntityFrameworkCore;
 
-namespace LitExplorer.ApplicationLogic {
+namespace LitExplore.ApplicationLogic {
 
-    public interface ILitExplorerContext : IDisposable
+    public interface ILitExploreContext : IDisposable
     {
         DbSet<Paper> Papers { get; }
         DbSet<Connection> Connections { get; }

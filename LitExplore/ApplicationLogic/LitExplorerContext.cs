@@ -1,28 +1,37 @@
-namespace ApplicationLogic;
-
-public class LitExplorerContext : DbContext, ILitExplorerContext
+using LitExplore.ApplicationLogic;
+using Microsoft.EntityFrameworkCore;
+namespace ApplicationLogic
 {
-    public DbSet<Paper> Papers => Set<Papers>();
-    public DbSet<Connection> Connections => Set<Connection>();
-    public DbSet<Team> Teams => Set<Teams>();
-
-    public LitExplorerContext(DbContextOptions<LitExplorerContext> options) : base(options) { }
-
-    protected overrride void OnModelCreating(ModelBuilder modelBuilder)
+    public class LitExploreContext : DbContext, ILitExploreContext
     {
-        modelBuilder
-            .Entity<Paper>()
-            .HasIndex(p => p.Id)
-            .isUnique();
+        public DbSet<Paper> Papers => Set<Paper>();
+        public DbSet<Connection> Connections => Set<Connection>();
+        public DbSet<Team> Teams => Set<Team>();
 
-        modelBuilder
-            .Entity<Connection>()
-            .HasIndex(con => con.Id)
-            .isUnique();
+        public LitExploreContext(DbContextOptions<LitExploreContext> options) : base(options) { }
 
-        modelBuilder
-            .Entity<Team>()
-            .HasIndex(team => team.Id)
-            .isUnique();
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Paper>()
+                .HasIndex(p => p.Id)
+                .IsUnique();
+
+            modelBuilder
+                .Entity<Connection>()
+                .HasIndex(con => con.Id)
+                .IsUnique();
+
+            modelBuilder
+                .Entity<Team>()
+                .HasIndex(team => team.Id)
+                .IsUnique();
+        }
+
+        public int saveChanges()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+
