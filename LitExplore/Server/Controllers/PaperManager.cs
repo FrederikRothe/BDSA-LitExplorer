@@ -23,7 +23,6 @@ public class PaperManager
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(PaperDTO), 200)]
     [ProducesResponseType(401)]
-    [HttpGet("{id}")]
     public async Task<ActionResult<PaperDTO>> Get(int paperID) => await _repository.ReadAsync(paperID);
 
 
