@@ -17,7 +17,7 @@
 @code {
 
     [Parameter]
-    public Connection conn { get; set; }
+    public Connection conn { get; set; } = TestEntities.testconn1;
     private bool hidetypeAuthor { get => !conn.Connections.Contains(ConnectionType.Author); }
     private string authors
     {
