@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Storage {
     public record ConnectionDTO(int Id, int PaperOneId, int PaperTwoId, string ConnectionType, string Description);
 
