@@ -23,7 +23,6 @@ public class TeamManager
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(TeamDTO), 200)]
     [ProducesResponseType(401)]
-    [HttpGet("{id}")]
     public async Task<ActionResult<TeamDTO>> Get(int teamID) => await _repository.ReadAsync(teamID);
 
     [ProducesResponseType(404)]

@@ -22,14 +22,17 @@ public class ConnectionManager
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ConnectionDTO), 200)]
-    [HttpGet("{id}")]
     public async Task<ActionResult<ConnectionDTO>> Get(int connectionID) => await _repository.ReadAsync(connectionID);
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ICollection<ConnectionDTO>), 200)]
-    [HttpGet("{teamId}")]
     public async Task<ActionResult<ICollection<ConnectionDTO>>> GetTeamConnections(int teamId) => await _repository.ReadTeamAsync(teamId);
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(typeof(ICollection<ConnectionDTO>), 200)]
+    public async Task<ActionResult<ICollection<ConnectionDTO>>> GetUserConnections(int userId) => await _repository.ReadUserAsync(userId);
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
