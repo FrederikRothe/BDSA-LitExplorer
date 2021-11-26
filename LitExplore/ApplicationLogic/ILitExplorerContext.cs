@@ -1,17 +1,13 @@
-using LitExplore.ApplicationLogic;
-using Microsoft.EntityFrameworkCore;
+namespace LitExplore.ApplicationLogic;
 
-namespace LitExplore.ApplicationLogic {
+public interface ILitExploreContext : IDisposable
+{
+    DbSet<Paper> Papers { get; }
+    DbSet<Connection> Connections { get; }
+    DbSet<Team> Teams { get; }
 
-    public interface ILitExploreContext : IDisposable
-    {
-        DbSet<Paper> Papers { get; }
-        DbSet<Connection> Connections { get; }
-        DbSet<Team> Teams { get; }
+    int saveChanges();
 
-        int saveChanges();
-
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-    }
-
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
+

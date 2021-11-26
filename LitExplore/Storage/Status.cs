@@ -1,4 +1,4 @@
-namespace Storage;
+namespace LitExplore.Storage;
 
 public enum Status
 { 

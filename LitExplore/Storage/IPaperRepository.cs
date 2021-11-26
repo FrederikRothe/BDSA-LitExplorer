@@ -1,9 +1,9 @@
-namespace Storage {
-    public interface IPaperRepository {
-        Task<PaperDTO> CreateAsync(PaperCreateDTO paper);
-        Task<Option<PaperDTO>> ReadAsync(int paperId);
-        Task<IReadOnlyCollection<PaperDTO>> ReadAsync();
-        Task<Status> DeleteAsync(int paperId);
-    }
+namespace LitExplore.Storage;
+public interface IPaperRepository {
+    Task<PaperDTO> CreateAsync(PaperCreateDTO paper);
+    Task<Option<PaperDTO>> ReadAsync(int paperId);
+    Task<IReadOnlyCollection<PaperDTO>> ReadAsync();
+    Task<Status> DeleteAsync(int paperId);
 }
+
 
