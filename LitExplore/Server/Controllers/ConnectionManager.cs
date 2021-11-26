@@ -38,11 +38,11 @@ public class ConnectionManager
     
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
-    [ProducesResponseType(201)]
+    [ProducesResponseType(204)]
     public async Task<IActionResult> Put(int connectionID, ConnectionCreateDTO ccdto) => await _repository.UpdateAsync(connectionID, ccdto);
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
-    [ProducesResponseType(201)]
+    [ProducesResponseType(204)]
     public async Task<IActionResult> Delete(int connectionID) => await _repository.DeleteAsync(connectionID);
 }
