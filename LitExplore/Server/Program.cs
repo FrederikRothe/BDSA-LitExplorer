@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Identity.Web;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +6,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<LitExploreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LitExploreDB")));
+builder.Services.AddScoped<ILitExploreContext, LitExploreContext>();
+builder.Services.AddScoped<IPaperRepository, PaperRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepsitory>();
+builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
 
 var app = builder.Build();
 
