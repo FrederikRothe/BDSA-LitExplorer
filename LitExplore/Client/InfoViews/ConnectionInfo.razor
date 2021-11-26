@@ -1,5 +1,4 @@
 @page "/viewconnectioninformation"
-@using LitExplore.Client.InfoViews
 
 <h1>@conn.Paper1.Title and @conn.Paper2.Title</h1>
 <section>
@@ -13,15 +12,8 @@
 
 
 @code {
-
-    private static Paper p1 = new Paper("file",new List<string>{"Caspar", "Nadja", "Theis"}, "How to get stronk", 2021,5,29, new List<string>{"training", "health"});
-    private static Paper p2 = new Paper("file1",new List<string>{"Caspar", "Theis"}, "How to make food", 2020,4,6, new List<string>{"food", "health"});
-
-    private static Connection testconn1 = new Connection(p1,p2,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Tag}, null);
-    private static Connection testconn2 = new Connection(p1,p2,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Other}, "Jeg har sat dem sammen fordi jeg godt kan lide dem.");
-
     [Parameter]
-    public Connection conn { get; set; } = testconn2;
+    public Connection conn { get; set; } = TestEntities.testconn1;
     private bool hideDescription { get => conn.Description == null; }
     private string? description { get => conn.Description; }
    

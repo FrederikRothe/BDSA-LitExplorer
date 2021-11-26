@@ -1,7 +1,23 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+:root {
+    /* Brand colours */
+    --background: #0E1730;
+    --white: #F0EEE7;
+    --blue: #1B44D8;
+    --cyan: #8BE0D5;
+    --grey: #252D42;
+
+    /* Team colours */
+    --green: #3A7E38;
+    --orange: #FC871B;
+    --yellow: #FFBE17;
+    --red: #DB3030;
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    color: var(--white);
 }
 
 h1:focus {
