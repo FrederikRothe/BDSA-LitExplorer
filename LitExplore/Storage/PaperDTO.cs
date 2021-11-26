@@ -18,5 +18,5 @@ namespace Storage
         [Required] 
         public int Day { get; init; }
     }
-    public record PaperDTO(int Id, string Document, ICollection<string> Authors, string Title, int Year, int Month, int Day) : PaperCreateDTO(Document, Authors, Title, Year, Month, Day);
+    public record PaperDTO(int Id, [Required] string Document, ICollection<string> Authors, string Title, int Year, int Month, int Day);
 } 
