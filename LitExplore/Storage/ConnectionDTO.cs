@@ -16,6 +16,6 @@ namespace Storage {
 
     public record ConnectionUpdateDTO : ConnectionCreateDTO
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
     }
 }
