@@ -7,7 +7,9 @@ public class Paper
 
     public string Title { get; set; }
 
-    public DateTime PublishDate { get; set; }
+    public int Year { get; set; }
+    public int Month { get; set; }
+    public int Day { get; set; }
 
     public ICollection<string>? Tags { get; set; }
 
@@ -18,8 +20,10 @@ public class Paper
         Document = document;
         Authors = authors;
         Title = title;
-        PublishDate = new DateTime(year, month, day);
+        Year = year;
+        Month = month;
+        Day = day;
     }
 
-    public override string ToString() => $"{Title}\n{PublishDate.ToString()}\n\n{Document}";
+    //public override string ToString() => $"{Title}\n{PublishDate.ToString()}\n\n{Document}";
 }
