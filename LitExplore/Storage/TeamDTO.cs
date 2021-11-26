@@ -13,4 +13,5 @@ namespace Storage
         [StringLength(50)]
         public string TeamName { get; init; }
     }
+    public record TeamUpdateDTO (int Id) : TeamCreateDTO()
 } 
