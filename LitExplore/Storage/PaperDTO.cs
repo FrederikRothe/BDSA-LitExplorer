@@ -2,19 +2,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage
 {
-    public record PaperCreateDTO {
+    public record PaperCreateDTO 
+    {
         [Required] 
-        public string Document { get; init; }
+        public string Document { get; init; } = null!;
         [Required] 
-        public ICollection<string> Authors {get; init;}
+        public ICollection<string> Authors {get; init;} = null!;
         [Required] 
-        public string Title { get; init; }
+        [StringLength(50)]
+        public string Title { get; init; } = null!;
         [Required] 
-        int Year
+        public int Year { get; init; }
         [Required] 
-        int Month
+        public int Month { get; init; }
         [Required] 
-        int Day
-        }
-    public record PaperDTO(int Id, [Required] string Document, [Required] ICollection<string> Authors, [Required] string Title, [Required] int Year, [Required] int Month, [Required] int Day) : PaperCreateDTO(Document, Authors, Title, Year, Month, Day);
+        public int Day { get; init; }
+    }
+    public record PaperDTO(int Id, string Document, ICollection<string> Authors, string Title, int Year, int Month, int Day);
 } 

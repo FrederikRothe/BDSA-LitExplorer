@@ -1,7 +1,7 @@
 namespace Storage {
     public class PaperRepository : IPaperRepository
     {
-        public Task<PaperDetailsDTO> CreateAsync(PaperCreateDTO paper)
+        public Task<PaperDTO> CreateAsync(PaperCreateDTO paper)
         {
             throw new NotImplementedException();
         }
@@ -11,7 +11,7 @@ namespace Storage {
             throw new NotImplementedException();
         }
 
-        public Task<Option<PaperDetailsDTO>> ReadAsync(int paperId)
+        public Task<Option<PaperDTO>> ReadAsync(int paperId)
         {
             throw new NotImplementedException();
         }
