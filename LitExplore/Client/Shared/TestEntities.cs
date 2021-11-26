@@ -9,4 +9,15 @@ public static class TestEntities {
     public static Connection testconn1 = new Connection(howToGetStronk,howToMakeFood,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Tag}, null);
     public static Connection testconn2 = new Connection(howToGetStronk,howToMakeFood,new List<ConnectionType>{ConnectionType.Author, ConnectionType.Other}, "Jeg har sat dem sammen fordi jeg godt kan lide dem.");
     public static Connection testconn3 = new Connection(hihihaha,howToMakeFood,new List<ConnectionType>{ConnectionType.Reference, ConnectionType.Other}, "Cool papers, that I like.");
+    public static Team team1 = new Team(new User {Id = 1}, "The sejerejeste team") 
+    {
+        Id = 1,
+        Users = new List<User>() 
+        {
+            new User {Id = 2},
+            new User {Id = 3},
+            new User {Id = 4},
+            new User {Id = 5}
+        }
+    };
 }
