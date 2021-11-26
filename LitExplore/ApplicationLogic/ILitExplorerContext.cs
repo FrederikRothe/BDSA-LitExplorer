@@ -1,6 +1,7 @@
 using LitExplore.ApplicationLogic;
+using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationLogic {
+namespace LitExplorer.ApplicationLogic {
 
     public interface ILitExplorerContext : IDisposable
     {
