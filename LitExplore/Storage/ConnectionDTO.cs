@@ -6,12 +6,12 @@ namespace Storage {
     public record ConnectionCreateDTO
     {
         [Required]
-        public int PaperOneId {get; set;}
+        public int PaperOneId { get; init; }
         [Required]
-        public int PaperTwoId {get; set;}
+        public int PaperTwoId { get; init; }
         [Required]
-        public string ConnectionType {get; set;}
-        public string? Description {get; set;}
+        public string ConnectionType { get; init; }
+        public string? Description { get; init; }
     }
 
     public record ConnectionUpdateDTO : ConnectionCreateDTO

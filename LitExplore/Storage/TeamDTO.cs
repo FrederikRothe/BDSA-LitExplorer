@@ -2,7 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage
 
-{
-    public record TeamCreateDTO([Required] string TeamLeaderId, [Required] string TeamName);
-    public record TeamDTO(int Id, [Required] string TeamLeaderId, [Required] string TeamName) : TeamCreateDTO(TeamLeaderId, TeamName);
+{   
+    public record TeamDTO(int Id, string TeamLeaderId, string TeamName) : TeamCreateDTO(TeamLeaderId, TeamName);
+    public record TeamCreateDTO
+    {
+        [Required] 
+        public string TeamLeaderId { get; init; }
+        
+        [Required]
+        [StringLength(50)]
+        public string TeamName { get; init; }
+    }
 } 

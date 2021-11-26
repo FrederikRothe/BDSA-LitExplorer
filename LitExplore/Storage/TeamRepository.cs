@@ -2,7 +2,7 @@ namespace Storage {
 
     public class TeamRepsitory : ITeamRepository
     {
-        public Task<TeamDetailsDTO> CreateAsync(TeamCreateDTO team)
+        public Task<TeamDTO> CreateAsync(TeamCreateDTO team)
         {
             throw new NotImplementedException();
         }
@@ -12,7 +12,7 @@ namespace Storage {
             throw new NotImplementedException();
         }
 
-        public Task<Option<TeamDetailsDTO>> ReadAsync(int teamId)
+        public Task<Option<TeamDTO>> ReadAsync(int teamId)
         {
             throw new NotImplementedException();
         }

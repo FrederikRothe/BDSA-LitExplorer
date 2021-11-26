@@ -1,7 +1,7 @@
 namespace Storage {
     public class ConnectionRepository : IConnectionRepository
     {
-        public Task<ConnectionDetailsDTO> CreateAsync(ConnectionCreateDTO connection)
+        public Task<ConnectionDTO> CreateAsync(ConnectionCreateDTO connection)
         {
             throw new NotImplementedException();
         }
@@ -11,7 +11,7 @@ namespace Storage {
             throw new NotImplementedException();
         }
 
-        public Task<Option<ConnectionDetailsDTO>> ReadAsync(int connectionId)
+        public Task<Option<ConnectionDTO>> ReadAsync(int connectionId)
         {
             throw new NotImplementedException();
         }
