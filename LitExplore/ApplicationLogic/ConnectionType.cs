@@ -5,5 +5,6 @@ public enum ConnectionType
     Author,
     Tag,
     Reference,
+    Team,
     Other
 }
