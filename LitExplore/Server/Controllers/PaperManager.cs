@@ -25,5 +25,10 @@ public class PaperManager
     [ProducesResponseType(401)]
     public async Task<ActionResult<PaperDTO>> Get(int paperID) => await _repository.ReadAsync(paperID);
 
+    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(ICollection<PaperDTO>), 200)]
+    [ProducesResponseType(401)]
+    public async Task<ActionResult<PaperDTO>> GetPapers() => await _repository.ReadAllAsync();
+
 
 }

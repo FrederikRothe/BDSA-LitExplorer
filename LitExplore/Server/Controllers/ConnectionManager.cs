@@ -36,6 +36,11 @@ public class ConnectionManager
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
+    [ProducesResponseType(typeof(ICollection<ConnectionDTO>), 200)]
+    public async Task<ActionResult<ICollection<ConnectionDTO>>> GetConnections() => await _repository.ReadPredefinedAsync();
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ConnectionDTO), 201)]
     public async Task<IActionResult> Post(ConnectionCreateDTO ccdto) => await _repository.CreateAsync(ccdto);
     
