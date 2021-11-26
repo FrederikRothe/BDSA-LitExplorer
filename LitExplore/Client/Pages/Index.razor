@@ -6,12 +6,14 @@
 <h1>Welcome to LitExplore!</h1>
 
 
-<div style="background-color:powderblue;width:10pt;height:10pt" @onmouseover="hoverOnPaper" @onmouseout="hoverOnPaper"></div>
+<NavLink class="nav-link" href="viewpaperinformation">
+    <div style="background-color:powderblue;width:10pt;height:10pt" @onmouseover="hoverOnPaper" @onmouseout="hoverOnPaper"></div>
+</NavLink>
 <div hidden=@hidePaperHoverWindow><PaperPartialInfo paper=@paper/></div>
 
 @code {
 
-    private Paper paper = TestEntities.howToGetStronk;
+    private Paper paper = TestEntities.genericPaper;
     private bool hidePaperHoverWindow = true;
     private void hoverOnPaper() {
         hidePaperHoverWindow = !hidePaperHoverWindow;

@@ -5,8 +5,13 @@
 
 <h1>Add a connection between two papers</h1>
 
-<ConnectionForm UpdateForm=false/>
+<ConnectionForm UpdateForm=false Paper1=@p1Title/>
 
 @code {
-
+    [Parameter]
+    public Paper? Paper1 {get;set;} = null;
+    public string? p1Title 
+    {
+        get => Paper1 == null? null : Paper1.Title;
+    }
 }
