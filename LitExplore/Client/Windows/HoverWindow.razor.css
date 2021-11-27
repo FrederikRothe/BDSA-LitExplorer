@@ -14,12 +14,12 @@
     z-index: 3;
 }
 
-p {
+::deep p {
     font-size: 12pt;
     margin-top: 8pt;
     margin-bottom: 0pt;
 }
-.title {
+::deep .title {
     font-weight: bold;
     margin-top: 0pt;
 }

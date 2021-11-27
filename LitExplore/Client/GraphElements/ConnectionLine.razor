@@ -1,7 +1,7 @@
 @using LitExplore.Client.Windows
 
 <div class="connection">
-    <svg width="500" height="500"><line @onmouseover="hoversOn" @onmouseout="hoversOn" x1="50" y1="50" x2="350" y2="350" stroke="white"/></svg>
+    <svg width="500" height="500"><line @onmouseover="hoversOn" @onmouseout="hoversOn" x1="50" y1="50" x2="350" y2="350"/></svg>
     @if (showHoverWindow) {
         <HoverWindow connection=@connection/>
     } 

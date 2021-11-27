@@ -1,30 +1,29 @@
-
-@if (conn.Connections.Contains(ConnectionType.Author)) {
-    <p>Author(s): @authors</p>
+@if (connection.Connections.Contains(ConnectionType.Author)) {
+    <p>author(s): <i>@authors</i></p>
 }
-@if (conn.Connections.Contains(ConnectionType.Tag)) {
-    <p>Tag(s): @tags</p>
+@if (connection.Connections.Contains(ConnectionType.Tag)) {
+    <p>tag(s): <i>@tags</i></p>
 }
-@if (conn.Connections.Contains(ConnectionType.Reference)) {
-    <p>@conn.Paper1.Title references @conn.Paper2.Title</p>
+@if (connection.Connections.Contains(ConnectionType.Reference)) {
+    <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
 }
-@if (conn.Connections.Contains(ConnectionType.Other)) {
-    <p>You have connected these papers yourself.</p>
+@if (connection.Connections.Contains(ConnectionType.Other)) {
+    <p><i>you have connected these papers yourself.</i></p>
 }
 
 
 
 @code {
     [Parameter]
-    public Connection conn { get; set; } = TestEntities.testconn1;
-    private string authors
+    public Connection connection { get; set; } = TestEntities.testconn1;
+    private string authors 
     {
         get 
         {
             string result = "";
-            foreach (string author in conn.Paper1.Authors) 
+            foreach (string author in connection.Paper1.Authors) 
             {
-                if (conn.Paper2.Authors.Contains(author)) {
+                if (connection.Paper2.Authors.Contains(author)) {
                     result += author + ", ";
                 }
             }
@@ -33,19 +32,16 @@
     }
     private string tags
     {
-        get 
+        get
         {
-            if (conn.Paper1.Tags != null && conn.Paper2.Tags != null) 
+            string result = "";
+            foreach (string tag in connection.Paper1.Tags) 
             {
-                string result = "";
-                foreach (string tag in conn.Paper1.Tags) 
-                {
-                    if (conn.Paper2.Tags.Contains(tag)) {
-                        result += tag + ", ";
-                    }
+                if (connection.Paper2.Tags.Contains(tag)) {
+                    result += tag + ", ";
                 }
-                return result.Substring(0,result.Length-2);
-            } else return "";
+            }
+            return result.Substring(0,result.Length-2);
         }
     }
 }

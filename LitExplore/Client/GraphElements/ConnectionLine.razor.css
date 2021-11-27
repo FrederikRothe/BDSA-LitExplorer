@@ -1,3 +1,8 @@
 .connection {
     position: fixed;
 }
+
+line {
+    stroke-width: 3pt;
+    stroke: var(--blue);
+}
