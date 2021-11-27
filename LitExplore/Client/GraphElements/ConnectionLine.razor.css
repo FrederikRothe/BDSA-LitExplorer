@@ -1,5 +1,6 @@
 .connection {
     position: fixed;
+    z-index: 2;
 }
 
 line {

@@ -1,6 +1,6 @@
 @using LitExplore.Client.InfoViews
 
-<div class="window" hidden=@hidden>
+<div class=@styleclass hidden=@hidden>
     @if (paper != null) {
         <PaperPartialInfo paper=@paper />
     }
@@ -17,4 +17,5 @@
     public Connection? connection {get;set;}
     [Parameter]
     public bool hidden {get;set;}
+    private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
 }

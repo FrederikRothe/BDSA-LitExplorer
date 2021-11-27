@@ -2,12 +2,21 @@
     background-color: var(--white);
     color: var(--background);
     position: relative;
-    left: -47pt;
-    top: 65pt;
+    
     width: 140pt;
     border-radius: 5pt;
     padding: 5pt;
     z-index: 10000 !important;
+}
+
+.connwindow {
+    left: 0pt;
+    top: 30pt;
+}
+
+.paperwindow {
+    left: -47pt;
+    top: 65pt;
 }
 
 .paper .window {
