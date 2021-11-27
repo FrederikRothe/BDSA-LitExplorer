@@ -6,3 +6,7 @@
     border-radius: 4pt;
     z-index: 2;
 }
+
+.paper .window {
+    z-index: 3;
+}
