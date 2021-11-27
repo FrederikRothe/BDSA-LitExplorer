@@ -9,11 +9,11 @@ public class Paper
 
     public DateTime PublishDate { get; set; }
 
-    public ICollection<string>? Tags { get; set; }
+    public ICollection<Tag>? Tags { get; set; }
 
     public string Document { get; set; }
 
-    public Paper(string document, ICollection<Author> authors, string title, int year, int month, int day, ICollection<string>? tags)
+    public Paper(string document, ICollection<Author> authors, string title, int year, int month, int day, ICollection<Tag>? tags)
     {
         Document = document;
         Authors = authors;
