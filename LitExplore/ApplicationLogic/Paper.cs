@@ -3,11 +3,16 @@ namespace LitExplore.ApplicationLogic;
 public class Paper
 {
     public int Id { get; set; }
+
     public ICollection<Author> Authors { get; set; }
 
     public string Title { get; set; }
 
-    public DateTime PublishDate { get; set; }
+    public int Year { get; set; }
+
+    public int Month { get; set; }
+    
+    public int Day { get; set; }
 
     public ICollection<Tag>? Tags { get; set; }
 
