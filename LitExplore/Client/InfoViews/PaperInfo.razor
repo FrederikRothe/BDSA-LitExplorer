@@ -1,0 +1,30 @@
+@page "/viewpaperinformation"
+
+<PageTitle>View Paper Information</PageTitle>
+<PaperPartialInfo paper=@currentPaper />
+<section>
+    <label for="releasedate">Published at:</label>
+    <h4 id="releasedate">@PublishDate</h4>
+</section>
+<section>
+    <label for="content">Content:</label>
+    <p id="content">@currentPaper.Document</p>
+</section>
+
+
+
+
+@code {
+    [Parameter]
+    public Paper currentPaper { get; set; } = TestEntities.genericPaper;
+    private string PublishDate
+    {
+        get
+        {
+            var currentDate = currentPaper.PublishDate;
+            var s = currentDate.Day + "/" + currentDate.Month + "/" + currentDate.Year;
+            return s;
+        }
+    }
+
+}

@@ -1,0 +1,36 @@
+<form>
+    <section>
+        <label for="paper1">Paper1</label><br/>
+        <input type="text" id="paper1" value=@Paper1 disabled=@missingPaper1/>
+    </section>
+    <section>
+        <label for="paper2">Paper2</label><br/>
+        <input type="text" id="paper2" value=@Paper2 disabled=@missingPaper2/>
+    </section>
+    <br/>
+    <section>
+        <label for="description">Description</label><br/>
+        <textarea id="description" rows="4" cols="30"/>
+    </section>
+    <input type="submit" value=@SubmitButtonLabel/>
+</form>
+
+
+@code {
+    [Parameter]
+    public bool UpdateForm {get;set;} = false;
+
+    [Parameter]
+    public string? Paper1 {get;set;}
+    private bool missingPaper1 { get => Paper1 != null; }
+
+    [Parameter]
+    public string? Paper2 {get;set;}
+    private bool missingPaper2 { get => Paper2 != null; }
+
+    private string SubmitButtonLabel
+    {
+        get => UpdateForm? "Update Connection" : "Create Connection";
+    } 
+
+}

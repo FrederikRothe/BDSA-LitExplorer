@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Client", "Client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\Storage.csproj", "{48C012BA-1881-416C-8FDE-C3377DE6D0B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogic", "ApplicationLogic\ApplicationLogic.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LitExplore.ApplicationLogic", "ApplicationLogic\LitExplore.ApplicationLogic.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0840D466-309E-4947-82C4-B49386032C0F}"
 EndProject
