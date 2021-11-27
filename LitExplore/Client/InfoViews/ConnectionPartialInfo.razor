@@ -1,4 +1,3 @@
-
 @if (conn.Connections.Contains(ConnectionType.Author)) {
     <p>Author(s): @authors</p>
 }
@@ -22,10 +21,10 @@
         get 
         {
             string result = "";
-            foreach (string author in conn.Paper1.Authors) 
+            foreach (Author author in conn.Paper1.Authors) 
             {
                 if (conn.Paper2.Authors.Contains(author)) {
-                    result += author + ", ";
+                    result += author.Name + ", ";
                 }
             }
             return result.Substring(0,result.Length-2);
@@ -35,17 +34,14 @@
     {
         get 
         {
-            if (conn.Paper1.Tags != null && conn.Paper2.Tags != null) 
+            string result = "";
+            foreach (Tag tag in conn.Paper1.Tags) 
             {
-                string result = "";
-                foreach (string tag in conn.Paper1.Tags) 
-                {
-                    if (conn.Paper2.Tags.Contains(tag)) {
-                        result += tag + ", ";
-                    }
+                if (conn.Paper2.Tags.Contains(tag)) {
+                    result += tag.Name + ", ";
                 }
-                return result.Substring(0,result.Length-2);
-            } else return "";
+            }
+            return result.Substring(0,result.Length-2);
         }
     }
 }

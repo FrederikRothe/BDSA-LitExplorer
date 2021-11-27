@@ -33,17 +33,17 @@
             string result = "";
             if (paper != null) 
             {
-                foreach (string author in paper.Authors) 
+                foreach (Author author in paper.Authors) 
                 {
-                    result += author + ", ";
+                    result += author.Name + ", ";
                 }
             }
             else if (connection != null)
             {
-                foreach (string tag in connection.Paper1.Tags) 
+                foreach (Author author in connection.Paper1.Authors) 
                 {
-                    if (connection.Paper2.Tags.Contains(tag)) {
-                        result += tag + ", ";
+                    if (connection.Paper2.Authors.Contains(author)) {
+                        result += author.Name + ", ";
                     }
                 }
             }
@@ -57,16 +57,17 @@
             string result = "";
             if (paper != null) 
             {
-                foreach (string tag in paper.Tags) 
+                foreach (Tag tag in paper.Tags) 
                 {
-                    result += tag + ", ";
+                    result += tag.Name + ", ";
                 }
-            } else if (connection != null) 
+            } 
+            else if (connection != null) 
             {
-                foreach (string author in connection.Paper1.Authors) 
+                foreach (Tag tag in connection.Paper1.Tags) 
                 {
-                    if (connection.Paper2.Authors.Contains(author)) {
-                        result += author + ", ";
+                    if (connection.Paper2.Tags.Contains(tag)) {
+                        result += tag.Name + ", ";
                     }
                 }
             }
