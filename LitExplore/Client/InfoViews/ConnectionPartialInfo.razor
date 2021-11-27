@@ -1,24 +1,22 @@
 
-<section id="SameAuthor" hidden=@hidetypeAuthor>
+@if (conn.Connections.Contains(ConnectionType.Author)) {
     <p>Author(s): @authors</p>
-</section>
-<section id="SameTags" hidden=@hidetypeTag>
+}
+@if (conn.Connections.Contains(ConnectionType.Tag)) {
     <p>Tag(s): @tags</p>
-</section>
-<section id="References" hidden=@hidetypeReference>
+}
+@if (conn.Connections.Contains(ConnectionType.Reference)) {
     <p>@conn.Paper1.Title references @conn.Paper2.Title</p>
-</section>
-<section id="Other" hidden=@hidetypeOther>
+}
+@if (conn.Connections.Contains(ConnectionType.Other)) {
     <p>You have connected these papers yourself.</p>
-</section>
+}
 
 
 
 @code {
-
     [Parameter]
-    public Connection conn { get; set; }
-    private bool hidetypeAuthor { get => !conn.Connections.Contains(ConnectionType.Author); }
+    public Connection conn { get; set; } = TestEntities.testconn1;
     private string authors
     {
         get 
@@ -33,7 +31,6 @@
             return result.Substring(0,result.Length-2);
         }
     }
-    private bool hidetypeTag { get => !conn.Connections.Contains(ConnectionType.Tag); }
     private string tags
     {
         get 
@@ -51,9 +48,4 @@
             } else return "";
         }
     }
-
-    private bool hidetypeReference { get => !conn.Connections.Contains(ConnectionType.Reference); }
-    private bool hidetypeOther { get => !conn.Connections.Contains(ConnectionType.Other); }
-   
-
 }

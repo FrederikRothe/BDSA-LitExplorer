@@ -1,34 +1,26 @@
 
-<section>
-    <label for="title">Paper Title:</label>
-    <h1 id="title">@Title</h1>
-</section>
-<section>
-    <label for="authors">Author(s):</label>
-    <h2 id="authors">@Authors</h2>
-</section>
-<section hidden=@hideTags>
+<label for="title">Paper Title:</label>
+<h1 id="title">@paper.Title</h1>
+<label for="authors">Author(s):</label>
+<h2 id="authors">@authors</h2>
+@if (paper.Tags != null) {
     <label for="tags">Tag(s):</label>
-    <h2 id="tags">@Tags</h2>
-</section>
-
-
+    <h2 id="tags">@tags</h2>
+}
 
 @code {
-
     [Parameter]
-    public Paper currentPaper { get; set; }
-    private string Title { get => currentPaper.Title; }
-    private string Authors
+    public Paper paper { get; set; } = TestEntities.genericPaper;
+    private string authors 
     {
         get
         {
             var sb = new StringBuilder();
             sb.Append("Authors: ");
-            foreach (var a in currentPaper.Authors)
+            foreach (var a in paper.Authors)
             {
                 sb.Append(a);
-                if (a != currentPaper.Authors.Last())
+                if (a != paper.Authors.Last())
                 {
                     sb.Append(',');
                     sb.Append(' ');
@@ -37,19 +29,18 @@
             return sb.ToString();
         }
     }
-    private bool hideTags { get => currentPaper.Tags == null; }
-    private string Tags
+    private string tags
     {
         get
         {
-            if (currentPaper.Tags != null) 
+            if (paper.Tags != null) 
             {
                 var sb = new StringBuilder();
                 sb.Append("Tags: ");
-                foreach (var t in currentPaper.Tags)
+                foreach (var t in paper.Tags)
                 {
                     sb.Append(t);
-                    if (t != currentPaper.Tags.Last())
+                    if (t != paper.Tags.Last())
                     {
                         sb.Append(',');
                         sb.Append(' ');
