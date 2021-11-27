@@ -1,19 +1,14 @@
 
-<section>
-    <label for="title">Paper Title:</label>
-    <h1 id="title">@paper.Title</h1>
-</section>
-<section>
-    <label for="authors">Author(s):</label>
-    <h2 id="authors">@authors</h2>
-</section>
-<section hidden=@hideTags>
+<label for="title">Paper Title:</label>
+<h1 id="title">@paper.Title</h1>
+<label for="authors">Author(s):</label>
+<h2 id="authors">@authors</h2>
+@if (paper.Tags != null) {
     <label for="tags">Tag(s):</label>
     <h2 id="tags">@tags</h2>
-</section>
+}
 
 @code {
-
     [Parameter]
     public Paper paper { get; set; } = TestEntities.genericPaper;
     private string authors 
@@ -34,7 +29,6 @@
             return sb.ToString();
         }
     }
-    private bool hideTags { get => paper.Tags == null; }
     private string tags
     {
         get

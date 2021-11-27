@@ -1,0 +1,22 @@
+.window {
+    background-color: var(--white);
+    color: var(--background);
+    position: relative;
+    left: -37pt;
+    top: 65pt;
+    width: 140pt;
+    /*height: 80pt;*/
+    border-radius: 5pt;
+    padding: 5pt;
+    z-index: 3;
+}
+
+p {
+    font-size: 12pt;
+    margin-top: 8pt;
+    margin-bottom: 0pt;
+}
+.title {
+    font-weight: bold;
+    margin-top: 0pt;
+}

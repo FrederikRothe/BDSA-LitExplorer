@@ -1,13 +1,13 @@
 @page "/"
+@using LitExplore.Client.GraphElements
 
 <PageTitle>Index</PageTitle>
 
 <div>
     @for (int i=0; i<12; i++) {
-        <div class="paper"></div>
+        <PaperNode/>
     }
 </div>
 
 @code {
-    
 }

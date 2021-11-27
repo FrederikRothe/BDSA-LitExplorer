@@ -1,0 +1,15 @@
+@using LitExplore.Client.Windows
+
+<div class="paper" @onmouseover="hoverOnPaper" @onmouseout="hoverOnPaper"/>
+@if (!hidePaperHoverWindow) {
+    <HoverWindow paper=@paper/>
+} 
+
+@code {
+    [Parameter]
+    public Paper paper {get; set;} = TestEntities.genericPaper;
+    public bool hidePaperHoverWindow = true;
+    private void hoverOnPaper() {
+        hidePaperHoverWindow = !hidePaperHoverWindow;
+    }
+}
