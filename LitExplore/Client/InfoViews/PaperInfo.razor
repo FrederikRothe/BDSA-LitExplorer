@@ -2,14 +2,8 @@
 
 <PageTitle>View Paper Information</PageTitle>
 <PaperPartialInfo paper=@currentPaper />
-<section>
-    <label for="releasedate">Published at:</label>
-    <h4 id="releasedate">@PublishDate</h4>
-</section>
-<section>
-    <label for="content">Content:</label>
-    <p id="content">@currentPaper.Document</p>
-</section>
+<p id="releasedate">Published at: @PublishDate</p>
+<p id="content">Content:<br/>@currentPaper.Document</p>
 
 
 
