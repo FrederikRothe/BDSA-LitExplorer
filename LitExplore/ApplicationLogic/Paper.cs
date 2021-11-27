@@ -3,7 +3,7 @@ namespace LitExplore.ApplicationLogic;
 public class Paper
 {
     public int Id { get; set; }
-    public ICollection<string> Authors { get; set; }
+    public ICollection<Author> Authors { get; set; }
 
     public string Title { get; set; }
 
@@ -13,7 +13,7 @@ public class Paper
 
     public string Document { get; set; }
 
-    public Paper(string document, ICollection<string> authors, string title, int year, int month, int day, ICollection<string>? tags)
+    public Paper(string document, ICollection<Author> authors, string title, int year, int month, int day, ICollection<string>? tags)
     {
         Document = document;
         Authors = authors;
@@ -21,6 +21,4 @@ public class Paper
         PublishDate = new DateTime(year, month, day);
         Tags = tags;
     }
-
-    public override string ToString() => $"{Title}\n{PublishDate.ToString()}\n\n{Document}";
 }
