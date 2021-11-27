@@ -1,16 +1,33 @@
 @page "/"
 @using LitExplore.Client.GraphElements
+@using LitExplore.Client.Windows
 
 <PageTitle>LitExplore</PageTitle>
 
 <div>
     @for (int i=0; i<12; i++) {
-        <PaperNode paper=@paper/>
+        <div class="paperbutton" @onclick="() => setSelectedPaper(paper)">
+            <PaperNode paper=@paper/>
+        </div>
     }
     <ConnectionLine connection=@connection/>
+
+    <div class="teams">
+        <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+    </div>
+    <PaperInfoWindow paper=@selectedPaper/>
+    <TeamCustomisation/>
 </div>
+
+
+
+
 
 @code {
     private Paper paper = TestEntities.genericPaper;
     private Connection connection = TestEntities.testconn1;
+    private Paper selectedPaper = TestEntities.genericPaper;
+    private void setSelectedPaper(Paper paper) {
+        selectedPaper = paper;
+    }
 }

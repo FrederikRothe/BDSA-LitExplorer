@@ -1,25 +1,27 @@
 @page "/teamcustomisation"
 
-<section id="teamname">
-    <h1>@currentTeam.TeamName</h1>
-</section>
-<section id="colours">
-    <div id="colourbuttons">
+<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">@currentTeam.TeamName</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
         <button id="redutton" disabled = @isTeamOwner></button>
         <button id="yellowbutton" disabled = @isTeamOwner></button>
         <button id="greenbutton" disabled = @isTeamOwner></button>
         <button id="orangebutton" disabled = @isTeamOwner></button>
-    </div>
-</section>
-<section id="teammembers">
-    <label for="members"></label>
-    <div id="members">
+      </div>
+      <div class="modal-footer">
         @foreach(var user in currentTeam.Users) 
         {
-            <div id="user" @onclick="() => removeUser(user)">@user.Id</div>
+            <button id="user" @onclick="() => removeUser(user)">@user.Id</button>
         }
+      </div>
     </div>
-</section>
+  </div>
+</div>
 
 @code {
     [Parameter]

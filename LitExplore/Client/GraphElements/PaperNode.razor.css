@@ -1,10 +1,8 @@
 .paper {
-    position: fixed;
     background-color: var(--white);
     width: 46pt;
     height: 60pt;
     border-radius: 4pt;
-    z-index: 3;
 }
 
 .paper .window {

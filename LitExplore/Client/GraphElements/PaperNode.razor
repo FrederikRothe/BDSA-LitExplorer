@@ -1,10 +1,11 @@
 @using LitExplore.Client.Windows
 
-<div class="paper" @onmouseover="hoversOn" @onmouseout="hoversOn">
+<div type="button" class="paper" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
     @if (showHoverWindow) {
         <HoverWindow paper=@paper/>
     } 
 </div>
+
 
 @code {
     [Parameter]
