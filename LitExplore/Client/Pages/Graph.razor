@@ -7,8 +7,10 @@
     @for (int i=0; i<12; i++) {
         <PaperNode paper=@paper/>
     }
+    <ConnectionLine connection=@connection/>
 </div>
 
 @code {
     private Paper paper = TestEntities.genericPaper;
+    private Connection connection = TestEntities.testconn1;
 }
