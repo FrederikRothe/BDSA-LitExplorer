@@ -8,7 +8,7 @@ public class Connection
 
     public Paper Paper2 { get; set; }
 
-    public ICollection<ConnectionType> Connections { get; set; }
+    public ICollection<ConnectionType>? Connections { get; set; }
 
     public string? Description { get; set; }
 

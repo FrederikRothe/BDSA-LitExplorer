@@ -5,7 +5,7 @@ public class LitExploreContextFactory : IDesignTimeDbContextFactory<LitExploreCo
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddUserSecrets<Program>()
+            .AddUserSecrets<LitExploreContextFactory>()
             .AddJsonFile("appsettings.json")
             .Build();
 

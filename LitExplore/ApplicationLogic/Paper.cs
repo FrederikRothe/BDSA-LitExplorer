@@ -23,7 +23,9 @@ public class Paper
         Document = document;
         Authors = authors;
         Title = title;
-        PublishDate = new DateTime(year, month, day);
+        Year = year;
+        Month = month;
+        Day = day;
         Tags = tags;
     }
 }
