@@ -1,0 +1,82 @@
+<div class="window" hidden=@hidden>
+    @if (paper != null) {
+        <p class="title">@paper.Title</p>
+        <p>by: <i>@authors</i></p>
+        @if (paper.Tags != null) {
+            <p>tags: <i>@tags</i></p>
+        }
+    }
+    @if (connection != null) {
+        <p class="title">Connection</p>
+        @if (connection.Connections.Contains(ConnectionType.Author)) {
+            <p>author(s): <i>@authors</i></p>
+        }
+        @if (connection.Connections.Contains(ConnectionType.Tag)) {
+            <p>tag(s): <i>@tags</i></p>
+        }
+        @if (connection.Connections.Contains(ConnectionType.Reference)) {
+            <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
+        }
+        @if (connection.Connections.Contains(ConnectionType.Other)) {
+            <p><i>you have connected these papers yourself.</i></p>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Paper? paper {get;set;}
+    private string authors 
+    {
+        get 
+        {
+            string result = "";
+            if (paper != null) 
+            {
+                foreach (Author author in paper.Authors) 
+                {
+                    result += author.Name + ", ";
+                }
+            }
+            else if (connection != null)
+            {
+                foreach (Author author in connection.Paper1.Authors) 
+                {
+                    if (connection.Paper2.Authors.Contains(author)) {
+                        result += author.Name + ", ";
+                    }
+                }
+            }
+            return result.Substring(0,result.Length-2);
+        }
+    }
+    private string tags
+    {
+        get
+        {
+            string result = "";
+            if (paper != null) 
+            {
+                foreach (Tag tag in paper.Tags) 
+                {
+                    result += tag.Name + ", ";
+                }
+            } 
+            else if (connection != null) 
+            {
+                foreach (Tag tag in connection.Paper1.Tags) 
+                {
+                    if (connection.Paper2.Tags.Contains(tag)) {
+                        result += tag.Name + ", ";
+                    }
+                }
+            }
+            return result.Substring(0,result.Length-2);
+        }
+    }
+
+    [Parameter]
+    public Connection? connection {get;set;}
+    [Parameter]
+    public bool hidden {get;set;}
+}

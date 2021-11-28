@@ -1,0 +1,17 @@
+@using LitExplore.Client.Windows
+
+<div class="connection">
+    <svg width="500" height="500"><line @onmouseover="hoversOn" @onmouseout="hoversOn" x1="50" y1="50" x2="350" y2="350" stroke="white"/></svg>
+    @if (showHoverWindow) {
+        <HoverWindow connection=@connection/>
+    } 
+</div>
+
+@code {
+    [Parameter]
+    public Connection connection {get; set;} = TestEntities.testconn1;
+    public bool showHoverWindow = false;
+    private void hoversOn() {
+        showHoverWindow = !showHoverWindow;
+    }
+}
