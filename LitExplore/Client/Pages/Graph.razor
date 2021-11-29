@@ -10,12 +10,15 @@
             <PaperNode paper=@paper/>
         </div>
     }
-    <ConnectionLine connection=@connection/>
+    <div class="connectionbutton" @onclick="() => setSelectedConnection(connection)">
+        <ConnectionLine connection=@connection/>
+    </div>
 
     <div class="teams">
-        <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+        <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />
     </div>
     <PaperInfoWindow paper=@selectedPaper/>
+    <ConnectionInfoWindow connection=@selectedConnection/>
     <TeamCustomisation/>
 </div>
 
@@ -30,4 +33,9 @@
     private void setSelectedPaper(Paper paper) {
         selectedPaper = paper;
     }
+    private Connection selectedConnection = TestEntities.testconn1;
+    private void setSelectedConnection(Connection connection) {
+        selectedConnection = connection;
+    }
+
 }
