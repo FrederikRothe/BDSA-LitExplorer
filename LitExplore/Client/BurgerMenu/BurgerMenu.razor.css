@@ -2,8 +2,8 @@ body {
   margin: 0;
   padding: 0;
 
-  background: #232323;
-  color: #cdcdcd;
+  background: var(--background);
+  color: var(--white);
 }
 
 .menuToggle {
