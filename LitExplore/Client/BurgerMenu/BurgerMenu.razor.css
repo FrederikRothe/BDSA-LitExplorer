@@ -45,7 +45,7 @@ body {
   margin-bottom: 5px;
   position: relative;
 
-  background: #cdcdcd;
+  background: var(--white);
   border-radius: 3px;
 
   z-index: 1;
