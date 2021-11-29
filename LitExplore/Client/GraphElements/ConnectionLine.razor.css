@@ -1,5 +1,7 @@
 .connection {
     position: fixed;
+    margin-left: 23pt;
+    margin-top: 30pt;
     z-index: 2;
 }
 
