@@ -1,0 +1,21 @@
+@using LitExplore.Client.InfoViews
+
+<div class=@styleclass hidden=@hidden>
+    @if (paper != null) {
+        <PaperPartialInfo paper=@paper />
+    }
+    @if (connection != null) {
+        <p class="title">Connection</p>
+        <ConnectionPartialInfo connection=@connection />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Paper? paper {get;set;}
+    [Parameter]
+    public Connection? connection {get;set;}
+    [Parameter]
+    public bool hidden {get;set;}
+    private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
+}

@@ -1,0 +1,15 @@
+#redbutton {
+    background-color: var(--red);
+}
+
+#greenbutton {
+    background-color: var(--green);
+}
+
+#yellowbutton {
+    background-color: var(--yellow);
+}
+
+#orangebutton {
+    background-color: var(--oranges);
+}

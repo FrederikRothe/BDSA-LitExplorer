@@ -1,60 +1,34 @@
-
-<section>
-    <label for="title">Paper Title:</label>
-    <h1 id="title">@paper.Title</h1>
-</section>
-<section>
-    <label for="authors">Author(s):</label>
-    <h2 id="authors">@authors</h2>
-</section>
-<section hidden=@hideTags>
-    <label for="tags">Tag(s):</label>
-    <h2 id="tags">@tags</h2>
-</section>
+<p class="title">@paper.Title</p>
+<p>by: <i>@authors</i></p>
+@if (paper.Tags != null) {
+    <p>tags: <i>@tags</i></p>
+}
 
 @code {
-
     [Parameter]
     public Paper paper { get; set; } = TestEntities.genericPaper;
     private string authors 
     {
-        get
+        get 
         {
-            var sb = new StringBuilder();
-            sb.Append("Authors: ");
-            foreach (var a in paper.Authors)
+            string result = "";
+            foreach (string author in paper.Authors) 
             {
-                sb.Append(a);
-                if (a != paper.Authors.Last())
-                {
-                    sb.Append(',');
-                    sb.Append(' ');
-                }
+                result += author + ", ";
             }
-            return sb.ToString();
+            return result.Substring(0,result.Length-2);
         }
     }
-    private bool hideTags { get => paper.Tags == null; }
     private string tags
     {
         get
         {
-            if (paper.Tags != null) 
+            string result = "";
+            foreach (string tag in paper.Tags) 
             {
-                var sb = new StringBuilder();
-                sb.Append("Tags: ");
-                foreach (var t in paper.Tags)
-                {
-                    sb.Append(t);
-                    if (t != paper.Tags.Last())
-                    {
-                        sb.Append(',');
-                        sb.Append(' ');
-                    }
-                }
-                return sb.ToString();
+                result += tag + ", ";
             }
-            else return "";
+            return result.Substring(0,result.Length-2);
         }
     }
 }

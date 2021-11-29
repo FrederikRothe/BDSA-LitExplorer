@@ -1,66 +1,68 @@
-.paper {
-    position: fixed;
-    background-color: var(--white);
-    width: 45pt;
-    height: 60pt;
-    border-radius: 5pt;
-    z-index: 2;
+.paperbutton {
+    position: fixed; 
+    z-index: 3;
 }
 
-.paper:nth-child(1) {
+::deep .paperbutton:nth-child(1) {
     left: 12vw;
     top: 15vh;
 }
-.paper:nth-child(2) {
+::deep .paperbutton:nth-child(2) {
     left: 27vw;
     top: 24vh;
 }
-.paper:nth-child(3) {
+::deep .paperbutton:nth-child(3) {
     left: 45vw;
     top: 23vh;
 }
-.paper:nth-child(4) {
+::deep .paperbutton:nth-child(4) {
     left: 43vw;
     top: 48vh;
 }
-.paper:nth-child(5) {
+::deep .paperbutton:nth-child(5) {
     left: 55vw;
     top: 60vh;
 }
-.paper:nth-child(6) {
+::deep .paperbutton:nth-child(6) {
     left: 73vw;
     top: 35vh;
 }
-.paper:nth-child(7) {
+::deep .paperbutton:nth-child(7) {
     left: 62vw;
     top: 15vh;
 }
-.paper:nth-child(8) {
+::deep .paperbutton:nth-child(8) {
     left: 15vw;
     top: 75vh;
 }
-.paper:nth-child(9) {
+::deep .paperbutton:nth-child(9) {
     left: 38vw;
     top: 83vh;
 }
-.paper:nth-child(10) {
+::deep .paperbutton:nth-child(10) {
     left: 28vw;
     top: 58vh;
 }
-.paper:nth-child(11) {
+::deep .paperbutton:nth-child(11) {
     left: 70vw;
     top: 73vh;
 }
-.paper:nth-child(12) {
+::deep .paperbutton:nth-child(12) {
     left: 85vw;
     top: 51vh;
 }
 
-.connection {
+.teams {
     position: fixed;
-    background-color: var(--white);
-    width: 45pt;
-    height: 60pt;
-    border-radius: 5pt;
-    z-index: 2;
+    top: 4.5rem;
+    right: 1rem;
+    z-index: 10;
+}
+
+.teams button {
+    border-radius: 50%;
+    width: 50pt;
+    height: 50pt;
+    background-color: var(--blue);
+    border: none;
 }
