@@ -21,8 +21,8 @@ main {
 .top-row {
   background-color: var(--grey);
   height: 3.5rem;
-  display: grid;
-  grid-template-columns: 10fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
