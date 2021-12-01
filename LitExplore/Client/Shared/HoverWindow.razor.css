@@ -5,11 +5,10 @@
     
     width: 150pt;
     border-radius: 5pt;
-    padding: 5pt;
-    z-index: 10000 !important;
     padding: 10pt;
     z-index: 10;
 }
+
 
 .connwindow {
     left: 0pt;
