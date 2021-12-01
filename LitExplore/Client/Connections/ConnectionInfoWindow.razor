@@ -2,11 +2,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@connection.Paper1.Title and @connection.Paper2.Title</h5>
+                <h1 class="modal-title" id="connectionModalLabel">"@connection.Paper1.Title" and "@connection.Paper2.Title"</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h2>Connections</h2>
+                <h2>Connected on</h2>
                 <ConnectionPartialInfo connection=@connection />
                 @if (connection.Description != null) {
                     <h2>Description</h2>

@@ -1,0 +1,23 @@
+.modal-content {
+    background-color: var(--background);
+    color: var(--white);
+}
+
+h1 {
+    font-size: 16pt;
+}
+
+h2 {
+    font-size: 8pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+::deep p {
+    margin-bottom: 0;
+}
+
+.modal-body {
+    margin-bottom: 1rem;
+}
