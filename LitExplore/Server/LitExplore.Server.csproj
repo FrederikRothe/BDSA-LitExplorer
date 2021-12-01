@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\LitExplore.Client.csproj" />
-    <ProjectReference Include="..\Storage\Storage.csproj" />
-    <ProjectReference Include="..\ApplicationLogic\ApplicationLogic.csproj" />
+    <ProjectReference Include="..\Storage\LitExplore.Storage.csproj" />
+    <ProjectReference Include="..\ApplicationLogic\LitExplore.ApplicationLogic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

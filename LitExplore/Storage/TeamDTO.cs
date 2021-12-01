@@ -1,10 +1,10 @@
 namespace LitExplore.Storage;
    
-public record TeamDTO(int Id, string TeamLeaderId, string TeamName);
+public record TeamDTO(int Id, int TeamLeaderId, string TeamName);
 public record TeamCreateDTO
 {
     [Required] 
-    public string TeamLeaderId { get; init; }
+    public int TeamLeaderId { get; init; }
     
     [Required]
     [StringLength(50)]
@@ -12,5 +12,5 @@ public record TeamCreateDTO
 }
 public record TeamUpdateDTO : TeamCreateDTO 
 { 
-    int Id { get; set; }
+    public int Id { get; set; }
 };

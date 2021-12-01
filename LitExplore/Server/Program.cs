@@ -10,7 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<LitExploreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LitExploreDB")));
 builder.Services.AddScoped<ILitExploreContext, LitExploreContext>();
 builder.Services.AddScoped<IPaperRepository, PaperRepository>();
-builder.Services.AddScoped<ITeamRepository, TeamRepsitory>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
 
 var app = builder.Build();

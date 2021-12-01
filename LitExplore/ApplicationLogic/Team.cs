@@ -1,7 +1,3 @@
-
-
-
-
 namespace LitExplore.ApplicationLogic;
 public class Team
 {
