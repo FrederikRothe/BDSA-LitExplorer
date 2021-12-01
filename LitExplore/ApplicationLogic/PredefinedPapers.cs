@@ -1,9 +1,9 @@
 namespace LitExplore.ApplicationLogic;
-using Microsoft.Extensions.Hosting;
+//using Microsoft.Extensions.Hosting;
 
 public static class SeedExtensions
 {
-    public static IHost Seed(this IHost host)
+    /* public static IHost Seed(this IHost host)
     {
         using (var scope = host.Services.CreateScope())
         {
@@ -12,9 +12,9 @@ public static class SeedExtensions
             SeedPapers(context);
         }
         return host;
-    }
+    } */
 
-    private static void SeedPapers(LitExploreContext context)
+    /* private static void SeedPapers(LitExploreContext context)
     {
         context.Database.Migrate();
 
@@ -38,5 +38,5 @@ public static class SeedExtensions
             );
             context.SaveChanges();
         }
-    }
+    } */
 }

@@ -1,15 +1,11 @@
 namespace LitExplore.ApplicationLogic;
 
-public class Author : IEquatable<Author>
-{
-    public int Id {get; set;}
+public class Author {
+    public int Id { get; set; }
     
-    public string Name {get; set;}
-
-    public Author(string name)
-    {
-        Name = name;
-    }
+    [StringLength(25)]
+    public string Name { get; set; }
+    public ICollection<Paper> Papers { get; set; }
 
     public bool Equals(Author that) => Name == that.Name ? true : false;
 }

@@ -1,11 +1,12 @@
-namespace LitExplore.ApplicationLogic;
-public class LitExploreContextFactory : IDesignTimeDbContextFactory<LitExploreContext>
+namespace LitExplore.ApplicationLogic
+{
+ /*    public class LitExploreContextFactory : IDesignTimeDbContextFactory<LitExploreContext>
 {
     public LitExploreContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddUserSecrets<LitExploreContextFactory>()
+            .AddUserSecrets<Program>()
             .AddJsonFile("appsettings.json")
             .Build();
 
@@ -15,4 +16,5 @@ public class LitExploreContextFactory : IDesignTimeDbContextFactory<LitExploreCo
 
         return new LitExploreContext(optionsBuilder.Options);
     }
+} */
 }
