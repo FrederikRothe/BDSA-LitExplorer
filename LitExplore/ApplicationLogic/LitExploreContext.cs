@@ -12,7 +12,7 @@ public class LitExploreContext : DbContext, ILitExploreContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+
     }
 
     public int saveChanges()

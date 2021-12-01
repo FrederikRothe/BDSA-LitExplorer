@@ -11,7 +11,7 @@ namespace LitExplore.Server.Controllers;
 public class TeamManager 
 
 {
-    private readonly ILogger<PaperManager> _logger;
+   /*  private readonly ILogger<PaperManager> _logger;
     private readonly ITeamRepository _repository;
 
     public TeamManager(ILogger<PaperManager> logger, ITeamRepository repository)
@@ -39,5 +39,4 @@ public class TeamManager
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
     public async Task<IActionResult> Put(int teamID, TeamCreateDTO tcdto) => await _repository.UpdateAsync(teamID, tcdto); */
-
 }
