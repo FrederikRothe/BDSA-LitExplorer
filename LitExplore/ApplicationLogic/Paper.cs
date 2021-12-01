@@ -9,7 +9,7 @@ public class Paper
 
     public DateTime PublishDate { get; set; }
 
-    public ICollection<string>? Tags { get; set; }
+    public ICollection<string> Tags { get; set; } = new List<string>();
 
     public string Document { get; set; }
 
@@ -19,7 +19,7 @@ public class Paper
         Authors = authors;
         Title = title;
         PublishDate = new DateTime(year, month, day);
-        Tags = tags;
+        if (tags != null) Tags = tags;
     }
 
     public override string ToString() => $"{Title}\n{PublishDate.ToString()}\n\n{Document}";

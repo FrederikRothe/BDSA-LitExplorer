@@ -32,7 +32,7 @@
     {
         if (isTeamOwner)
         {
-            currentTeam.Users.Remove(currentTeam.Users.Where(u => u == user).FirstOrDefault());
+            currentTeam.Users.Remove(currentTeam.Users.Where(u => u == user).First());
         }
     }
 
