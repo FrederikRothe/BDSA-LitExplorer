@@ -11,7 +11,7 @@ public class Paper
     public int Year { get; set; }
 
     public int Month { get; set; }
-
+    
     public int Day { get; set; }
 
     public ICollection<Tag>? Tags { get; set; }
@@ -23,7 +23,9 @@ public class Paper
         Document = document;
         Authors = authors;
         Title = title;
-        PublishDate = new DateTime(year, month, day);
+        Year = year;
+        Month = month;
+        Day = day;
         Tags = tags;
     }
 }

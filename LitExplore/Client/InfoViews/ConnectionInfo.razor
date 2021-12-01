@@ -5,16 +5,14 @@
     <h2>Connections</h2>
     <ConnectionPartialInfo conn=@conn />
 </section>
-<section id="Description" hidden=@hideDescription>
+@if (conn.Description != null) {
     <h2>Description</h2>
     <p>@description</p>
-</section>
-
+}
 
 @code {
     [Parameter]
     public Connection conn { get; set; } = TestEntities.testconn1;
-    private bool hideDescription { get => conn.Description == null; }
     private string? description { get => conn.Description; }
    
 

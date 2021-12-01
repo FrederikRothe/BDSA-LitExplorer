@@ -1,16 +1,14 @@
 @page "/teamcustomisation"
 
 <section id="teamname">
-    <h1>@TeamName</h1>
+    <h1>@currentTeam.TeamName</h1>
 </section>
 <section id="colours">
     <div id="colourbuttons">
-        <button id="redbutton" disabled = @isTeamOwner></button>
+        <button id="redutton" disabled = @isTeamOwner></button>
         <button id="yellowbutton" disabled = @isTeamOwner></button>
         <button id="greenbutton" disabled = @isTeamOwner></button>
-        <button id="bluebutton" disabled = @isTeamOwner></button>
-        <button id="purplebutton" disabled = @isTeamOwner></button>
-        <button id="pinkbutton" disabled = @isTeamOwner></button>
+        <button id="orangebutton" disabled = @isTeamOwner></button>
     </div>
 </section>
 <section id="teammembers">
@@ -24,12 +22,10 @@
 </section>
 
 @code {
-    private Team currentTeam { get; set; } = TestEntities.team1;
-    private string TeamName { get => currentTeam.TeamName; }
-
+    [Parameter]
+    public Team currentTeam { get; set; } = TestEntities.team1;
     [Parameter]
     public bool isTeamOwner { get; set; } = false;
-
     private void removeUser(User user) 
     {
         if (isTeamOwner)
