@@ -7,20 +7,25 @@
 
 <div>
     @for (int i=0; i<12; i++) {
-        <div class="paperbutton" @onclick="() => setSelectedPaper(paper)">
-            <PaperNode paper=@paper/>
+        <div class="paperbutton" @onclick="() => setSelectedPaper(_paper)">
+            <PaperNode paper=@_paper/>
         </div>
     }
-    <div class="connectionbutton" @onclick="() => setSelectedConnection(connection)">
-        <ConnectionLine connection=@connection/>
+    <div class="connectionbutton" @onclick="() => setSelectedConnection(_connection)">
+        <ConnectionLine connection=@_connection/>
     </div>
 
     <div class="teams">
-        <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />
+        @foreach (var team in teams)
+        {
+            <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" @onclick="() => setSelectedTeam(team)"/>        
+        }
+        <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"/>
     </div>
-    <PaperInfoWindow paper=@selectedPaper/>
-    <ConnectionInfoWindow connection=@selectedConnection/>
-    <TeamCustomisation/>
+    <PaperInfoWindow paper=@_selectedPaper/>
+    <ConnectionInfoWindow connection=@_selectedConnection/>
+    <TeamCustomisation currentTeam=@_selectedTeam/>
+    <TeamForm/>
 </div>
 
 
@@ -28,15 +33,20 @@
 
 
 @code {
-    private Paper paper = TestEntities.genericPaper;
-    private Connection connection = TestEntities.testconn1;
-    private Paper selectedPaper = TestEntities.genericPaper;
+    private Paper _paper = TestEntities.genericPaper;
+    private Connection _connection = TestEntities.testconn1;
+    private Paper _selectedPaper = TestEntities.genericPaper;
     private void setSelectedPaper(Paper paper) {
-        selectedPaper = paper;
+        _selectedPaper = paper;
     }
-    private Connection selectedConnection = TestEntities.testconn1;
+    private Connection _selectedConnection = TestEntities.testconn1;
     private void setSelectedConnection(Connection connection) {
-        selectedConnection = connection;
+        _selectedConnection = connection;
+    }
+    private List<Team> teams = new List<Team>() {TestEntities.team1, TestEntities.team2};
+    private Team _selectedTeam = TestEntities.team1;
+    private void setSelectedTeam(Team team) {
+        _selectedTeam = team;
     }
 
 }

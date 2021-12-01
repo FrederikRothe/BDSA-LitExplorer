@@ -12,13 +12,16 @@
 
     private int width { get => Math.Abs(GraphPositions.positions[0].Item1-GraphPositions.positions[1].Item1); }
     private string widthS { get => width+"vw"; }
+
     private int height { get => Math.Abs(GraphPositions.positions[0].Item2-GraphPositions.positions[1].Item2); }
     private string heightS { get => height+"vh"; }
 
     private int left { get => Math.Min(GraphPositions.positions[0].Item1, GraphPositions.positions[1].Item1); }
     private string leftS { get => (left)+"vw"; }
+
     private int top { get => Math.Min(GraphPositions.positions[0].Item2, GraphPositions.positions[1].Item2); }
     private string topS { get => (top)+"vh"; }
+    
     private string x1  { get => (GraphPositions.positions[0].Item1-left)+"vw"; }
     private string y1  { get => (GraphPositions.positions[0].Item2-top)+"vh"; }
     private string x2  { get => (GraphPositions.positions[1].Item1-left)+"vw"; }

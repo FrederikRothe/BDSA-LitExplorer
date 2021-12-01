@@ -21,4 +21,5 @@ public static class TestEntities {
 
     // Teams
     public static Team team1 = new Team(user1, "The sejerejeste team") { Id = 1, Users = new List<User>() {user2, user3, user4, user5} };
+    public static Team team2 = new Team(user2, "Coolio Dont Julio") { Id = 2, Users = new List<User>() {user1, user3, user4, user5} };
 }
