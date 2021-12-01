@@ -6,7 +6,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h2>Connected on</h2>
                 <ConnectionPartialInfo connection=@connection />
                 @if (connection.Description != null) {
                     <h2>Description</h2>
@@ -14,9 +13,10 @@
                 }
             </div>
             <div class="modal-footer">
+                <button>Update connection</button>
+                <button>Delete connection</button>
                 @if (Model.currentUser.Connections.Contains(connection)) {
-                    <button>Update connection</button>
-                    <button>Delete connection</button>
+                    
                 }
             </div>
         </div>

@@ -1,14 +1,14 @@
 @if (connection.Connections.Contains(ConnectionType.Author)) {
-    <p>author(s): <i>@authors</i></p>
+    <h2>Authors</h2>
+    <p>@authors</p>
 }
 @if (connection.Connections.Contains(ConnectionType.Tag)) {
-    <p>tag(s): <i>@tags</i></p>
+    <h2>Tags</h2>
+    <p>@tags</p>
 }
 @if (connection.Connections.Contains(ConnectionType.Reference)) {
+    <h2>Reference</h2>
     <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
-}
-@if (connection.Connections.Contains(ConnectionType.Other)) {
-    <p><i>you have connected these papers yourself.</i></p>
 }
 
 
