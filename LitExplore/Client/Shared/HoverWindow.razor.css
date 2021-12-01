@@ -6,8 +6,8 @@
     width: 140pt;
     border-radius: 5pt;
     padding: 5pt;
-    z-index: 10000 !important;
 }
+
 
 .connwindow {
     left: 0pt;
@@ -17,10 +17,6 @@
 .paperwindow {
     left: -47pt;
     top: 65pt;
-}
-
-.window {
-    z-index: 10;
 }
 
 ::deep p {
