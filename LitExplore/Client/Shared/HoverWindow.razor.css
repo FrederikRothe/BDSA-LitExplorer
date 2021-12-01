@@ -3,9 +3,10 @@
     color: var(--background);
     position: relative;
     
-    width: 140pt;
+    width: 150pt;
     border-radius: 5pt;
-    padding: 5pt;
+    padding: 10pt;
+    z-index: 10;
 }
 
 
@@ -15,16 +16,27 @@
 }
 
 .paperwindow {
-    left: -47pt;
+    left: -52pt;
     top: 65pt;
 }
 
 ::deep p {
     font-size: 12pt;
-    margin-top: 8pt;
-    margin-bottom: 0pt;
 }
-::deep .title {
+
+::deep p:last-of-type {
+    margin-bottom: 0;
+}
+
+::deep h1 {
+    font-size: 13pt;
     font-weight: bold;
-    margin-top: 0pt;
+}
+
+::deep h2 {
+    font-size: 8pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2pt;
+    margin-bottom: 3pt;
 }

@@ -3,11 +3,15 @@
 
 <div class=@styleclass hidden=@hidden>
     @if (paper != null) {
+        <h1>@paper.Title</h1>
         <PaperPartialInfo paper=@paper />
     }
     @if (connection != null) {
-        <p class="title">Connection</p>
         <ConnectionPartialInfo connection=@connection />
+        @if (connection.Connections.Contains(ConnectionType.Other)) {
+            <h2>Description</h2>
+            <p>@conndescription</p>
+        }
     }
 </div>
 
@@ -19,4 +23,14 @@
     [Parameter]
     public bool hidden {get;set;}
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
+    private string conndescription
+    {
+        get
+        {
+            if (connection.Description.Length > 20) {
+                return connection.Description.Substring(0,20)+"...";
+            } 
+            return connection.Description;
+        }
+    }
 }
