@@ -10,7 +10,7 @@ namespace LitExplore.Server.Controllers;
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class ConnectionManager 
 {
-    private readonly ILogger<PaperManager> _logger;
+ /*    private readonly ILogger<PaperManager> _logger;
     private readonly IConnectionRepository _repository;
 
     public ConnectionManager(ILogger<PaperManager> logger, IConnectionRepository repository)
@@ -52,5 +52,5 @@ public class ConnectionManager
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> Delete(int connectionID) => await _repository.DeleteAsync(connectionID);
+    public async Task<IActionResult> Delete(int connectionID) => await _repository.DeleteAsync(connectionID); */
 }

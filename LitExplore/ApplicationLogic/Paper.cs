@@ -3,29 +3,14 @@ namespace LitExplore.ApplicationLogic;
 public class Paper
 {
     public int Id { get; set; }
-
+    [Required]
     public ICollection<Author> Authors { get; set; }
-
+    [Required]
+    [StringLength(50)]
     public string Title { get; set; }
-
-    public int Year { get; set; }
-
-    public int Month { get; set; }
-    
-    public int Day { get; set; }
-
+    [Required]
+    public DateTime Date { get; set; }
     public ICollection<Tag>? Tags { get; set; }
-
+    [Required]
     public string Document { get; set; }
-
-    public Paper(string document, ICollection<Author> authors, string title, int year, int month, int day, ICollection<Tag>? tags)
-    {
-        Document = document;
-        Authors = authors;
-        Title = title;
-        Year = year;
-        Month = month;
-        Day = day;
-        Tags = tags;
-    }
 }
