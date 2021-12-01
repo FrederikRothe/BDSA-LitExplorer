@@ -5,10 +5,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LitExplore.ApplicationLogic.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Papers",
                 columns: table => new
@@ -25,41 +38,64 @@ namespace LitExplore.ApplicationLogic.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Authors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
-                    PaperId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Authors_Papers_PaperId",
-                        column: x => x.PaperId,
-                        principalTable: "Papers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tags",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaperId = table.Column<int>(type: "int", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AuthorPaper",
+                columns: table => new
+                {
+                    AuthorsId = table.Column<int>(type: "int", nullable: false),
+                    PapersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthorPaper", x => new { x.AuthorsId, x.PapersId });
                     table.ForeignKey(
-                        name: "FK_Tags_Papers_PaperId",
-                        column: x => x.PaperId,
+                        name: "FK_AuthorPaper_Authors_AuthorsId",
+                        column: x => x.AuthorsId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AuthorPaper_Papers_PapersId",
+                        column: x => x.PapersId,
                         principalTable: "Papers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaperTag",
+                columns: table => new
+                {
+                    PapersId = table.Column<int>(type: "int", nullable: false),
+                    TagsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaperTag", x => new { x.PapersId, x.TagsId });
+                    table.ForeignKey(
+                        name: "FK_PaperTag_Papers_PapersId",
+                        column: x => x.PapersId,
+                        principalTable: "Papers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaperTag_Tags_TagsId",
+                        column: x => x.TagsId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,7 +107,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                     Paper1Id = table.Column<int>(type: "int", nullable: true),
                     Paper2Id = table.Column<int>(type: "int", nullable: false),
                     ConnectionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -97,6 +133,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TeamLeaderId = table.Column<int>(type: "int", nullable: false),
+                    Colour = table.Column<int>(type: "int", nullable: false),
                     TeamName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
                 },
                 constraints: table =>
@@ -123,9 +160,9 @@ namespace LitExplore.ApplicationLogic.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Authors_PaperId",
-                table: "Authors",
-                column: "PaperId");
+                name: "IX_AuthorPaper_PapersId",
+                table: "AuthorPaper",
+                column: "PapersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Connections_Paper1Id",
@@ -143,9 +180,9 @@ namespace LitExplore.ApplicationLogic.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_PaperId",
-                table: "Tags",
-                column: "PaperId");
+                name: "IX_PaperTag_TagsId",
+                table: "PaperTag",
+                column: "TagsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_TeamLeaderId",
@@ -180,16 +217,22 @@ namespace LitExplore.ApplicationLogic.Migrations
                 table: "Teams");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "AuthorPaper");
 
             migrationBuilder.DropTable(
                 name: "Connections");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "PaperTag");
+
+            migrationBuilder.DropTable(
+                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Papers");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LitExplore.ApplicationLogic.Migrations
 {
     [DbContext(typeof(LitExploreContext))]
-    [Migration("20211201134114_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20211201143310_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,6 +24,21 @@ namespace LitExplore.ApplicationLogic.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("AuthorPaper", b =>
+                {
+                    b.Property<int>("AuthorsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PapersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuthorsId", "PapersId");
+
+                    b.HasIndex("PapersId");
+
+                    b.ToTable("AuthorPaper");
+                });
+
             modelBuilder.Entity("LitExplore.ApplicationLogic.Author", b =>
                 {
                     b.Property<int>("Id")
@@ -33,15 +48,11 @@ namespace LitExplore.ApplicationLogic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int?>("PaperId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PaperId");
 
                     b.ToTable("Authors");
                 });
@@ -59,6 +70,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -119,12 +131,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PaperId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PaperId");
 
                     b.ToTable("Tags");
                 });
@@ -136,6 +143,9 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Colour")
+                        .HasColumnType("int");
 
                     b.Property<int>("TeamLeaderId")
                         .HasColumnType("int");
@@ -170,11 +180,34 @@ namespace LitExplore.ApplicationLogic.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LitExplore.ApplicationLogic.Author", b =>
+            modelBuilder.Entity("PaperTag", b =>
                 {
+                    b.Property<int>("PapersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PapersId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("PaperTag");
+                });
+
+            modelBuilder.Entity("AuthorPaper", b =>
+                {
+                    b.HasOne("LitExplore.ApplicationLogic.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LitExplore.ApplicationLogic.Paper", null)
-                        .WithMany("Authors")
-                        .HasForeignKey("PaperId");
+                        .WithMany()
+                        .HasForeignKey("PapersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.Connection", b =>
@@ -198,13 +231,6 @@ namespace LitExplore.ApplicationLogic.Migrations
                     b.Navigation("Paper2");
                 });
 
-            modelBuilder.Entity("LitExplore.ApplicationLogic.Tag", b =>
-                {
-                    b.HasOne("LitExplore.ApplicationLogic.Paper", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("PaperId");
-                });
-
             modelBuilder.Entity("LitExplore.ApplicationLogic.Team", b =>
                 {
                     b.HasOne("LitExplore.ApplicationLogic.User", "TeamLeader")
@@ -223,11 +249,19 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .HasForeignKey("TeamId");
                 });
 
-            modelBuilder.Entity("LitExplore.ApplicationLogic.Paper", b =>
+            modelBuilder.Entity("PaperTag", b =>
                 {
-                    b.Navigation("Authors");
+                    b.HasOne("LitExplore.ApplicationLogic.Paper", null)
+                        .WithMany()
+                        .HasForeignKey("PapersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Tags");
+                    b.HasOne("LitExplore.ApplicationLogic.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.Team", b =>

@@ -9,12 +9,12 @@ public class Team
 
     [Required]
     public User? TeamLeader { get; set; }
-    
+    public int Colour { get; set; }
     public ICollection<User>? Users { get; set; }
 
     [Required]
     [StringLength(25)]
-    public string? TeamName { get; set; }
+    public string TeamName { get; set; }
 
 
 }
