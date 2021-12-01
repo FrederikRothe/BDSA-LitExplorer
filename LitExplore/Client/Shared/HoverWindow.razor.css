@@ -19,8 +19,8 @@
     top: 65pt;
 }
 
-.paper .window {
-    z-index: 3;
+.window {
+    z-index: 10;
 }
 
 ::deep p {
