@@ -1,0 +1,12 @@
+p {
+    margin: 0;
+    text-align: right;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    font-size: 10pt;
+}
+
+a, .btn-link {
+    text-decoration: none;
+    color: var(--white);
+}

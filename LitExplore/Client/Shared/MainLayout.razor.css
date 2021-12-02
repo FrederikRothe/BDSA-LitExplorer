@@ -10,19 +10,11 @@ main {
   flex: 1;
 }
 
-.sidebar {
-  background-image: linear-gradient(
-    180deg,
-    var(--grey) 0%,
-    var(--background) 100%
-  );
-}
-
 .top-row {
   background-color: var(--grey);
   height: 3.5rem;
   display: grid;
-  grid-template-columns: 1fr 15fr 1fr;
+  grid-template-columns: 1fr 8fr 8fr;
   align-items: center;
 }
 
