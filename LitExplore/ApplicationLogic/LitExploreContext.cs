@@ -14,11 +14,6 @@ public class LitExploreContext : DbContext, ILitExploreContext
     {
 
     }
-
-    public int saveChanges()
-    {
-        throw new NotImplementedException();
-    }
 }
 
 
