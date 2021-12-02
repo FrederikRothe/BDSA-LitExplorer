@@ -1,12 +1,12 @@
-@if (connection.Connections.Contains(ConnectionType.Author)) {
+@if (connection.ConnectionType.Contains("author")) {
     <h2>Authors</h2>
     <p>@authors</p>
 }
-@if (connection.Connections.Contains(ConnectionType.Tag)) {
+@if (connection.ConnectionType.Contains("tag")) {
     <h2>Tags</h2>
     <p>@tags</p>
 }
-@if (connection.Connections.Contains(ConnectionType.Reference)) {
+@if (connection.ConnectionType.Contains("reference")) {
     <h2>Reference</h2>
     <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
 }
@@ -21,10 +21,10 @@
         get 
         {
             string result = "";
-            foreach (string author in connection.Paper1.Authors) 
+            foreach (Author author in connection.Paper1.Authors) 
             {
                 if (connection.Paper2.Authors.Contains(author)) {
-                    result += author + ", ";
+                    result += author.Name + ", ";
                 }
             }
             return result.Substring(0,result.Length-2);
@@ -35,10 +35,10 @@
         get
         {
             string result = "";
-            foreach (string tag in connection.Paper1.Tags) 
+            foreach (Tag tag in connection.Paper1.Tags) 
             {
                 if (connection.Paper2.Tags.Contains(tag)) {
-                    result += tag + ", ";
+                    result += tag.Name + ", ";
                 }
             }
             return result.Substring(0,result.Length-2);

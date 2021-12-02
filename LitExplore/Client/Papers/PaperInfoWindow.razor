@@ -24,11 +24,6 @@
 
     private string PublishDate
     {
-        get
-        {
-            var currentDate = paper.PublishDate;
-            var s = currentDate.Day + "/" + currentDate.Month + "/" + currentDate.Year;
-            return s;
-        }
+        get => paper.Date.ToString("dd.MM.yyyy");
     }
 }
