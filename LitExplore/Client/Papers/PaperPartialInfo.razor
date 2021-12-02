@@ -13,9 +13,9 @@
         get 
         {
             string result = "";
-            foreach (string author in paper.Authors) 
+            foreach (Author author in paper.Authors) 
             {
-                result += author + ", ";
+                result += author.Name + ", ";
             }
             return result.Substring(0,result.Length-2);
         }
@@ -25,9 +25,9 @@
         get
         {
             string result = "";
-            foreach (string tag in paper.Tags) 
+            foreach (Tag tag in paper.Tags) 
             {
-                result += tag + ", ";
+                result += tag.Name + ", ";
             }
             return result.Substring(0,result.Length-2);
         }

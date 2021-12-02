@@ -8,7 +8,7 @@
     }
     @if (connection != null) {
         <ConnectionPartialInfo connection=@connection />
-        @if (connection.Connections.Contains(ConnectionType.Other)) {
+        @if (connection.ConnectionType.Contains("other")) {
             <h2>Description</h2>
             <p>@conndescription</p>
         }
