@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Hosting;
-
 namespace LitExplore.ApplicationLogic;
 
 public static class SeedExtensions
