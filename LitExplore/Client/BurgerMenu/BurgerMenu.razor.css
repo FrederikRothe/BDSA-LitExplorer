@@ -1,9 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-
-  background: var(--background);
-  color: var(--white);
 }
 
 .menuToggle {
@@ -79,14 +76,21 @@ body {
   transform: rotate(-45deg) translate(0, -1px);
 }
 
+.menuToggle input:checked ~ ul {
+  transform: none;
+}
+
 .menu {
   position: absolute;
-  width: 300px;
-  margin: -100px 0 0 -50px;
-  padding: 50px;
-  padding-top: 125px;
+  width: 330px;
+  height: 100vh;
+  margin: -62px -24px;
+  padding: 5.5rem 2rem;
 
-  background: var(--grey);
+  background-image: linear-gradient(
+    var(--grey),
+    var(--background)
+  );
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
 
@@ -97,10 +101,22 @@ body {
 }
 
 .menu li {
-  padding: 10px 0;
-  font-size: 22px;
+  padding: 0.5rem 0;
+  margin: 0;
+  font-size: 18pt;
+  text-transform: lowercase;
+  letter-spacing: 0.2rem;
+  cursor: pointer;
 }
 
-.menuToggle input:checked ~ ul {
-  transform: none;
+.menu :nth-child(2) {
+  margin-top: 3rem;
+}
+
+h1 {
+  font-size: 14pt;
+  text-transform: lowercase;
+  letter-spacing: 0.7rem;
+  margin: 1rem 0rem;
+  text-align: center;
 }
