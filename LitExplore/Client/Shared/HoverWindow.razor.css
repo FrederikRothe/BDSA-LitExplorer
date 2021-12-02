@@ -1,0 +1,42 @@
+.window {
+    background-color: var(--white);
+    color: var(--background);
+    position: relative;
+    
+    width: 150pt;
+    border-radius: 5pt;
+    padding: 10pt;
+    z-index: 10;
+}
+
+
+.connwindow {
+    left: 0pt;
+    top: 30pt;
+}
+
+.paperwindow {
+    left: -52pt;
+    top: 65pt;
+}
+
+::deep p {
+    font-size: 12pt;
+}
+
+::deep p:last-of-type {
+    margin-bottom: 0;
+}
+
+::deep h1 {
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+::deep h2 {
+    font-size: 8pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2pt;
+    margin-bottom: 3pt;
+}

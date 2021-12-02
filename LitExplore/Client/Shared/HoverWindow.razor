@@ -1,0 +1,36 @@
+@using LitExplore.Client.Connections
+@using LitExplore.Client.Papers
+
+<div class=@styleclass hidden=@hidden>
+    @if (paper != null) {
+        <h1>@paper.Title</h1>
+        <PaperPartialInfo paper=@paper />
+    }
+    @if (connection != null) {
+        <ConnectionPartialInfo connection=@connection />
+        @if (connection.Connections.Contains(ConnectionType.Other)) {
+            <h2>Description</h2>
+            <p>@conndescription</p>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Paper? paper {get;set;}
+    [Parameter]
+    public Connection? connection {get;set;}
+    [Parameter]
+    public bool hidden {get;set;}
+    private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
+    private string conndescription
+    {
+        get
+        {
+            if (connection.Description.Length > 20) {
+                return connection.Description.Substring(0,20)+"...";
+            } 
+            return connection.Description;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<div type="button" class="paper" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
+    @if (showHoverWindow) {
+        <HoverWindow paper=@paper/>
+    } 
+</div>
+
+
+@code {
+    [Parameter]
+    public Paper paper {get; set;} = TestEntities.genericPaper;
+    public bool showHoverWindow = false;
+    private void hoversOn() {
+        showHoverWindow = !showHoverWindow;
+    }
+}

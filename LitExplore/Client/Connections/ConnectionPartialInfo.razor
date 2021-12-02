@@ -1,0 +1,47 @@
+@if (connection.Connections.Contains(ConnectionType.Author)) {
+    <h2>Authors</h2>
+    <p>@authors</p>
+}
+@if (connection.Connections.Contains(ConnectionType.Tag)) {
+    <h2>Tags</h2>
+    <p>@tags</p>
+}
+@if (connection.Connections.Contains(ConnectionType.Reference)) {
+    <h2>Reference</h2>
+    <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
+}
+
+
+
+@code {
+    [Parameter]
+    public Connection connection { get; set; } = TestEntities.testconn1;
+    private string authors 
+    {
+        get 
+        {
+            string result = "";
+            foreach (string author in connection.Paper1.Authors) 
+            {
+                if (connection.Paper2.Authors.Contains(author)) {
+                    result += author + ", ";
+                }
+            }
+            return result.Substring(0,result.Length-2);
+        }
+    }
+    private string tags
+    {
+        get
+        {
+            string result = "";
+            foreach (string tag in connection.Paper1.Tags) 
+            {
+                if (connection.Paper2.Tags.Contains(tag)) {
+                    result += tag + ", ";
+                }
+            }
+            return result.Substring(0,result.Length-2);
+        }
+    }
+}

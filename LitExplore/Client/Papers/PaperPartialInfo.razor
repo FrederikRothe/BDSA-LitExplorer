@@ -1,8 +1,8 @@
-
-<h1>paper.Title</h1>
-<h2>by: <i>@authors</i></h2>
+<h2>Authours</h2>
+<p>@authors</p>
 @if (paper.Tags != null) {
-    <h2>tags: <i>@tags</i></h2>
+    <h2>Tags</h2>
+    <p>@tags</p>
 }
 
 @code {
@@ -10,11 +10,12 @@
     public Paper paper { get; set; } = TestEntities.genericPaper;
     private string authors 
     {
-        get
+        get 
         {
             string result = "";
-            foreach (Author author in paper.Authors) { 
-                result += author.Name + ", ";
+            foreach (string author in paper.Authors) 
+            {
+                result += author + ", ";
             }
             return result.Substring(0,result.Length-2);
         }
@@ -24,9 +25,9 @@
         get
         {
             string result = "";
-            foreach (Tag tag in paper.Tags) 
+            foreach (string tag in paper.Tags) 
             {
-                result += tag.Name + ", ";
+                result += tag + ", ";
             }
             return result.Substring(0,result.Length-2);
         }
