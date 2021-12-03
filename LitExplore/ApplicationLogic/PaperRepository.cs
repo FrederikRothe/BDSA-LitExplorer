@@ -13,7 +13,7 @@ public class PaperRepository : IPaperRepository
     //     var conflict =
     //         await _context.Papers
     //                         .Where(p => p.Title == paper.Title)
-    //                         .Select(p => new PaperDTO(p.Id, p.Document, FindAuthorsId(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, p.Tags))
+    //                         .Select(p => new PaperDTO(p.Id, p.Document, FindAuthorsName(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, p.Tags))
     //                         .FirstOrDefaultAsync();
 
     //     if (conflict != null)
@@ -33,35 +33,35 @@ public class PaperRepository : IPaperRepository
 
     //     await _context.SaveChangesAsync();
 
-    //     return new PaperDTO(entity.Id, entity.Document, FindAuthorsId(entity.Authors), entity.Title, entity.Date.Year, entity.Date.Month, entity.Date.Day, entity.Tags);
+    //     return new PaperDTO(entity.Id, entity.Document, FindAuthorsName(entity.Authors), entity.Title, entity.Date.Year, entity.Date.Month, entity.Date.Day, entity.Tags);
     // }
 
     public async Task<Option<PaperDTO>> ReadAsync(int paperId)
     {
         var papers = from p in _context.Papers
                     where p.Id == paperId
-                    select new PaperDTO(p.Id, p.Document, FindAuthorsId(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, FindTagsId(p.Tags));
+                    select new PaperDTO(p.Id, p.Document, FindAuthorsName(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, FindTagsName(p.Tags));
                 
         return await papers.FirstOrDefaultAsync();
     }
 
     public async Task<IReadOnlyCollection<PaperDTO>> ReadAsync() =>
             (await _context.Papers
-                           .Select(p => new PaperDTO(p.Id, p.Document, FindAuthorsId(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, FindTagsId(p.Tags)))
+                           .Select(p => new PaperDTO(p.Id, p.Document, FindAuthorsName(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, FindTagsName(p.Tags)))
                            .ToListAsync())
                            .AsReadOnly();
 
-    private IEnumerable<int> FindAuthorsId(IEnumerable<Author> authors){
+    private IEnumerable<string> FindAuthorsName(IEnumerable<Author> authors){
         foreach (Author author in authors)
         {
-            yield return _context.Authors.Where(a => a.Equals(author)).Select(a => a.Id).First();
+            yield return _context.Authors.Where(a => a.Equals(author)).Select(a => a.Name).First();
         }
     }
 
-    private IEnumerable<int> FindTagsId(IEnumerable<Tag> tags){
+    private IEnumerable<string> FindTagsName(IEnumerable<Tag> tags){
         foreach (Tag tag in tags)
         {
-            yield return _context.Authors.Where(t => t.Id == tag.Id).Select(a => a.Id).First();
+            yield return _context.Authors.Where(t => t.Id == tag.Id).Select(a => a.Name).First();
         }
     }
 }
