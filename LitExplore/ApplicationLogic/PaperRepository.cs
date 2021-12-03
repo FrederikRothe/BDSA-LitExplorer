@@ -74,19 +74,5 @@ public class PaperRepository : IPaperRepository
                            .Select(p => new PaperDTO(p.Id, p.Document, p.Authors.Select(a => a.Id).ToHashSet(), p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
                            .ToListAsync())
                            .AsReadOnly();
-
-    private Author getAuthors(ICollection<int> ids) {
-        foreach (int id in ids)
-        {
-            var author = from a in _context.Authors
-                         where a.Id == id
-                         select new AuthorDTO{
-                             a.Id,
-                             a.Name,
-                             a.Papers
-                         };
-        }
-        
-    }
 }
 
