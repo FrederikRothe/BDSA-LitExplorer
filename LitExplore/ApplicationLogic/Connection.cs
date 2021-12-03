@@ -13,4 +13,5 @@ public class Connection
     public string ConnectionType { get; set; }
     [StringLength(100)]
     public string Description { get; set; }
+    public ICollection<Team> Teams { get; set; }
 }

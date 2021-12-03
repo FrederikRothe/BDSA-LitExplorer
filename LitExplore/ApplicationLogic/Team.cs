@@ -7,6 +7,7 @@ public class Team
     public User? TeamLeader { get; set; }
     public int Colour { get; set; }
     public ICollection<User>? Users { get; set; }
+    public ICollection<Connection>? Connections { get; set; }
 
     [Required]
     [StringLength(25)]
