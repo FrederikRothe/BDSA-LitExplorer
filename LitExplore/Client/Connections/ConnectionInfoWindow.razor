@@ -2,7 +2,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title" id="connectionModalLabel">"@connection.Paper1.Title" and "@connection.Paper2.Title"</h1>
+                <h1 class="modal-title" id="connectionModalLabel">"@connection.PaperOneId" and "@connection.Paper2.Title"</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -15,9 +15,6 @@
             <div class="modal-footer">
                 <button>update connection</button>
                 <button>delete connection</button>
-                @if (Model.currentUser.Connections.Contains(connection)) {
-                    
-                }
             </div>
         </div>
     </div>
@@ -25,6 +22,6 @@
 
 @code {
     [Parameter]
-    public Connection connection {get;set;} = TestEntities.testconn1;
+    public ConnectionDTO connection {get;set;} = TestEntities.testconn1;
     private string? description { get => connection.Description; }
 }
