@@ -1,6 +1,6 @@
 namespace LitExplore.Storage;
 
-public record AuthorCreateDTO
+public record TagCreateDTO
 {
     [Required]
     public string Name { get; init; }
@@ -8,9 +8,10 @@ public record AuthorCreateDTO
     public ICollection<int> PaperIDs { get; init; }
 }
 
-public record AuthorDTO(int Id, string Name, ICollection<int> PaperIDs);
+public record TagDTO(int Id, string Name, ICollection<int> PaperIDs);
 
-public record AuthorUpdateDTO : AuthorCreateDTO
+public record TagUpdateDTO : TagCreateDTO
 {
     public int Id { get; set; }
 }
+

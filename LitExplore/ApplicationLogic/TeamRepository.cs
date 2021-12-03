@@ -25,7 +25,11 @@ public class TeamRepository : ITeamRepository
         return new TeamDTO(
                             entity.Id,
                             entity.TeamLeader.Id,
-                            entity.TeamName
+                            entity.TeamName,
+                            entity.Colour,
+                            entity.Users.Select(u => u.Id),
+                            entity.Connections.Select(c => c.Id)
+
                         );
     }
 
@@ -53,7 +57,10 @@ public class TeamRepository : ITeamRepository
                          select new TeamDTO(
                             t.Id,
                             t.TeamLeader.Id,
-                            t.TeamName
+                            t.TeamName,
+                            t.Colour,
+                            t.Users.Select(u => u.Id),
+                            t.Connections.Select(c => c.Id)
                          );
 
         return await teams.FirstOrDefaultAsync();
