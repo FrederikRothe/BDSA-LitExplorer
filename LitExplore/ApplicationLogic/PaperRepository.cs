@@ -1,4 +1,4 @@
-namespace LitExplore.Storage;
+namespace LitExplore.ApplicationLogic;
 public class PaperRepository : IPaperRepository
 {
      private readonly ILitExploreContext _context;
@@ -14,7 +14,7 @@ public class PaperRepository : IPaperRepository
             var conflict =
                 await _context.Papers
                               .Where(p => p.Title == paper.Title)
-                              .Select(c => new PaperDTO(p.id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
+                              .Select(p => new PaperDTO(p.Id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
                               .FirstOrDefaultAsync();
 
             if (conflict != null)
@@ -34,7 +34,7 @@ public class PaperRepository : IPaperRepository
 
             await _context.SaveChangesAsync();
 
-            return (Created, new PaperDTO(entity.id, entity.Document, entity.Authors, entity.Title, entity.Date.Year, entity.Date.Month, entity.Date.Day));
+            return new PaperDTO(entity.Id, entity.Document, entity.Authors, entity.Title, entity.Date.Year, entity.Date.Month, entity.Date.Day);
         }
 
     public async Task<Status> DeleteAsync(int paperId)
@@ -42,7 +42,7 @@ public class PaperRepository : IPaperRepository
             var entity =
                 await _context.Papers
                               .Include(c => c.Connections)
-                              .FirstOrDefaultAsync(c => c.Id == paper1 || c.Id == paper2);
+                              .FirstOrDefaultAsync(c => c.PaperOneId == paperId || c.PaperTwoId == paperId);
 
             if (entity == null)
             {
@@ -62,17 +62,31 @@ public class PaperRepository : IPaperRepository
 
     public async Task<Option<PaperDTO>> ReadAsync(int paperId)
     {
-        var Paper = from p in _context.papers
-                    where p.id == paperId
-                    select new PaperDTO(p.id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day);
+        var papers = from p in _context.Papers
+                    where p.Id == paperId
+                    select new PaperDTO(p.Id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day);
                 
-        return await _context.papers.FirstOrDefaultAsync();
+        return await papers.FirstOrDefaultAsync();
     }
 
     public async Task<IReadOnlyCollection<PaperDTO>> ReadAsync() =>
             (await _context.Papers
-                           .Select(c => new PaperDTO(p.id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
+                           .Select(p => new PaperDTO(p.Id, p.Document, p.Authors.Select(a => a.Id).ToHashSet(), p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
                            .ToListAsync())
                            .AsReadOnly();
+
+    private Author getAuthors(ICollection<int> ids) {
+        foreach (int id in ids)
+        {
+            var author = from a in _context.Authors
+                         where a.Id == id
+                         select new AuthorDTO{
+                             a.Id,
+                             a.Name,
+                             a.Papers
+                         };
+        }
+        
+    }
 }
 

@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace LitExplore.ApplicationLogic;
 
 public class Connection

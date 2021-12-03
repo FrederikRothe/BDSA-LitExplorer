@@ -5,7 +5,7 @@ public record PaperCreateDTO
     [Required] 
     public string Document { get; init; }
     [Required] 
-    public ICollection<string> Authors {get; init;}
+    public ICollection<int> Authors {get; init;}
     [Required] 
     [StringLength(50)]
     public string Title { get; init; }
