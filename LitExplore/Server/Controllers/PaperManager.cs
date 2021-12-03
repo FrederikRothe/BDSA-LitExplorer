@@ -7,6 +7,7 @@ namespace LitExplore.Server.Controllers;
 [Authorize]
 [ApiController]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+[Route("api/[controller]")]
 public class PaperManager 
 
 {

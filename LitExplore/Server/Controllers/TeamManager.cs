@@ -8,6 +8,7 @@ namespace LitExplore.Server.Controllers;
 [Authorize]
 [ApiController]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+[Route("api/[controller]")]
 public class TeamManager 
 {
     private readonly ILogger<PaperManager> _logger;
