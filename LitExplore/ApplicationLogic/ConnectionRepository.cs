@@ -35,7 +35,8 @@ public class ConnectionRepository : IConnectionRepository
                             entity.Paper1.Id,
                             entity.Paper2.Id,
                             entity.ConnectionType,
-                            entity.Description
+                            entity.Description,
+                            entity.Teams.Select(t => t.Id)
                          );
     }
 
@@ -57,14 +58,15 @@ public class ConnectionRepository : IConnectionRepository
     public async Task<Option<ConnectionDTO>> ReadAsync(int connectionId)
     {
         var connections = from c in _context.Connections
-                         where c.Id == connectionId
-                         select new ConnectionDTO(
-                            c.Id,
-                            c.Paper1.Id,
-                            c.Paper2.Id,
-                            c.ConnectionType,
-                            c.Description
-                         );
+                          where c.Id == connectionId
+                          select new ConnectionDTO(
+                             c.Id,
+                             c.Paper1.Id,
+                             c.Paper2.Id,
+                             c.ConnectionType,
+                             c.Description,
+                             c.Teams.Select(t => t.Id)
+                          );
 
         return await connections.FirstOrDefaultAsync();
     }
