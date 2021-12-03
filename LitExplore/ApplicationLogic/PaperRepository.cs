@@ -14,7 +14,7 @@ public class PaperRepository : IPaperRepository
             var conflict =
                 await _context.Papers
                               .Where(p => p.Title == paper.Title)
-                              .Select(p => new PaperDTO(p.Id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
+                              .Select(p => new PaperDTO(p.Id, p.Document, FindAuthorsId(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
                               .FirstOrDefaultAsync();
 
             if (conflict != null)
@@ -24,9 +24,9 @@ public class PaperRepository : IPaperRepository
 
             var entity = new Paper
             {
-                Authors = paper.Authors,
+                Authors = FindAuthorsObj(paper.Authors),
                 Title = paper.Title,
-                Date = 1,
+                Date = new DateTime(paper.Year, paper.Month, paper.Day),
                 Document = paper.Document
             };
 
@@ -34,7 +34,7 @@ public class PaperRepository : IPaperRepository
 
             await _context.SaveChangesAsync();
 
-            return new PaperDTO(entity.Id, entity.Document, entity.Authors, entity.Title, entity.Date.Year, entity.Date.Month, entity.Date.Day);
+            return new PaperDTO(entity.Id, entity.Document, FindAuthorsId(entity.Authors), entity.Title, entity.Date.Year, entity.Date.Month, entity.Date.Day);
         }
 
     public async Task<Status> DeleteAsync(int paperId)
@@ -64,15 +64,29 @@ public class PaperRepository : IPaperRepository
     {
         var papers = from p in _context.Papers
                     where p.Id == paperId
-                    select new PaperDTO(p.Id, p.Document, p.Authors, p.Title, p.Date.Year, p.Date.Month, p.Date.Day);
+                    select new PaperDTO(p.Id, p.Document, FindAuthorsId(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day);
                 
         return await papers.FirstOrDefaultAsync();
     }
 
     public async Task<IReadOnlyCollection<PaperDTO>> ReadAsync() =>
             (await _context.Papers
-                           .Select(p => new PaperDTO(p.Id, p.Document, p.Authors.Select(a => a.Id).ToHashSet(), p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
+                           .Select(p => new PaperDTO(p.Id, p.Document, FindAuthorsId(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day))
                            .ToListAsync())
                            .AsReadOnly();
+    
+    private IEnumerable<Author> FindAuthorsObj(ICollection<int> ids){
+        foreach (int id in ids)
+        {
+            yield return _context.Authors.Where(a => a.Id == id).First();
+        }
+    }
+
+    private IEnumerable<int> FindAuthorsId(IEnumerable<Author> authors){
+        foreach (Author author in authors)
+        {
+            yield return _context.Authors.Where(a => a.Equals(author)).Select(a => a.Id).First();
+        }
+    }
 }
 
