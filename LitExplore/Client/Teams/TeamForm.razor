@@ -9,10 +9,18 @@
             <div class="modal-body">
                 <section>
                     <label for="teamname">Team Name:</label><br />
-                    <input type="text" id="teamname" />
+                    <input type="text" id="teamname" bind=@teamName/>
                 </section>
-                <input type="submit" value="Create team" />
+                <input type="submit" value="Create Team" />
             </div>
         </div>
     </div>
 </div>
+
+@code {
+    [Parameter]
+    public User admin {get;set;} = TestEntities.user1;
+
+    private string teamName {get;set;} = "";
+
+}
