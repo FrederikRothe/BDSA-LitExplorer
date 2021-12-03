@@ -1,19 +1,19 @@
-namespace LitExplore.ApplicationLogic;
+namespace LitExplore.Server;
 
 public static class SeedExtensions
 {
-    public static IHost Seed(this IHost host)
+    public static async Task<IHost> SeedAsync(this IHost host)
     {
         using (var scope = host.Services.CreateScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<LitExploreContext>();
 
-            SeedPapers(context);
+            await SeedPapersAsync(context);
         }
         return host;
     }
 
-    private static void SeedPapers(LitExploreContext context)
+    private static async Task SeedPapersAsync(LitExploreContext context)
     {
         context.Database.Migrate();
 
@@ -103,7 +103,7 @@ public static class SeedExtensions
 
             // Add to context.
             context.Papers.AddRange(Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }
