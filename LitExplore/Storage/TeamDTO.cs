@@ -11,11 +11,11 @@ public record TeamCreateDTO
     [Required]
     public int Colour { get; init; }
     [Required]
-    public ICollection<int> UserIDs { get; init; }
+    public IEnumerable<int> UserIDs { get; init; }
     [Required]
-    public ICollection<int> ConnectionIDs { get; init; }
+    public IEnumerable<int> ConnectionIDs { get; init; }
 }
-public record TeamDTO(int Id, int TeamLeaderId, string TeamName, int Colour, ICollection<int> UserIDs, ICollection<int> ConnectionIDs);
+public record TeamDTO(int Id, int TeamLeaderId, string TeamName, int Colour, IEnumerable<int> UserIDs, IEnumerable<int> ConnectionIDs);
 public record TeamUpdateDTO : TeamCreateDTO
 {
     public int Id { get; set; }
