@@ -2,13 +2,14 @@
 @using LitExplore.Client.Connections
 @using LitExplore.Client.Papers
 @using LitExplore.Client.Teams
+@inject HttpClient Http
 
 <PageTitle>LitExplore</PageTitle>
 
 <div>
-    @for (int i=0; i<12; i++) {
-        <div class="paperbutton" @onclick="() => setSelectedPaper(paper)">
-            <PaperNode paper=@paper/>
+    @foreach (PaperDTO p in Papers) {
+        <div class="paperbutton" @onclick="() => setSelectedPaper(p)">
+            <PaperNode paper=@p/>
         </div>
     }
     <div class="connectionbutton" @onclick="() => setSelectedConnection(connection)">
@@ -24,19 +25,23 @@
 </div>
 
 
-
-
-
 @code {
+
     private Paper paper = TestEntities.genericPaper;
     private Connection connection = TestEntities.testconn1;
-    private Paper selectedPaper = TestEntities.genericPaper;
-    private void setSelectedPaper(Paper paper) {
-        selectedPaper = paper;
-    }
+    
     private Connection selectedConnection = TestEntities.testconn1;
     private void setSelectedConnection(Connection connection) {
         selectedConnection = connection;
     }
 
+    private PaperDTO[]? papers;
+    protected override async Task OnInitializedAsync()
+    {
+        papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/PaperManager");
+    }
+    private PaperDTO selectedPaper = TestEntities.genericPaper;
+    private void setSelectedPaper(PaperDTO paper) {
+        selectedPaper = paper;
+    }
 }

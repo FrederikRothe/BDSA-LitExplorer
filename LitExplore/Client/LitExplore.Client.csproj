@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApplicationLogic\LitExplore.ApplicationLogic.csproj" />
+    <ProjectReference Include="..\Storage\LitExplore.Storage.csproj" />
   </ItemGroup>
 
 </Project>

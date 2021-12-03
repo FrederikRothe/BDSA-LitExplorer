@@ -20,10 +20,10 @@
 
 @code {
     [Parameter]
-    public Paper paper {get;set;} = TestEntities.genericPaper;
+    public PaperDTO paper {get;set;} = null!;
 
     private string PublishDate
     {
-        get => paper.Date.ToString("dd.MM.yyyy");
+        get => paper.Day + "." + paper.Month + "." + paper.Year;
     }
 }

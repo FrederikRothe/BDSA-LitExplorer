@@ -6,6 +6,7 @@ namespace LitExplore.Server.Controllers;
 
 [Authorize]
 [ApiController]
+[Route("api/[controller]")]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class PaperManager 
 
@@ -19,15 +20,17 @@ public class PaperManager
         _repository = repository;
     }
 
-    /* [ProducesResponseType(404)]
+    [ProducesResponseType(404)]
     [ProducesResponseType(typeof(PaperDTO), 200)]
     [ProducesResponseType(401)]
+    [HttpGet("{id}")]
     public async Task<ActionResult<PaperDTO>> Get(int paperID) => await _repository.ReadAsync(paperID);
 
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(ICollection<PaperDTO>), 200)]
     [ProducesResponseType(401)]
+    [HttpGet]
     public async Task<ActionResult<PaperDTO>> GetPapers() => await _repository.ReadAllAsync();
- */
+
 
 }
