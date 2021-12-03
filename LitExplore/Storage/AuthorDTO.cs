@@ -8,7 +8,7 @@ public record AuthorCreateDTO
     
     public ICollection<int>? Papers { get; init; }
 }
-public record AuthorUpdateDTO : TeamCreateDTO 
+public record AuthorUpdateDTO : AuthorCreateDTO 
 { 
     public int Id { get; set; }
 };

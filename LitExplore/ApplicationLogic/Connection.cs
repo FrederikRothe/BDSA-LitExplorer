@@ -3,7 +3,7 @@ namespace LitExplore.ApplicationLogic;
 public class Connection
 {
     public int Id { get; set; }
-
+    [Required]
     public Paper? Paper1 { get; set; }
     [Required]
     public Paper? Paper2 { get; set; }
