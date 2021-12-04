@@ -7,7 +7,7 @@
 <PageTitle>LitExplore</PageTitle>
 
 <div>
-    @foreach (PaperDTO p in Papers) {
+    @foreach (PaperDTO p in papers) {
         <div class="paperbutton" @onclick="() => setSelectedPaper(p)">
             <PaperNode paper=@p/>
         </div>
@@ -36,6 +36,7 @@
     private PaperDTO[]? papers;
     protected override async Task OnInitializedAsync()
     {
+        GraphPositions.initialise(Http);
         papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/PaperManager");
     }
     private PaperDTO selectedPaper = TestEntities.genericPaper;
