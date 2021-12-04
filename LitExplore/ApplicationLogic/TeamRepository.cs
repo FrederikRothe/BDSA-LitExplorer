@@ -15,7 +15,10 @@ public class TeamRepository : ITeamRepository
         var entity = new Team
         {
             TeamLeader = _context.Users.Where(u => u.Id == creatorId).SingleOrDefault(),
-            TeamName = team.TeamName
+            TeamName = team.TeamName,
+            Colour = team.Colour,
+            Users = new List<User>(),
+            Connections = new List<Connection>()
         };
 
         _context.Teams.Add(entity);
@@ -73,7 +76,7 @@ public class TeamRepository : ITeamRepository
 
     public async Task<Status> UpdateAsync(int id, TeamUpdateDTO team)
     {
-        var entity = await _context.Teams.FirstOrDefaultAsync(t => t.Id == id);
+        var entity = FindTeam(id);
 
         if (entity == null)
         {
