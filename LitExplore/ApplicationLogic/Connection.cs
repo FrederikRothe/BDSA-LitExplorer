@@ -1,11 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace LitExplore.ApplicationLogic;
 
 public class Connection
 {
     public int Id { get; set; }
-
     public Paper? Paper1 { get; set; }
     [Required]
     public Paper? Paper2 { get; set; }

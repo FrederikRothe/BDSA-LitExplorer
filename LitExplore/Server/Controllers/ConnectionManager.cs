@@ -7,8 +7,9 @@ namespace LitExplore.Server.Controllers;
 
 [Authorize]
 [ApiController]
+[Route("api/[controller]")]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-public class ConnectionManager 
+public class ConnectionManager : ControllerBase
 {
     private readonly ILogger<PaperManager> _logger;
     private readonly IConnectionRepository _repository;
@@ -22,25 +23,30 @@ public class ConnectionManager
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ConnectionDTO), 200)]
-    public async Task<ActionResult<ConnectionDTO>> Get(int connectionID) => (await _repository.ReadAsync(connectionID)).ToActionResult();
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ConnectionDTO>> Get(int id) => (await _repository.ReadAsync(id)).ToActionResult();
 
-    // [ProducesResponseType(404)]
-    // [ProducesResponseType(401)]
-    // [ProducesResponseType(typeof(IReadOnlyCollection<ConnectionDTO>), 200)]
-    // public async Task<Option<IReadOnlyCollection<ConnectionDTO>>> GetConnections() => await _repository.ReadPredefinedAsync();
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(typeof(IReadOnlyCollection<ConnectionDTO>), 200)]
+    [HttpGet]
+    public async Task<IReadOnlyCollection<ConnectionDTO>> GetConnections() => await _repository.ReadPredefinedAsync();
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ConnectionDTO), 201)]
+    [HttpPost]
     public async Task<Option<ConnectionDTO>> Post(ConnectionCreateDTO ccdto) => await _repository.CreateAsync(ccdto);
     
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> Put(int connectionID, ConnectionUpdateDTO ccdto) => (await _repository.UpdateAsync(connectionID, ccdto)).ToActionResult();
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, ConnectionUpdateDTO ccdto) => (await _repository.UpdateAsync(id, ccdto)).ToActionResult();
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> Delete(int connectionID) => (await _repository.DeleteAsync(connectionID)).ToActionResult();
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id) => (await _repository.DeleteAsync(id)).ToActionResult();
 }

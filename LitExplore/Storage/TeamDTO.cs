@@ -10,13 +10,12 @@ public record TeamCreateDTO
 
     [Required]
     public int Colour { get; init; }
-    [Required]
-    public IEnumerable<int> UserIDs { get; init; }
-    [Required]
-    public IEnumerable<int> ConnectionIDs { get; init; }
+    
 }
 public record TeamDTO(int Id, int TeamLeaderId, string TeamName, int Colour, IEnumerable<int> UserIDs, IEnumerable<int> ConnectionIDs);
 public record TeamUpdateDTO : TeamCreateDTO
 {
     public int Id { get; set; }
+    public IEnumerable<int> UserIDs { get; init; }
+    public IEnumerable<int> ConnectionIDs { get; init; }
 };
