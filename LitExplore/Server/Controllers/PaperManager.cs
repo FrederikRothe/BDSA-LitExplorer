@@ -22,12 +22,12 @@ public class PaperManager : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(PaperDTO), 200)]
     [ProducesResponseType(401)]
-    [HttpGet{id}]
-    public async Task<ActionResult<PaperDTO>> Get(int id) => await _repository.ReadAsync(id);
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Option<PaperDTO>>> Get(int id) => await _repository.ReadAsync(id);
 
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(ICollection<PaperDTO>), 200)]
     [ProducesResponseType(401)]
     [HttpGet]
-    public async Task<ActionResult<PaperDTO>> GetPapers() => await _repository.ReadAllAsync();
+    public async Task<IReadOnlyCollection<PaperDTO>> GetPapers() => await _repository.ReadAsync();
 }

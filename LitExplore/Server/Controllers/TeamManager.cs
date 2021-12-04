@@ -23,7 +23,7 @@ public class TeamManager : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(TeamDTO), 200)]
     [ProducesResponseType(401)]
-    [HttpGet{id]}]
+    [HttpGet("{id}")]
     public async Task<ActionResult<TeamDTO>> Get(int id) => (await _repository.ReadAsync(id)).ToActionResult();
 
     [ProducesResponseType(404)]
@@ -35,12 +35,12 @@ public class TeamManager : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
-    [HttpDelete{id}]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id) => (await _repository.DeleteAsync(id)).ToActionResult();
 
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
-    [HttpPut{id}]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, TeamUpdateDTO tcdto) => (await _repository.UpdateAsync(id, tcdto)).ToActionResult();
 }
