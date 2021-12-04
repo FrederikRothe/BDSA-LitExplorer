@@ -1,4 +1,4 @@
-$project = "./Client"
+$project = "./Server"
 $password = "fredagsBAR2021"
 
 Write-Host "Starting SQL Server"
