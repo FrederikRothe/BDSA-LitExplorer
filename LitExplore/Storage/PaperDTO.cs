@@ -19,5 +19,5 @@ public record PaperCreateDTO
     [Required]
     public ICollection<int> TagIDs { get; init; }
 }
-public record PaperDTO(int Id, [Required] string Document, ICollection<int> Authors, string Title, int Year, int Month, int Day, ICollection<int> TagIDs);
+public record PaperDTO(int Id, [Required] string Document, ICollection<int> AuthorIDs, string Title, int Year, int Month, int Day, ICollection<int> TagIDs);
 
