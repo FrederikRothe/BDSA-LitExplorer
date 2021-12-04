@@ -9,12 +9,12 @@
 <div>
     @foreach (PaperDTO p in _papers) {
         <div class="paperbutton" @onclick="() => setSelectedPaper(p)">
-            <PaperNode paper=@p/>
+            <PaperNode paper=@p left=@getLeftPosPaper(p) height=getTopPosPaper(p) />
         </div>
     }
     @foreach (ConnectionDTO c in _connections) {
         <div class="connectionbutton" @onclick="() => setSelectedConnection(c)">
-            <ConnectionLine connection=@c/>
+            <ConnectionLine connection=@c />
         </div>
     }
     
@@ -29,21 +29,25 @@
 
 
 @code {
-   
-    
-    private ConnectionDTO _selectedConnection;
+    private ConnectionDTO _selectedConnection = TestEntities.connectionDTO;
     private void setSelectedConnection(ConnectionDTO connection) {
         _selectedConnection = connection;
     }
     private ConnectionDTO[]? _connections;
     private PaperDTO[]? _papers;
+    private int getLeftPosPaper(PaperDTO p) {
+        return GraphPositions.paperToPositions[p.Id].Item1;
+    }
+    private int getTopPosPaper(PaperDTO p) {
+        return GraphPositions.paperToPositions[p.Id].Item2;
+    }
     protected override async Task OnInitializedAsync()
     {
         GraphPositions.initialise(Http);
         _papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/PaperManager");
         _connections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/ConnectionManager");
     }
-    private PaperDTO? _selectedPaper;
+    private PaperDTO _selectedPaper = TestEntities.paperDTO;
     private void setSelectedPaper(PaperDTO paper) {
         _selectedPaper = paper;
     }

@@ -1,14 +1,14 @@
 <h2>Authours</h2>
-<p>@authors</p>
+<p>@_authors</p>
 @if (paper.TagNames != null) {
     <h2>Tags</h2>
-    <p>@tags</p>
+    <p>@_tags</p>
 }
 
 @code {
     [Parameter]
     public PaperDTO paper { get; set; } = null!;
-    private string authors 
+    private string _authors 
     {
         get 
         {
@@ -20,7 +20,7 @@
             return result.Substring(0,result.Length-2);
         }
     }
-    private string tags
+    private string _tags
     {
         get
         {
