@@ -7,40 +7,44 @@
 <PageTitle>LitExplore</PageTitle>
 
 <div>
-    @foreach (PaperDTO p in papers) {
+    @foreach (PaperDTO p in _papers) {
         <div class="paperbutton" @onclick="() => setSelectedPaper(p)">
             <PaperNode paper=@p/>
         </div>
     }
-    <div class="connectionbutton" @onclick="() => setSelectedConnection(connection)">
-        <ConnectionLine connection=@connection/>
-    </div>
+    @foreach (ConnectionDTO c in _connections) {
+        <div class="connectionbutton" @onclick="() => setSelectedConnection(c)">
+            <ConnectionLine connection=@c/>
+        </div>
+    }
+    
 
     <div class="teams">
         <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />
     </div>
-    <PaperInfoWindow paper=@selectedPaper/>
-    <ConnectionInfoWindow connection=@selectedConnection/>
+    <PaperInfoWindow paper=@_selectedPaper/>
+    <ConnectionInfoWindow connection=@_selectedConnection/>
     <TeamCustomisation/>
 </div>
 
 
 @code {
-    private Connection connection = TestEntities.testconn1;
+   
     
-    private Connection selectedConnection = TestEntities.testconn1;
-    private void setSelectedConnection(Connection connection) {
-        selectedConnection = connection;
+    private ConnectionDTO _selectedConnection;
+    private void setSelectedConnection(ConnectionDTO connection) {
+        _selectedConnection = connection;
     }
-
-    private PaperDTO[]? papers;
+    private ConnectionDTO[]? _connections;
+    private PaperDTO[]? _papers;
     protected override async Task OnInitializedAsync()
     {
         GraphPositions.initialise(Http);
-        papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/PaperManager");
+        _papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/PaperManager");
+        _connections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/ConnectionManager");
     }
-    private PaperDTO selectedPaper = TestEntities.genericPaper;
+    private PaperDTO? _selectedPaper;
     private void setSelectedPaper(PaperDTO paper) {
-        selectedPaper = paper;
+        _selectedPaper = paper;
     }
 }

@@ -7,7 +7,7 @@
 
 @code {
     [Parameter]
-    public Connection connection {get; set;} = TestEntities.testconn1;
+    public ConnectionDTO? connection {get; set;}
     private bool showHoverWindow = false;
 
     private int width { get => Math.Abs(GraphPositions.positions[0].Item1-GraphPositions.positions[1].Item1); }
