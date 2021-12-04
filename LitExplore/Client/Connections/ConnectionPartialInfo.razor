@@ -1,11 +1,11 @@
 @inject HttpClient Http
 @if (connection.ConnectionType.Contains("author")) {
     <h2>Authors</h2>
-    <p>@authors</p>
+    <p>@_authors</p>
 }
 @if (connection.ConnectionType.Contains("tag")) {
     <h2>Tags</h2>
-    <p>@tags</p>
+    <p>@_tags</p>
 }
 @if (connection.ConnectionType.Contains("reference")) {
     <h2>Reference</h2>
@@ -26,7 +26,7 @@
         _paper1 = await Http.GetFromJsonAsync<PaperDTO>("api/PaperManager/{connection.PaperOneId}");
         _paper2 = await Http.GetFromJsonAsync<PaperDTO>("api/PaperManager/{connection.PaperTwoId}");      
     }
-    private string authors 
+    private string _authors 
     {
         get 
         {
@@ -40,7 +40,7 @@
             return result.Substring(0,result.Length-2);
         }
     }
-    private string tags
+    private string _tags
     {
         get
         {
