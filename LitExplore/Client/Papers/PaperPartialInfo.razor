@@ -1,6 +1,6 @@
 <h2>Authours</h2>
 <p>@authors</p>
-@if (paper.Tags != null) {
+@if (paper.TagNames != null) {
     <h2>Tags</h2>
     <p>@tags</p>
 }
@@ -13,7 +13,7 @@
         get 
         {
             string result = "";
-            foreach (string author in paper.Authors) 
+            foreach (string author in paper.AuthorNames) 
             {
                 result += author + ", ";
             }
@@ -25,7 +25,7 @@
         get
         {
             string result = "";
-            foreach (string tag in paper.Tags) 
+            foreach (string tag in paper.TagNames) 
             {
                 result += tag + ", ";
             }
