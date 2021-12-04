@@ -25,7 +25,7 @@
 
 @code {
     [Parameter]
-    public Team currentTeam { get; set; } = TestEntities.team1;
+    public Team currentTeam { get; set; } = null!;
     [Parameter]
     public bool isTeamOwner { get; set; } = false;
     private void removeUser(User user) 
@@ -35,5 +35,5 @@
             currentTeam.Users.Remove(currentTeam.Users.Where(u => u == user).First());
         }
     }
-
+    
 }

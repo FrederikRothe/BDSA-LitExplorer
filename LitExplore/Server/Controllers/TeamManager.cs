@@ -19,9 +19,10 @@ public class TeamManager
         _repository = repository;
     }
 
-   [ProducesResponseType(404)]
+    [ProducesResponseType(404)]
     [ProducesResponseType(typeof(TeamDTO), 200)]
     [ProducesResponseType(401)]
+    [HttpGet("{id}")]
     public async Task<ActionResult<TeamDTO>> Get(int teamID) => (await _repository.ReadAsync(teamID)).ToActionResult();
 
     [ProducesResponseType(404)]
