@@ -1,20 +1,23 @@
 namespace LitExplore.Storage;
 
-public record PaperCreateDTO 
+public record PaperCreateDTO
 {
-    [Required] 
+    [Required]
     public string Document { get; init; }
-    [Required] 
-    public ICollection<string> Authors {get; init;}
-    [Required] 
+    [Required]
+    public ICollection<string> AuthorNames { get; init; }
+    [Required]
     [StringLength(50)]
     public string Title { get; init; }
-    [Required] 
+    [Required]
     public int Year { get; init; }
-    [Required] 
+    [Required]
     public int Month { get; init; }
-    [Required] 
+    [Required]
     public int Day { get; init; }
+
+    [Required]
+    public ICollection<string> TagNames { get; init; }
 }
-public record PaperDTO(int Id, [Required] string Document, ICollection<string> Authors, string Title, int Year, int Month, int Day);
- 
+public record PaperDTO(int Id, [Required] string Document, IEnumerable<string> AuthorNames, string Title, int Year, int Month, int Day, IEnumerable<string> TagNames);
+
