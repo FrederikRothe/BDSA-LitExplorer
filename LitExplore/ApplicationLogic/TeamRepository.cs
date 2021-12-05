@@ -14,7 +14,7 @@ public class TeamRepository : ITeamRepository
         if (team == null) return null;
         var entity = new Team
         {
-            TeamLeader = _context.Users.Where(u => u.Id.Equals(creatorId)).SingleOrDefault(),
+            TeamLeader = _context.Users.Where(u => u.oid == creatorId).SingleOrDefault(),
             TeamName = team.TeamName,
             Colour = team.Colour,
             Users = new List<User>(),
@@ -37,7 +37,8 @@ public class TeamRepository : ITeamRepository
     }
 
     private Team FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).First();
-    private User FindUser(string userId) => _context.Users.Where(u => u.Id == userId).First();
+    private User FindUser(int userId) => _context.Users.Where(u => u.Id == userId).First();
+    private User FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
 
     public async Task<Status> DeleteAsync(int teamId)
     {
@@ -71,7 +72,7 @@ public class TeamRepository : ITeamRepository
     }
 
     public async Task<IReadOnlyCollection<TeamDTO>> ReadUserTeamsAsync(string userId)
-        => (await _context.Teams.Where(t => t.Users.Contains(FindUser(userId)))
+        => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))
                                 .Select(t => new TeamDTO(
                                         t.Id,
                                         t.TeamLeader.Id,

@@ -2,7 +2,7 @@ namespace LitExplore.Storage;
 public record TeamCreateDTO
 {
     [Required]
-    public string TeamLeaderId { get; init; }
+    public int TeamLeaderId { get; init; }
 
     [Required]
     [StringLength(50)]
@@ -12,10 +12,10 @@ public record TeamCreateDTO
     public int Colour { get; init; }
     
 }
-public record TeamDTO(int Id, string TeamLeaderId, string TeamName, int Colour, IEnumerable<string> UserIDs, IEnumerable<int> ConnectionIDs);
+public record TeamDTO(int Id, int TeamLeaderId, string TeamName, int Colour, IEnumerable<int> UserIDs, IEnumerable<int> ConnectionIDs);
 public record TeamUpdateDTO : TeamCreateDTO
 {
     public int Id { get; set; }
-    public IEnumerable<string> UserIDs { get; init; }
+    public IEnumerable<int> UserIDs { get; init; }
     public IEnumerable<int> ConnectionIDs { get; init; }
 };
