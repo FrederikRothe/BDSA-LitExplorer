@@ -9,12 +9,12 @@ public class TeamRepository : ITeamRepository
     {
         _context = context;
     }
-    public async Task<TeamDTO> CreateAsync(TeamCreateDTO team, int creatorId)
+    public async Task<TeamDTO> CreateAsync(TeamCreateDTO team, string creatorId)
     {
         if (team == null) return null;
         var entity = new Team
         {
-            TeamLeader = _context.Users.Where(u => u.Id == creatorId).SingleOrDefault(),
+            TeamLeader = _context.Users.Where(u => u.Id.Equals(creatorId)).SingleOrDefault(),
             TeamName = team.TeamName,
             Colour = team.Colour,
             Users = new List<User>(),
@@ -37,6 +37,7 @@ public class TeamRepository : ITeamRepository
     }
 
     private Team FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).First();
+    private User FindUser(string userId) => _context.Users.Where(u => u.Id == userId).First();
 
     public async Task<Status> DeleteAsync(int teamId)
     {
@@ -68,6 +69,18 @@ public class TeamRepository : ITeamRepository
 
         return await teams.FirstOrDefaultAsync();
     }
+
+    public async Task<IReadOnlyCollection<TeamDTO>> ReadUserTeamsAsync(string userId)
+        => (await _context.Teams.Where(t => t.Users.Contains(FindUser(userId)))
+                                .Select(t => new TeamDTO(
+                                        t.Id,
+                                        t.TeamLeader.Id,
+                                        t.TeamName,
+                                        t.Colour,
+                                        t.Users.Select(u => u.Id),
+                                        t.Connections.Select(c => c.Id)))
+                                .ToListAsync())
+                                .AsReadOnly();
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync()
     {
