@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
@@ -20,17 +19,23 @@ public class TeamManager : ControllerBase
         _repository = repository;
     }
 
+    // [ProducesResponseType(404)]
+    // [ProducesResponseType(typeof(TeamDTO), 200)]
+    // [ProducesResponseType(401)]
+    // [HttpGet("{id}")]
+    // public async Task<ActionResult<TeamDTO>> Get(int id) => (await _repository.ReadAsync(id)).ToActionResult();
+
     [ProducesResponseType(404)]
-    [ProducesResponseType(typeof(TeamDTO), 200)]
+    [ProducesResponseType(typeof(IReadOnlyCollection<TeamDTO>), 200)]
     [ProducesResponseType(401)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<TeamDTO>> Get(int id) => (await _repository.ReadAsync(id)).ToActionResult();
+    public async Task<IReadOnlyCollection<TeamDTO>> GetCurrentUserTeamsAsync(string userId) => (await _repository.ReadUserTeamsAsync(userId));
 
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(TeamDTO), 201)]
     [ProducesResponseType(401)]
     [HttpPost]
-    public async Task<ActionResult<TeamDTO>> Post(TeamCreateDTO tdto, int creatorId) => await _repository.CreateAsync(tdto, creatorId);
+    public async Task<ActionResult<TeamDTO>> Post(TeamCreateDTO tdto, string creatorId) => await _repository.CreateAsync(tdto, creatorId);
 
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
