@@ -2,7 +2,7 @@ namespace LitExplore.ApplicationLogic;
 public class User
 {
     // This is just to keep oid's for the AAD shit
-    public int Id { get; init; }
+    public string Id { get; init; }
 
     public string Name { get; init; }
 
