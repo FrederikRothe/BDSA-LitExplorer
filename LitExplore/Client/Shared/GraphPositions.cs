@@ -15,7 +15,6 @@ public static class GraphPositions {
             paperToPositions[papers[i].Id] = positions[i];
         }
 
-
         initialised = true;
     }
 }

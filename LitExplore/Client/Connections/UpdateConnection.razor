@@ -1,8 +1,7 @@
 <h1>Update a connection between two papers</h1>
 
-<ConnectionForm UpdateForm=true Paper1=@conn.Paper1.Title Paper2=@conn.Paper2.Title/>
 
 @code {
     [Parameter]
-    public Connection conn {get;set;} = TestEntities.testconn3;
+    public ConnectionDTO conn {get;set;} = null!;
 }

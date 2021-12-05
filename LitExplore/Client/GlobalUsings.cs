@@ -1,4 +1,3 @@
-global using LitExplore.ApplicationLogic;
 global using LitExplore.Client.Shared;
 global using LitExplore.Storage;
 
