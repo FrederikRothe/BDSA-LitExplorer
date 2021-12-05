@@ -45,4 +45,5 @@ app.MapFallbackToFile("index.html");
 await app.SeedAsync();
 
 app.Run();
+
 public partial class Program { }
