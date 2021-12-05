@@ -32,9 +32,9 @@ public class UserRepository : IUserRepository
                         );
     }
 
-    private User FindUser(int userId) => _context.Users.Where(u => u.Id == userId).First();
+    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
 
-    public async Task<Status> DeleteAsync(int userId)
+    public async Task<Status> DeleteAsync(string userId)
     {
         var entity = FindUser(userId);
 
@@ -49,10 +49,10 @@ public class UserRepository : IUserRepository
         return Deleted;
     }
 
-    public async Task<Option<UserDTO>> ReadAsync(int userId)
+    public async Task<Option<UserDTO>> ReadAsync(string userId)
     {
         var users = from u in _context.Users
-                    where u.Id == userId
+                    where u.Id.Equals(userId)
                     select new UserDTO(
                         u.Id,
                         u.Name,

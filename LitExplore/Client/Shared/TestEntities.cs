@@ -3,7 +3,7 @@ namespace LitExplore.Client;
 public static class TestEntities {
     public static PaperDTO paperDTO = new PaperDTO(1,"",new List<string>(),"", 1,1,1, new List<string>());
     public static ConnectionDTO connectionDTO = new ConnectionDTO(1,1,1,"","",new List<int>());
-    public static TeamDTO teamDTO = new TeamDTO(1,1,"",1,new List<int>(),new List<int>());
+    public static TeamDTO teamDTO = new TeamDTO(1,"","",1,new List<string>(),new List<int>());
     // Authors
     public static Author nadja = new Author() { Name = "Nadja" };
     public static Author caspar = new Author() { Name = "Caspar" };
@@ -70,11 +70,11 @@ public static class TestEntities {
     };
     
     // Users
-    public static User user1 = new User { Id = 1 };
-    public static User user2 = new User { Id = 2 };
-    public static User user3 = new User { Id = 3 };
-    public static User user4 = new User { Id = 4 };
-    public static User user5 = new User { Id = 5 };
+    public static User user1 = new User { Id = "1" };
+    public static User user2 = new User { Id = "2" };
+    public static User user3 = new User { Id = "3" };
+    public static User user4 = new User { Id = "4" };
+    public static User user5 = new User { Id = "5" };
 
     // Teams
     public static Team team1 = new Team() {
