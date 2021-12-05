@@ -1,6 +1,6 @@
 <div class="connection" style="left: @_left vw; top: @_top vh;">
     <svg style="width: @_width vw; height: @_height vh;"><line data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn" x1=@_x1 y1=@_y1 x2=@_x2 y2=@_y2 /></svg>
-    @if (showHoverWindow) {
+    @if (_showHoverWindow) {
         <HoverWindow connection=@connection/>
     } 
 </div>
@@ -8,7 +8,7 @@
 @code {
     [Parameter]
     public ConnectionDTO connection {get; set;} = null!;
-    private bool showHoverWindow = false;
+    private bool _showHoverWindow = false;
 
     private (int,int) position1() => GraphPositions.paperToPositions[connection.PaperOneId];
     private (int,int) position2() => GraphPositions.paperToPositions[connection.PaperTwoId];
@@ -21,6 +21,6 @@
     private string _x2  { get => (position2().Item1-_left)+"vw"; }
     private string _y2  { get => (position2().Item2-_top)+"vh"; }
     private void hoversOn() {
-        _showHoverWindow = !showHoverWindow;
+        _showHoverWindow = !_showHoverWindow;
     }
 }
