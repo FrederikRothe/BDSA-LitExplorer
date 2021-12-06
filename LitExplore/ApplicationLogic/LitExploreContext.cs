@@ -13,7 +13,17 @@ public class LitExploreContext : DbContext, ILitExploreContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
-    }
+        modelBuilder
+        .Entity<Team>()
+        .HasOne(t => t.TeamLeader)
+        .WithMany(u => u.IsLeaderOf);
+
+        modelBuilder
+        .Entity<Team>()
+        .HasMany(t => t.Users)
+        .WithMany(u => u.Teams);
+
+    }   
 }
 
 

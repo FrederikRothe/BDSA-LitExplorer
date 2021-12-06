@@ -124,8 +124,7 @@ namespace LitExplore.ApplicationLogic.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -160,7 +159,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                     b.Property<int>("Colour")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamLeaderId")
+                    b.Property<int?>("TeamLeaderId")
                         .HasColumnType("int");
 
                     b.Property<string>("TeamName")
@@ -183,12 +182,15 @@ namespace LitExplore.ApplicationLogic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("Users");
                 });
@@ -206,6 +208,21 @@ namespace LitExplore.ApplicationLogic.Migrations
                     b.HasIndex("TagsId");
 
                     b.ToTable("PaperTag");
+                });
+
+            modelBuilder.Entity("TeamUser", b =>
+                {
+                    b.Property<int>("TeamsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TeamUser");
                 });
 
             modelBuilder.Entity("AuthorPaper", b =>
@@ -262,19 +279,10 @@ namespace LitExplore.ApplicationLogic.Migrations
             modelBuilder.Entity("LitExplore.ApplicationLogic.Team", b =>
                 {
                     b.HasOne("LitExplore.ApplicationLogic.User", "TeamLeader")
-                        .WithMany()
-                        .HasForeignKey("TeamLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("IsLeaderOf")
+                        .HasForeignKey("TeamLeaderId");
 
                     b.Navigation("TeamLeader");
-                });
-
-            modelBuilder.Entity("LitExplore.ApplicationLogic.User", b =>
-                {
-                    b.HasOne("LitExplore.ApplicationLogic.Team", null)
-                        .WithMany("Users")
-                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("PaperTag", b =>
@@ -292,14 +300,26 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LitExplore.ApplicationLogic.Team", b =>
+            modelBuilder.Entity("TeamUser", b =>
                 {
-                    b.Navigation("Users");
+                    b.HasOne("LitExplore.ApplicationLogic.Team", null)
+                        .WithMany()
+                        .HasForeignKey("TeamsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LitExplore.ApplicationLogic.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.User", b =>
                 {
                     b.Navigation("Connections");
+
+                    b.Navigation("IsLeaderOf");
                 });
 #pragma warning restore 612, 618
         }

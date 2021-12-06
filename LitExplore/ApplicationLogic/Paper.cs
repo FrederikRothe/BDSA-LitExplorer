@@ -6,7 +6,6 @@ public class Paper
     [Required]
     public ICollection<Author>? Authors { get; set; }
     [Required]
-    [StringLength(50)]
     public string Title { get; set; }
     [Required]
     public DateTime Date { get; set; }
