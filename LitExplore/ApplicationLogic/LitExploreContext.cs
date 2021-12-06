@@ -18,6 +18,11 @@ public class LitExploreContext : DbContext, ILitExploreContext
         .HasOne(t => t.TeamLeader)
         .WithMany(u => u.IsLeaderOf);
 
+        modelBuilder
+        .Entity<Team>()
+        .HasMany(t => t.Users)
+        .WithMany(u => u.Teams);
+
     }   
 }
 

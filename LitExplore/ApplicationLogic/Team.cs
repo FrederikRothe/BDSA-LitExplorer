@@ -3,11 +3,10 @@ public class Team
 {
     public int Id { get; set; }
 
-    [Required]
-    public User TeamLeader { get; set; }
+    public User? TeamLeader { get; set; }
     public int Colour { get; set; }
-    public ICollection<User> Users { get; set; }
-    public ICollection<Connection> Connections { get; set; }
+    public ICollection<User>? Users { get; set; }
+    public ICollection<Connection>? Connections { get; set; }
     [Required]
     [StringLength(25)]
     public string TeamName { get; set; }
