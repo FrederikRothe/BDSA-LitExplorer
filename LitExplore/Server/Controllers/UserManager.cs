@@ -19,6 +19,14 @@ public class UserManager : ControllerBase
         _repository = repository;
     }
 
+    // Create
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(typeof(UserDTO), 201)]
+    [HttpPost]
+    public async Task<Option<UserDTO>> Post(UserCreateDTO ucdto) => await _repository.CreateAsync(ucdto);
+    
+    // Read
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(UserDTO), 200)]
