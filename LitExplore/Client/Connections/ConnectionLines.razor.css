@@ -1,0 +1,19 @@
+.connection {
+    position: fixed;
+    left: 32px;
+    top: 62px;
+}
+
+.bottom {
+    stroke-width: 8px;
+    stroke: var(--background);
+}
+
+.top {
+    stroke-width: 5px;
+    stroke: var(--blue);
+}
+
+.top:hover {
+    stroke: var(--cyan);
+}
