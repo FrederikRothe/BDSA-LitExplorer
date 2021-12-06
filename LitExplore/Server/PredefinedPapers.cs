@@ -62,8 +62,8 @@ public static class SeedExtensions
             Tag CompSci = new Tag{Name = "Computer Science", Papers = new List<Paper>{Paper10}};
             Tag BlueJ = new Tag{Name = "BlueJ", Papers = new List<Paper>{Paper11}};
             Tag Programming = new Tag{Name = "Programming", Papers = new List<Paper>{Paper11, Paper12}};
-            Tag OOP = new Tag{Name = "", Papers = new List<Paper>{Paper11}};
-            Tag Python = new Tag{Name = "", Papers = new List<Paper>{Paper12}};
+            Tag OOP = new Tag{Name = "Object Oriented Programming", Papers = new List<Paper>{Paper11}};
+            Tag Python = new Tag{Name = "Python", Papers = new List<Paper>{Paper12}};
 
             // Adding tags and authors to papers
             Paper1.Authors = new List<Author>{Sedgewick};
