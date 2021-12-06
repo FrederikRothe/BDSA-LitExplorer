@@ -5,7 +5,7 @@ public class Author {
     
     [StringLength(25)]
     public string Name { get; set; }
-    public ICollection<Paper> Papers { get; set; }
+    public ICollection<Paper> Papers { get; set; } = new List<Paper>();
 
     public bool Equals(Author that) => Name == that.Name ? true : false;
 }

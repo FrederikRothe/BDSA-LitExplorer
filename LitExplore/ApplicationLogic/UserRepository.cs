@@ -49,17 +49,17 @@ public class UserRepository : IUserRepository
     }
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(string userId)
-        => (await _context.Connections
-                          .Where(c => c.Creator.Equals(FindUserOid(userId)))
-                          .Select(c => new ConnectionDTO(
-                                c.Id,
-                                c.Paper1.Id,
-                                c.Paper2.Id,
-                                c.ConnectionType,
-                                c.Description,
-                                null))
-                          .ToListAsync())
-                          .AsReadOnly();
+        => throw new NotImplementedException(); //(await _context.Connections
+                        //   .Where(c => c.Creator.Equals(FindUserOid(userId)))
+                        //   .Select(c => new ConnectionDTO(
+                        //         c.Id,
+                        //         c.Paper1.Id,
+                        //         c.Paper2.Id,
+                        //         c.ConnectionType,
+                        //         c.Description,
+                        //         null))
+                        //   .ToListAsync())
+                        //   .AsReadOnly();
 
     public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(string userId)
         => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))

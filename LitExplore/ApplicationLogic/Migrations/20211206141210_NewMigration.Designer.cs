@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LitExplore.ApplicationLogic.Migrations
 {
     [DbContext(typeof(LitExploreContext))]
-    [Migration("20211206090323_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20211206141210_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,27 +84,27 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("Paper1Id")
+                    b.Property<int>("Paper1Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Paper2Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
 
                     b.HasIndex("Paper1Id");
 
                     b.HasIndex("Paper2Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Connections");
                 });
@@ -161,7 +161,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                     b.Property<int>("Colour")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TeamLeaderId")
+                    b.Property<int>("TeamLeaderId")
                         .HasColumnType("int");
 
                     b.Property<string>("TeamName")
@@ -259,19 +259,23 @@ namespace LitExplore.ApplicationLogic.Migrations
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.Connection", b =>
                 {
-                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper1")
-                        .WithMany()
-                        .HasForeignKey("Paper1Id");
+                    b.HasOne("LitExplore.ApplicationLogic.User", "Creator")
+                        .WithMany("Connections")
+                        .HasForeignKey("CreatorId");
 
-                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper2")
-                        .WithMany()
-                        .HasForeignKey("Paper2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper1")
+                        .WithMany("AsPaper1")
+                        .HasForeignKey("Paper1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LitExplore.ApplicationLogic.User", null)
-                        .WithMany("Connections")
-                        .HasForeignKey("UserId");
+                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper2")
+                        .WithMany("AsPaper2")
+                        .HasForeignKey("Paper2Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
 
                     b.Navigation("Paper1");
 
@@ -282,7 +286,9 @@ namespace LitExplore.ApplicationLogic.Migrations
                 {
                     b.HasOne("LitExplore.ApplicationLogic.User", "TeamLeader")
                         .WithMany("IsLeaderOf")
-                        .HasForeignKey("TeamLeaderId");
+                        .HasForeignKey("TeamLeaderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("TeamLeader");
                 });
@@ -315,6 +321,13 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LitExplore.ApplicationLogic.Paper", b =>
+                {
+                    b.Navigation("AsPaper1");
+
+                    b.Navigation("AsPaper2");
                 });
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.User", b =>

@@ -56,7 +56,7 @@ public class ConnectionRepository : IConnectionRepository
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadPredefinedAsync()
         => (await _context.Connections
-                          .Where(c => !c.ConnectionType.Contains("other"))
+                          .Where(c => c.Creator == null)
                           .Select(c => new ConnectionDTO(
                                 c.Id,
                                 c.Paper1.Id,

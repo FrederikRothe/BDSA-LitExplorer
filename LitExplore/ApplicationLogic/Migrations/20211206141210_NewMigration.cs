@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LitExplore.ApplicationLogic.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -118,11 +118,11 @@ namespace LitExplore.ApplicationLogic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Paper1Id = table.Column<int>(type: "int", nullable: true),
+                    CreatorId = table.Column<int>(type: "int", nullable: true),
+                    Paper1Id = table.Column<int>(type: "int", nullable: false),
                     Paper2Id = table.Column<int>(type: "int", nullable: false),
                     ConnectionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,16 +131,17 @@ namespace LitExplore.ApplicationLogic.Migrations
                         name: "FK_Connections_Papers_Paper1Id",
                         column: x => x.Paper1Id,
                         principalTable: "Papers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Connections_Papers_Paper2Id",
                         column: x => x.Paper2Id,
                         principalTable: "Papers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Connections_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Connections_Users_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
@@ -151,7 +152,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TeamLeaderId = table.Column<int>(type: "int", nullable: true),
+                    TeamLeaderId = table.Column<int>(type: "int", nullable: false),
                     Colour = table.Column<int>(type: "int", nullable: false),
                     TeamName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
                 },
@@ -162,7 +163,8 @@ namespace LitExplore.ApplicationLogic.Migrations
                         name: "FK_Teams_Users_TeamLeaderId",
                         column: x => x.TeamLeaderId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,6 +221,11 @@ namespace LitExplore.ApplicationLogic.Migrations
                 column: "PapersId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Connections_CreatorId",
+                table: "Connections",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Connections_Paper1Id",
                 table: "Connections",
                 column: "Paper1Id");
@@ -227,11 +234,6 @@ namespace LitExplore.ApplicationLogic.Migrations
                 name: "IX_Connections_Paper2Id",
                 table: "Connections",
                 column: "Paper2Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Connections_UserId",
-                table: "Connections",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ConnectionTeam_TeamsId",
