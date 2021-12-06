@@ -24,4 +24,16 @@ public class UserManager : ControllerBase
     [ProducesResponseType(typeof(UserDTO), 200)]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> Get(string id) => (await _repository.ReadAsync(id)).ToActionResult();
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(typeof(IEnumerable<ConnectionDTO>), 200)]
+    [HttpGet("connections/{id}")]
+    public Task<IEnumerable<ConnectionDTO>> GetConnections(string id) => _repository.ReadConnectionsAsync(id);
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(IReadOnlyCollection<TeamDTO>), 200)]
+    [ProducesResponseType(401)]
+    [HttpGet("teams/{id}")]
+    public async Task<IReadOnlyCollection<TeamDTO>> GetTeams(string id) => (await _repository.ReadTeamsAsync(id));
 }
