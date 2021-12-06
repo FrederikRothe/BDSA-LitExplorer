@@ -67,11 +67,11 @@ public static class TestEntities {
     };
     
     // Users
-    public static User user1 = new User { Id = "1" };
-    public static User user2 = new User { Id = "2" };
-    public static User user3 = new User { Id = "3" };
-    public static User user4 = new User { Id = "4" };
-    public static User user5 = new User { Id = "5" };
+    public static User user1 = new User { Id = 1, oid = "1" };
+    public static User user2 = new User { Id = 2, oid = "2" };
+    public static User user3 = new User { Id = 3, oid = "3" };
+    public static User user4 = new User { Id = 4, oid = "4" };
+    public static User user5 = new User { Id = 5, oid = "5" };
 
     // Teams
     public static Team team1 = new Team() {

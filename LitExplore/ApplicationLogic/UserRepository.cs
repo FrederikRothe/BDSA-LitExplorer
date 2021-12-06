@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
         if (user == null) return null;
         var entity = new User
         {
-            Id = user.Id,
+            oid = user.oid,
             Name = user.Name,
             Connections = new List<Connection>(),
             Teams = new List<Team>()
@@ -26,6 +26,7 @@ public class UserRepository : IUserRepository
 
         return new UserDTO(
                             entity.Id,
+                            entity.oid,
                             entity.Name,
                             entity.Connections.Select(c => c.Id),
                             entity.Teams.Select(t => t.Id)
@@ -55,6 +56,7 @@ public class UserRepository : IUserRepository
                     where u.Id.Equals(userId)
                     select new UserDTO(
                         u.Id,
+                        u.oid,
                         u.Name,
                         u.Connections.Select(c => c.Id),
                         u.Teams.Select(t => t.Id)
