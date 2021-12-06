@@ -15,6 +15,14 @@ public class ConnectionManager : ControllerBase
         _repository = repository;
     }
 
+    // Create
+    [ProducesResponseType(404)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(typeof(ConnectionDTO), 201)]
+    [HttpPost]
+    public async Task<Option<ConnectionDTO>> Post(ConnectionCreateDTO ccdto) => await _repository.CreateAsync(ccdto);
+    
+    // Read
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ConnectionDTO), 200)]
@@ -25,20 +33,22 @@ public class ConnectionManager : ControllerBase
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(IReadOnlyCollection<ConnectionDTO>), 200)]
     [HttpGet]
-    public async Task<IReadOnlyCollection<ConnectionDTO>> GetConnections() => await _repository.ReadPredefinedAsync();
+    public async Task<IReadOnlyCollection<ConnectionDTO>> GetAllConnections() => await _repository.ReadPredefinedAsync();
 
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
-    [ProducesResponseType(typeof(ConnectionDTO), 201)]
-    [HttpPost]
-    public async Task<Option<ConnectionDTO>> Post(ConnectionCreateDTO ccdto) => await _repository.CreateAsync(ccdto);
-    
+    [ProducesResponseType(typeof(IReadOnlyCollection<TeamDTO>), 200)]
+    [HttpGet("teams/{id}")]
+    public async Task<IReadOnlyCollection<TeamDTO>> GetTeams(int id) => await _repository.ReadTeamsAsync(id);
+
+    // Update
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, ConnectionUpdateDTO ccdto) => (await _repository.UpdateAsync(id, ccdto)).ToActionResult();
 
+    // Delete
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]
