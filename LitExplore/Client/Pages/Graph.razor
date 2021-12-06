@@ -26,7 +26,16 @@
                 <ConnectionLine connection=@c />
             </div>
         }
-    }   
+    } 
+
+    @if (Model.currentUserConnections != null && _dataIsLoaded )
+    {
+        @foreach (ConnectionDTO c in Model.currentUserConnections) {
+            <div class="connectionbutton" @onclick="() => setSelectedConnection(c)">
+                <ConnectionLine connection=@c colour=1 />
+            </div>
+        }
+    } 
 
     <div class="teams">
         <button type="button" @onClick="() => setSelectedTeam()" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />

@@ -1,5 +1,5 @@
 <div class="connection" style="left: @_left vw; top: @_top vh;">
-    <svg style="width: @_width vw; height: @_height vh;"><line data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn" x1=@_x1 y1=@_y1 x2=@_x2 y2=@_y2 /></svg>
+    <svg style="width: @_width vw; height: @_height vh;"><line class="c-@colour" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn" x1=@_x1 y1=@_y1 x2=@_x2 y2=@_y2 /></svg>
     @if (_showHoverWindow) {
         <HoverWindow connection=@connection/>
     } 
@@ -8,6 +8,10 @@
 @code {
     [Parameter]
     public ConnectionDTO connection {get; set;} = null!;
+    [Parameter]
+    public int colour { get; set; } = 0;
+    // 0 = blue, 1 = cyan, 2 = yellow, 3 = orange, 4 = green, 5 = red
+
     private bool _showHoverWindow = false;
 
     private (int,int) position1() => GraphPositions.paperToPositions[connection.PaperOneId];

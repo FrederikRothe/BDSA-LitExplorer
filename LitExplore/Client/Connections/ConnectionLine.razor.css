@@ -6,5 +6,28 @@
 
 line {
     stroke-width: 3pt;
+}
+
+.c-0 {
     stroke: var(--blue);
+}
+
+.c-1 {
+    stroke: var(--cyan);
+}
+
+.c-2 {
+    stroke: var(--yellow);
+}
+
+.c-3 {
+    stroke: var(--orange);
+}
+
+.c-4 {
+    stroke: var(--green);
+}
+
+.c-5 {
+    stroke: var(--red);
 }
