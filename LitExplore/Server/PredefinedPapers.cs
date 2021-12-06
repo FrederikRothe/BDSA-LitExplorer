@@ -117,21 +117,23 @@ public static class SeedExtensions
                     var connType = new List<String>();
                     foreach(Author a in p1.Authors) 
                     {
-                        foreach(Author b in p2.Authors) 
+                        if(p2.Authors.Contains(a))
                         {
-                            if(a.Equals(b)) connType.Add("author");
-                        }
+                            connType.Add("author");
+                            break;
+                        } 
                     }
                     foreach(Tag a in p1.Tags) 
                     {
-                        foreach(Tag b in p2.Tags) 
+                        if(p2.Tags.Contains(a)) 
                         {
-                            if(a.Equals(b)) connType.Add("tag");
-                        }
+                            connType.Add("tag");
+                            break;
+                        }    
                     }
                     if(connType.Count() > 0)
                     {
-                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray()), Description = "Predefined connection"});
+                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray())});
                     }
                 }
             }
