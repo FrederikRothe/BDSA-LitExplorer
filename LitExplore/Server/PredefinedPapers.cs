@@ -104,6 +104,42 @@ public static class SeedExtensions
             // Add to context.
             context.Papers.AddRange(Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12);
             await context.SaveChangesAsync();
+
+            var list1 = context.Papers.ToList();
+            var conns = new List<Connection>();
+
+            for(int i = 0; i < list1.Count; i++)
+            {
+                var p1 = list1[i];
+                for(int j = i + 1; j < list1.Count; j++)
+                {
+                    var p2 = list1[j];
+                    var connType = new List<String>();
+                    foreach(Author a in p1.Authors) 
+                    {
+                        if(p2.Authors.Contains(a))
+                        {
+                            connType.Add("author");
+                            break;
+                        } 
+                    }
+                    foreach(Tag a in p1.Tags) 
+                    {
+                        if(p2.Tags.Contains(a)) 
+                        {
+                            connType.Add("tag");
+                            break;
+                        }    
+                    }
+                    if(connType.Count() > 0)
+                    {
+                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray())});
+                    }
+                }
+            }
+
+            context.Connections.AddRange(conns);
+            await context.SaveChangesAsync();
         }
     }
 }
