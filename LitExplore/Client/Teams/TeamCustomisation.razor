@@ -28,7 +28,7 @@
     public TeamDTO currentTeam { get; set; } = null!;
     [Parameter]
     public bool isTeamOwner { get; set; } = false;
-    private void removeUser(string userId) 
+    private void removeUser(int userId) 
     {
         if (isTeamOwner)
         {
