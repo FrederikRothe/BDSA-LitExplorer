@@ -62,8 +62,7 @@ public class ConnectionRepository : IConnectionRepository
                                 c.Paper1.Id,
                                 c.Paper2.Id,
                                 c.ConnectionType,
-                                c.Description,
-                                null))
+                                null, null))
                           .ToListAsync())
                           .AsReadOnly();
 

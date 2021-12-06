@@ -101,19 +101,19 @@ public static class SeedExtensions
             Paper12.Authors = new List<Author>{Wayne, Dofensmirtz};
             Paper12.Tags = new List<Tag>{Python, Programming, Weapons};
 
-            // Add to context.
-            context.Papers.AddRange(Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12);
-            await context.SaveChangesAsync();
+            Console.WriteLine("yoooo");
+            var papers = new List<Paper>() {Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12};
+            context.Papers.AddRange(papers);
 
-            var list1 = context.Papers.ToList();
             var conns = new List<Connection>();
 
-            for(int i = 0; i < list1.Count; i++)
+            for(int i = 0; i < papers.Count; i++)
             {
-                var p1 = list1[i];
-                for(int j = i + 1; j < list1.Count; j++)
+                Console.WriteLine("Starting with i = " + i);
+                var p1 = papers[i];
+                for(int j = i + 1; j < papers.Count; j++)
                 {
-                    var p2 = list1[j];
+                    var p2 = papers[j];
                     var connType = new List<String>();
                     foreach(Author a in p1.Authors) 
                     {
@@ -133,7 +133,8 @@ public static class SeedExtensions
                     }
                     if(connType.Count() > 0)
                     {
-                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray())});
+                        Console.WriteLine("Yes we found a connection");
+                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray()), Description = ""});
                     }
                 }
             }
