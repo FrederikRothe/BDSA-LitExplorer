@@ -10,6 +10,7 @@ public class ConnectionRepository : IConnectionRepository
     }
 
     private Paper FindPaper(int id) => _context.Papers.Where(p => p.Id == id).First();
+    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
 
     public async Task<ConnectionDTO> CreateAsync(ConnectionCreateDTO connection)
     {
@@ -69,6 +70,24 @@ public class ConnectionRepository : IConnectionRepository
                           );
 
         return await connections.FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<ConnectionDTO>> ReadUserConnsAsync(string userId)
+    {
+        var user = FindUser(userId);
+
+
+        var connections = from c in user.Connections
+                          select new ConnectionDTO(
+                             c.Id,
+                             c.Paper1.Id,
+                             c.Paper2.Id,
+                             c.ConnectionType,
+                             c.Description,
+                             c.Teams.Select(t => t.Id)
+                          );
+
+        return connections;
     }
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadPredefinedAsync()

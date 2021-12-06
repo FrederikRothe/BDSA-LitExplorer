@@ -1,29 +1,26 @@
-<div class="connection" style="left: @leftS; top: @topS;">
-    <svg width=@widthS height=@heightS><line data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn" x1=@x1 y1=@y1 x2=@x2 y2=@y2 /></svg>
-    @if (showHoverWindow) {
+<div class="connection" style="left: @_left vw; top: @_top vh;">
+    <svg style="width: @_width vw; height: @_height vh;"><line data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn" x1=@_x1 y1=@_y1 x2=@_x2 y2=@_y2 /></svg>
+    @if (_showHoverWindow) {
         <HoverWindow connection=@connection/>
     } 
 </div>
 
 @code {
     [Parameter]
-    public Connection connection {get; set;} = TestEntities.testconn1;
-    private bool showHoverWindow = false;
+    public ConnectionDTO connection {get; set;} = null!;
+    private bool _showHoverWindow = false;
 
-    private int width { get => Math.Abs(GraphPositions.positions[0].Item1-GraphPositions.positions[1].Item1); }
-    private string widthS { get => width+"vw"; }
-    private int height { get => Math.Abs(GraphPositions.positions[0].Item2-GraphPositions.positions[1].Item2); }
-    private string heightS { get => height+"vh"; }
-
-    private int left { get => Math.Min(GraphPositions.positions[0].Item1, GraphPositions.positions[1].Item1); }
-    private string leftS { get => (left)+"vw"; }
-    private int top { get => Math.Min(GraphPositions.positions[0].Item2, GraphPositions.positions[1].Item2); }
-    private string topS { get => (top)+"vh"; }
-    private string x1  { get => (GraphPositions.positions[0].Item1-left)+"vw"; }
-    private string y1  { get => (GraphPositions.positions[0].Item2-top)+"vh"; }
-    private string x2  { get => (GraphPositions.positions[1].Item1-left)+"vw"; }
-    private string y2  { get => (GraphPositions.positions[1].Item2-top)+"vh"; }
+    private (int,int) position1() => GraphPositions.paperToPositions[connection.PaperOneId];
+    private (int,int) position2() => GraphPositions.paperToPositions[connection.PaperTwoId];
+    private int _width { get => Math.Abs(position1().Item1-position2().Item1); }
+    private int _height { get => Math.Abs(position1().Item2-position2().Item2); }
+    private int _left { get => Math.Min(position1().Item1, position2().Item1); }
+    private int _top { get => Math.Min(position1().Item2, position2().Item2); }
+    private string _x1  { get => (position1().Item1-_left)+"vw"; }
+    private string _y1  { get => (position1().Item2-_top)+"vh"; }
+    private string _x2  { get => (position2().Item1-_left)+"vw"; }
+    private string _y2  { get => (position2().Item2-_top)+"vh"; }
     private void hoversOn() {
-        showHoverWindow = !showHoverWindow;
+        _showHoverWindow = !_showHoverWindow;
     }
 }
