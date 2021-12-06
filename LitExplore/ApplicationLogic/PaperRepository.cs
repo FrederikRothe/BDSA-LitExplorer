@@ -12,7 +12,16 @@ public class PaperRepository : IPaperRepository
     {
         var papers = from p in _context.Papers
                      where p.Id == paperId
-                     select new PaperDTO(p.Id, p.Document, FindAuthorsName(p.Authors), p.Title, p.Date.Year, p.Date.Month, p.Date.Day, FindTagsName(p.Tags));
+                     select new PaperDTO(
+                         p.Id, 
+                         p.Document, 
+                         p.Authors.Select(a => a.Name),
+                         p.Title, 
+                         p.Date.Year, 
+                         p.Date.Month, 
+                         p.Date.Day, 
+                         p.Tags.Select(t => t.Name)
+                     );
                 
         return await papers.FirstOrDefaultAsync();
     }
@@ -22,27 +31,13 @@ public class PaperRepository : IPaperRepository
                            .Select(p => new PaperDTO(
                                p.Id, 
                                p.Document, 
-                               FindAuthorsName(p.Authors), 
+                               p.Authors.Select(a => a.Name), 
                                p.Title, 
                                p.Date.Year, 
                                p.Date.Month, 
                                p.Date.Day, 
-                               FindTagsName(p.Tags)))
+                               p.Tags.Select(t => t.Name)))
                            .ToListAsync())
                            .AsReadOnly();
-
-    private IEnumerable<string> FindAuthorsName(IEnumerable<Author> authors){
-        foreach (Author author in authors)
-        {
-            yield return _context.Authors.Where(a => a.Equals(author)).Select(a => a.Name).First();
-        }
-    }
-
-    private IEnumerable<string> FindTagsName(IEnumerable<Tag> tags){
-        foreach (Tag tag in tags)
-        {
-            yield return _context.Authors.Where(t => t.Id == tag.Id).Select(a => a.Name).First();
-        }
-    }
 }
 

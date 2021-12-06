@@ -49,17 +49,17 @@ public class UserRepository : IUserRepository
     }
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(string userId)
-        => throw new NotImplementedException(); //(await _context.Connections
-                        //   .Where(c => c.Creator.Equals(FindUserOid(userId)))
-                        //   .Select(c => new ConnectionDTO(
-                        //         c.Id,
-                        //         c.Paper1.Id,
-                        //         c.Paper2.Id,
-                        //         c.ConnectionType,
-                        //         c.Description,
-                        //         null))
-                        //   .ToListAsync())
-                        //   .AsReadOnly();
+        => (await _context.Connections
+                          .Where(c => c.Creator.Equals(FindUserOid(userId)))
+                          .Select(c => new ConnectionDTO(
+                                c.Id,
+                                c.Paper1.Id,
+                                c.Paper2.Id,
+                                c.ConnectionType,
+                                c.Description,
+                                null))
+                          .ToListAsync())
+                          .AsReadOnly();
 
     public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(string userId)
         => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))
@@ -73,7 +73,7 @@ public class UserRepository : IUserRepository
     
     public async Task<Status> DeleteAsync(string userId)
     {
-        var entity = FindUser(userId);
+        var entity = FindUserOid(userId);
 
         if (entity == null)
         {
@@ -86,6 +86,6 @@ public class UserRepository : IUserRepository
         return Deleted;
     }
     
-    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
+    private User FindUser(int userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
     private User FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
 }

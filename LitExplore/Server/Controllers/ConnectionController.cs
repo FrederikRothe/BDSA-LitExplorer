@@ -4,12 +4,12 @@ namespace LitExplore.Server.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-public class ConnectionManager : ControllerBase
+public class ConnectionController : ControllerBase
 {
-    private readonly ILogger<PaperManager> _logger;
+    private readonly ILogger<ConnectionController> _logger;
     private readonly IConnectionRepository _repository;
 
-    public ConnectionManager(ILogger<PaperManager> logger, IConnectionRepository repository)
+    public ConnectionController(ILogger<ConnectionController> logger, IConnectionRepository repository)
     {
         _logger = logger;
         _repository = repository;

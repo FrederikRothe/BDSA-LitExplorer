@@ -5,7 +5,7 @@ public record PaperCreateDTO
     [Required]
     public string Document { get; init; }
     [Required]
-    public ICollection<string> AuthorNames { get; init; }
+    public IEnumerable<string> AuthorNames { get; init; }
     [Required]
     [StringLength(50)]
     public string Title { get; init; }
@@ -16,7 +16,7 @@ public record PaperCreateDTO
     [Required]
     public int Day { get; init; }
     [Required]
-    public ICollection<string> TagNames { get; init; }
+    public IEnumerable<string> TagNames { get; init; }
 }
 public record PaperDTO(int Id, string? Document, IEnumerable<string>? AuthorNames, string Title, int? Year, int? Month, int? Day, IEnumerable<string>? TagNames);
 

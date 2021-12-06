@@ -8,12 +8,12 @@ namespace LitExplore.Server.Controllers;
 [ApiController]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 [Route("api/[controller]")]
-public class TeamManager : ControllerBase
+public class TeamController : ControllerBase
 {
-    private readonly ILogger<PaperManager> _logger;
+    private readonly ILogger<TeamController> _logger;
     private readonly ITeamRepository _repository;
 
-    public TeamManager(ILogger<PaperManager> logger, ITeamRepository repository)
+    public TeamController(ILogger<TeamController> logger, ITeamRepository repository)
     {
         _logger = logger;
         _repository = repository;

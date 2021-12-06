@@ -8,12 +8,12 @@ namespace LitExplore.Server.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-public class UserManager : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly ILogger<PaperManager> _logger;
+    private readonly ILogger<UserController> _logger;
     private readonly IUserRepository _repository;
 
-    public UserManager(ILogger<PaperManager> logger, IUserRepository repository)
+    public UserController(ILogger<UserController> logger, IUserRepository repository)
     {
         _logger = logger;
         _repository = repository;
