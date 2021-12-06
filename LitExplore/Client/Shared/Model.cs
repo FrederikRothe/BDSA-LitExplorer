@@ -1,5 +1,10 @@
 namespace LitExplore.Client;
 
 public static class Model {
-    public static User currentUser {get; set;} = TestEntities.user1;
+    public static UserDTO? currentUser { get; set; }
+    public static IEnumerable<TeamDTO>? currentUserTeams { get; set; }
+    public static IEnumerable<ConnectionDTO>? currentUserConnections { get; set; }
+
+    public static PaperDTO[]? allPapers { get; set; }
+    public static ConnectionDTO[]? publicConnections { get; set; }
 }

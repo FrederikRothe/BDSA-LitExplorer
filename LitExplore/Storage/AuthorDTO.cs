@@ -8,7 +8,7 @@ public record AuthorCreateDTO
     public ICollection<int> PaperIDs { get; init; }
 }
 
-public record AuthorDTO(int Id, string Name, ICollection<int> PaperIDs);
+public record AuthorDTO(int Id, string? Name, ICollection<int>? PaperIDs);
 
 public record AuthorUpdateDTO : AuthorCreateDTO
 {

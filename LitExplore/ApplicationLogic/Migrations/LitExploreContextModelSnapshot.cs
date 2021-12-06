@@ -82,27 +82,27 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CreatorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("Paper1Id")
+                    b.Property<int>("Paper1Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Paper2Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
 
                     b.HasIndex("Paper1Id");
 
                     b.HasIndex("Paper2Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Connections");
                 });
@@ -124,8 +124,7 @@ namespace LitExplore.ApplicationLogic.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -183,12 +182,15 @@ namespace LitExplore.ApplicationLogic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("Users");
                 });
@@ -206,6 +208,21 @@ namespace LitExplore.ApplicationLogic.Migrations
                     b.HasIndex("TagsId");
 
                     b.ToTable("PaperTag");
+                });
+
+            modelBuilder.Entity("TeamUser", b =>
+                {
+                    b.Property<int>("TeamsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TeamUser");
                 });
 
             modelBuilder.Entity("AuthorPaper", b =>
@@ -240,19 +257,23 @@ namespace LitExplore.ApplicationLogic.Migrations
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.Connection", b =>
                 {
-                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper1")
-                        .WithMany()
-                        .HasForeignKey("Paper1Id");
+                    b.HasOne("LitExplore.ApplicationLogic.User", "Creator")
+                        .WithMany("Connections")
+                        .HasForeignKey("CreatorId");
 
-                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper2")
-                        .WithMany()
-                        .HasForeignKey("Paper2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper1")
+                        .WithMany("AsPaper1")
+                        .HasForeignKey("Paper1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LitExplore.ApplicationLogic.User", null)
-                        .WithMany("Connections")
-                        .HasForeignKey("UserId");
+                    b.HasOne("LitExplore.ApplicationLogic.Paper", "Paper2")
+                        .WithMany("AsPaper2")
+                        .HasForeignKey("Paper2Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
 
                     b.Navigation("Paper1");
 
@@ -262,19 +283,12 @@ namespace LitExplore.ApplicationLogic.Migrations
             modelBuilder.Entity("LitExplore.ApplicationLogic.Team", b =>
                 {
                     b.HasOne("LitExplore.ApplicationLogic.User", "TeamLeader")
-                        .WithMany()
+                        .WithMany("IsLeaderOf")
                         .HasForeignKey("TeamLeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TeamLeader");
-                });
-
-            modelBuilder.Entity("LitExplore.ApplicationLogic.User", b =>
-                {
-                    b.HasOne("LitExplore.ApplicationLogic.Team", null)
-                        .WithMany("Users")
-                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("PaperTag", b =>
@@ -292,14 +306,33 @@ namespace LitExplore.ApplicationLogic.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LitExplore.ApplicationLogic.Team", b =>
+            modelBuilder.Entity("TeamUser", b =>
                 {
-                    b.Navigation("Users");
+                    b.HasOne("LitExplore.ApplicationLogic.Team", null)
+                        .WithMany()
+                        .HasForeignKey("TeamsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LitExplore.ApplicationLogic.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LitExplore.ApplicationLogic.Paper", b =>
+                {
+                    b.Navigation("AsPaper1");
+
+                    b.Navigation("AsPaper2");
                 });
 
             modelBuilder.Entity("LitExplore.ApplicationLogic.User", b =>
                 {
                     b.Navigation("Connections");
+
+                    b.Navigation("IsLeaderOf");
                 });
 #pragma warning restore 612, 618
         }

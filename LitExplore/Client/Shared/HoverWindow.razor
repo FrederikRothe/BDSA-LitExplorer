@@ -17,11 +17,11 @@
 
 @code {
     [Parameter]
-    public Paper? paper {get;set;}
+    public PaperDTO? paper { get;set; }
     [Parameter]
-    public Connection? connection {get;set;}
+    public ConnectionDTO? connection { get;set; }
     [Parameter]
-    public bool hidden {get;set;}
+    public bool hidden { get;set; }
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
     private string conndescription
     {

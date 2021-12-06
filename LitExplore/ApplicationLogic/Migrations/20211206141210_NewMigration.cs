@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LitExplore.ApplicationLogic.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace LitExplore.ApplicationLogic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Document = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -48,6 +48,20 @@ namespace LitExplore.ApplicationLogic.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    oid = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,11 +118,11 @@ namespace LitExplore.ApplicationLogic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Paper1Id = table.Column<int>(type: "int", nullable: true),
+                    CreatorId = table.Column<int>(type: "int", nullable: true),
+                    Paper1Id = table.Column<int>(type: "int", nullable: false),
                     Paper2Id = table.Column<int>(type: "int", nullable: false),
                     ConnectionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,13 +131,19 @@ namespace LitExplore.ApplicationLogic.Migrations
                         name: "FK_Connections_Papers_Paper1Id",
                         column: x => x.Paper1Id,
                         principalTable: "Papers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Connections_Papers_Paper2Id",
                         column: x => x.Paper2Id,
                         principalTable: "Papers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Connections_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -139,30 +159,71 @@ namespace LitExplore.ApplicationLogic.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teams", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Teams_Users_TeamLeaderId",
+                        column: x => x.TeamLeaderId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "ConnectionTeam",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TeamId = table.Column<int>(type: "int", nullable: true)
+                    ConnectionsId = table.Column<int>(type: "int", nullable: false),
+                    TeamsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_ConnectionTeam", x => new { x.ConnectionsId, x.TeamsId });
                     table.ForeignKey(
-                        name: "FK_Users_Teams_TeamId",
-                        column: x => x.TeamId,
+                        name: "FK_ConnectionTeam_Connections_ConnectionsId",
+                        column: x => x.ConnectionsId,
+                        principalTable: "Connections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConnectionTeam_Teams_TeamsId",
+                        column: x => x.TeamsId,
                         principalTable: "Teams",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamUser",
+                columns: table => new
+                {
+                    TeamsId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamUser", x => new { x.TeamsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_TeamUser_Teams_TeamsId",
+                        column: x => x.TeamsId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamUser_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuthorPaper_PapersId",
                 table: "AuthorPaper",
                 column: "PapersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Connections_CreatorId",
+                table: "Connections",
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Connections_Paper1Id",
@@ -175,9 +236,9 @@ namespace LitExplore.ApplicationLogic.Migrations
                 column: "Paper2Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Connections_UserId",
-                table: "Connections",
-                column: "UserId");
+                name: "IX_ConnectionTeam_TeamsId",
+                table: "ConnectionTeam",
+                column: "TeamsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaperTag_TagsId",
@@ -190,55 +251,42 @@ namespace LitExplore.ApplicationLogic.Migrations
                 column: "TeamLeaderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_TeamId",
-                table: "Users",
-                column: "TeamId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Connections_Users_UserId",
-                table: "Connections",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Teams_Users_TeamLeaderId",
-                table: "Teams",
-                column: "TeamLeaderId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                name: "IX_TeamUser_UsersId",
+                table: "TeamUser",
+                column: "UsersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Teams_Users_TeamLeaderId",
-                table: "Teams");
-
             migrationBuilder.DropTable(
                 name: "AuthorPaper");
 
             migrationBuilder.DropTable(
-                name: "Connections");
+                name: "ConnectionTeam");
 
             migrationBuilder.DropTable(
                 name: "PaperTag");
 
             migrationBuilder.DropTable(
+                name: "TeamUser");
+
+            migrationBuilder.DropTable(
                 name: "Authors");
 
             migrationBuilder.DropTable(
-                name: "Papers");
+                name: "Connections");
 
             migrationBuilder.DropTable(
                 name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Teams");
 
             migrationBuilder.DropTable(
-                name: "Teams");
+                name: "Papers");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

@@ -1,4 +1,4 @@
-<div type="button" class="paper" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
+<div type="button" class="paper" style="left: @left vw; top: @top vh;" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
     @if (showHoverWindow) {
         <HoverWindow paper=@paper/>
     } 
@@ -7,9 +7,13 @@
 
 @code {
     [Parameter]
-    public Paper paper {get; set;} = TestEntities.genericPaper;
+    public PaperDTO paper {get; set;} = null!;
     public bool showHoverWindow = false;
     private void hoversOn() {
         showHoverWindow = !showHoverWindow;
     }
+    [Parameter]
+    public int left { get; set; } = 0;
+    [Parameter]
+    public int top { get; set; } = 0;
 }

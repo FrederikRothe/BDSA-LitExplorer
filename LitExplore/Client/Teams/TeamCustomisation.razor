@@ -4,7 +4,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">@currentTeam.TeamName</h1>
+        <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -14,9 +14,9 @@
         <button id="orangebutton" disabled = @isTeamOwner></button>
       </div>
       <div class="modal-footer">
-        @foreach(var user in currentTeam.Users) 
+        @foreach(var user in team.UserIDs) 
         {
-            <button id="user" @onclick="() => removeUser(user)">@user.Id</button>
+            <button id="user" @onclick="() => removeUser(user)">@user</button>
         }
       </div>
     </div>
@@ -25,15 +25,15 @@
 
 @code {
     [Parameter]
-    public Team currentTeam { get; set; } = TestEntities.team1;
+    public TeamDTO team { get; set; } = null!;
     [Parameter]
     public bool isTeamOwner { get; set; } = false;
-    private void removeUser(User user) 
+    private void removeUser(int userId) 
     {
         if (isTeamOwner)
         {
-            currentTeam.Users.Remove(currentTeam.Users.Where(u => u == user).First());
+            //currentTeam.UserIDs.Remove(currentTeam.UserIDs.Where(u => u == userId).First());
         }
     }
-
+    
 }

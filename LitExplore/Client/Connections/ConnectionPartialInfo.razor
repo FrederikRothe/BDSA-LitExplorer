@@ -1,47 +1,52 @@
+@inject HttpClient Http
 @if (connection.ConnectionType.Contains("author")) {
     <h2>Authors</h2>
-    <p>@authors</p>
+    <p>@_authors</p>
 }
 @if (connection.ConnectionType.Contains("tag")) {
     <h2>Tags</h2>
-    <p>@tags</p>
+    <p>@_tags</p>
 }
 @if (connection.ConnectionType.Contains("reference")) {
     <h2>Reference</h2>
-    <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
+    <p><i>@_paper1.Title</i> references <i>@_paper2.Title</i></p>
 }
 
 
 
 @code {
     [Parameter]
-    public Connection connection { get; set; } = TestEntities.testconn1;
-    private string authors 
+    public ConnectionDTO? connection { get; set; }
+
+    private PaperDTO? _paper1;
+    private PaperDTO? _paper2;
+    
+    private string _authors 
     {
         get 
         {
             string result = "";
-            foreach (Author author in connection.Paper1.Authors) 
+            foreach (var authorName in _paper1.AuthorNames) 
             {
-                if (connection.Paper2.Authors.Contains(author)) {
-                    result += author.Name + ", ";
+                if (_paper2.AuthorNames.Contains(authorName)) {
+                    result += authorName + ", ";
                 }
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
-    private string tags
+    private string _tags
     {
         get
         {
             string result = "";
-            foreach (Tag tag in connection.Paper1.Tags) 
+            foreach (var tagName in _paper1.TagNames) 
             {
-                if (connection.Paper2.Tags.Contains(tag)) {
-                    result += tag.Name + ", ";
+                if (_paper2.TagNames.Contains(tagName)) {
+                    result += tagName + ", ";
                 }
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
 }
