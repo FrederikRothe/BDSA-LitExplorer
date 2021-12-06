@@ -29,9 +29,9 @@ public class TeamRepository : ITeamRepository
 
         return new TeamDTO(
                             entity.Id,
-                            entity.TeamLeader.Id,
                             entity.TeamName,
                             entity.Colour,
+                            entity.TeamLeader.Id,
                             entity.Users.Select(u => u.Id),
                             entity.Connections.Select(c => c.Id)
                         );
@@ -43,9 +43,9 @@ public class TeamRepository : ITeamRepository
                          where t.Id == teamId
                          select new TeamDTO(
                             t.Id,
-                            t.TeamLeader.Id,
                             t.TeamName,
                             t.Colour,
+                            t.TeamLeader.Id,
                             t.Users.Select(u => u.Id),
                             t.Connections.Select(c => c.Id)
                          );
@@ -54,22 +54,24 @@ public class TeamRepository : ITeamRepository
     }
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(int teamId)
-        => (await FindTeam(id).Connections.Select(
-                                            c => new ConnectionDTO(
-                                                c.Paper1.Id,
-                                                c.Paper2.Id,
-                                                c.ConnectionType,
-                                                c.Description
-                                            ))
-                                        .ToListAsync())
-                                        .AsReadOnly();
+        => (await FindTeam(teamId).Connections
+                                  .Select(c => new ConnectionDTO(
+                                        c.Id,
+                                        c.Paper1.Id,
+                                        c.Paper2.Id,
+                                        c.ConnectionType,
+                                        c.Description,
+                                        null))
+                                  .ToListAsync())
+                                  .AsReadOnly();
     
     public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId)
-        => (await FindTeam(id).Users.Select(
+        => (await FindTeam(teamId).Users.Select(
                                             u => new UserDTO(
                                                 u.Id,
-                                                u.Name
-                                            ))
+                                                null,
+                                                u.Name,
+                                                null, null))
                                         .ToListAsync())
                                         .AsReadOnly();
 

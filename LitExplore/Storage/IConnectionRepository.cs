@@ -4,7 +4,7 @@ public interface IConnectionRepository {
     Task<Option<ConnectionDTO>> ReadAsync(int connectionId);
     Task<IReadOnlyCollection<ConnectionDTO>> ReadPredefinedAsync();
     Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(int connectionId);
-    Task<Status> UpdateAsync(int id, ConnectionUpdateDTO connection);
+    Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection);
     Task<Status> DeleteAsync(int connectionId);
 }
 

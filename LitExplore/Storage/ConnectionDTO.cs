@@ -13,7 +13,7 @@ public record ConnectionCreateDTO
     public IEnumerable<int> TeamIDs { get; init; }
 }
 
-public record ConnectionDTO(int Id, int? PaperOneId, int? PaperTwoId, string? ConnectionType, string? Description, IEnumerable<int>? TeamIDs);
+public record ConnectionDTO(int Id, int PaperOneId, int PaperTwoId, string? ConnectionType, string? Description, IEnumerable<int>? TeamIDs);
 
 public record ConnectionUpdateDTO : ConnectionCreateDTO
 {

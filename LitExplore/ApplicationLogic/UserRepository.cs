@@ -58,7 +58,8 @@ public class UserRepository : IUserRepository
                              c.Paper1.Id,
                              c.Paper2.Id,
                              c.ConnectionType,
-                             c.Description
+                             c.Description,
+                             null
                           );
 
         return connections;
@@ -69,7 +70,8 @@ public class UserRepository : IUserRepository
                                 .Select(t => new TeamDTO(
                                         t.Id,
                                         t.TeamName,
-                                        t.Colour))
+                                        t.Colour,
+                                        null, null, null))
                                 .ToListAsync())
                                 .AsReadOnly();
     

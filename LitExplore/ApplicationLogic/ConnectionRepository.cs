@@ -56,13 +56,14 @@ public class ConnectionRepository : IConnectionRepository
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadPredefinedAsync()
         => (await _context.Connections
-                          .Where(c => !c.creatorId.Contains("other"))
+                          .Where(c => !c.ConnectionType.Contains("other"))
                           .Select(c => new ConnectionDTO(
                                 c.Id,
-                                c.PaperOneId,
-                                c.PaperTwoId
+                                c.Paper1.Id,
+                                c.Paper2.Id,
                                 c.ConnectionType,
-                                c.Description))
+                                c.Description,
+                                null))
                           .ToListAsync())
                           .AsReadOnly();
 
@@ -71,11 +72,12 @@ public class ConnectionRepository : IConnectionRepository
                                               .Select(t => new TeamDTO(
                                                     t.Id,
                                                     t.TeamName,
-                                                    t.Colour))
+                                                    t.Colour,
+                                                    null, null, null))
                                               .ToListAsync())
                                               .AsReadOnly();
 
-    public async Task<Status> UpdateAsync(int id, ConnectionUpdateDTO connection)
+    public async Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection)
     {
         var entity = FindConnection(connectionId);
 
