@@ -66,8 +66,8 @@
                 }
             }
             Model.currentUser = await Http.GetFromJsonAsync<UserDTO>($"api/UserManager/{userId}");
-            Model.currentUserTeams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/TeamManager/{userId}");
-            Model.currentUserConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/UserConnectionManager/{userId}");
+            Model.currentUserTeams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/UserManager/teams/{userId}");
+            Model.currentUserConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/UserManager/connections/{userId}");
         }
 
 
