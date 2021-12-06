@@ -7,18 +7,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Server", Version = "v1" });
+    c.UseInlineDefinitionsForEnums();
+});
 builder.Services.AddDbContext<LitExploreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LitExploreDB")));
 builder.Services.AddScoped<ILitExploreContext, LitExploreContext>();
 builder.Services.AddScoped<IPaperRepository, PaperRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IConnectionRepository, ConnectionRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-app.UseWebAssemblyDebugging();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    app.UseWebAssemblyDebugging();
 }
 else
 {

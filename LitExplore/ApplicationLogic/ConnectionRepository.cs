@@ -9,16 +9,13 @@ public class ConnectionRepository : IConnectionRepository
         _context = context;
     }
 
-    private Paper FindPaper(int id) => _context.Papers.Where(p => p.Id == id).First();
-    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
-
     public async Task<ConnectionDTO> CreateAsync(ConnectionCreateDTO connection)
     {
-
         if (connection == null) return null;
 
         var paper1 = FindPaper(connection.PaperOneId);
         var paper2 = FindPaper(connection.PaperTwoId);
+
         var entity = new Connection
         {
             Paper1 = paper1,
@@ -41,21 +38,6 @@ public class ConnectionRepository : IConnectionRepository
                          );
     }
 
-    public async Task<Status> DeleteAsync(int connectionId)
-    {
-        var entity = await _context.Connections.FindAsync(connectionId);
-
-        if (entity == null)
-        {
-            return NotFound;
-        }
-
-        _context.Connections.Remove(entity);
-        await _context.SaveChangesAsync();
-
-        return Deleted;
-    }
-
     public async Task<Option<ConnectionDTO>> ReadAsync(int connectionId)
     {
         var connections = from c in _context.Connections
@@ -72,32 +54,34 @@ public class ConnectionRepository : IConnectionRepository
         return await connections.FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<ConnectionDTO>> ReadUserConnsAsync(string userId)
-    {
-        var user = FindUser(userId);
-
-
-        var connections = from c in user.Connections
-                          select new ConnectionDTO(
-                             c.Id,
-                             c.Paper1.Id,
-                             c.Paper2.Id,
-                             c.ConnectionType,
-                             c.Description,
-                             c.Teams.Select(t => t.Id)
-                          );
-
-        return connections;
-    }
-
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadPredefinedAsync()
-    {
-        throw new NotImplementedException();
-    }
+        => (await _context.Connections
+                          .Where(c => c.Creator == null)
+                          .Select(c => new ConnectionDTO(
+                                c.Id,
+                                c.Paper1.Id,
+                                c.Paper2.Id,
+                                c.ConnectionType,
+                                c.Description,
+                                null))
+                          .ToListAsync())
+                          .AsReadOnly();
 
-    public async Task<Status> UpdateAsync(int id, ConnectionUpdateDTO connection)
+    public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(int connectionId) 
+        => (await _context.Teams
+                          .Where(t => t.Connections.Contains(FindConnection(connectionId)))
+                          .Select(t => new TeamDTO(
+                                t.Id,
+                                t.TeamName,
+                                t.Colour,
+                                null, null, null))
+                          .ToListAsync())
+                          .AsReadOnly();
+    
+
+    public async Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection)
     {
-        var entity = await _context.Connections.FirstOrDefaultAsync(c => c.Id == id);
+        var entity = FindConnection(connectionId);
 
         if (entity == null)
         {
@@ -114,4 +98,24 @@ public class ConnectionRepository : IConnectionRepository
 
         return Updated;
     }
+
+    public async Task<Status> DeleteAsync(int connectionId)
+    {
+        var entity = FindConnection(connectionId);
+
+        if (entity == null)
+        {
+            return NotFound;
+        }
+
+        _context.Connections.Remove(entity);
+        await _context.SaveChangesAsync();
+
+        return Deleted;
+    }
+
+    private Paper FindPaper(int id) => _context.Papers.Where(p => p.Id == id).First();
+    private Connection FindConnection(int id) => _context.Connections.Where(c => c.Id == id).First();
+    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
+
 }

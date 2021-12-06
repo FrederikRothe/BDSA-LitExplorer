@@ -1,4 +1,4 @@
-<div type="button" class="paper" style="left: @_left vw; top: @_top vh;" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
+<div type="button" class="paper" style="left: @left vw; top: @top vh;" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
     @if (showHoverWindow) {
         <HoverWindow paper=@paper/>
     } 
@@ -13,7 +13,7 @@
         showHoverWindow = !showHoverWindow;
     }
     [Parameter]
-    public int _left { get; set; } = 0;
+    public int left { get; set; } = 0;
     [Parameter]
-    public int _top { get; set; } = 0;
+    public int top { get; set; } = 0;
 }

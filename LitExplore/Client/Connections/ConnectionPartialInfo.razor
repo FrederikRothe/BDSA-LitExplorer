@@ -20,12 +20,7 @@
 
     private PaperDTO? _paper1;
     private PaperDTO? _paper2;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _paper1 = await Http.GetFromJsonAsync<PaperDTO>("api/PaperManager/{connection.PaperOneId}");
-        _paper2 = await Http.GetFromJsonAsync<PaperDTO>("api/PaperManager/{connection.PaperTwoId}");      
-    }
+    
     private string _authors 
     {
         get 
@@ -37,7 +32,7 @@
                     result += authorName + ", ";
                 }
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
     private string _tags
@@ -51,7 +46,7 @@
                     result += tagName + ", ";
                 }
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
 }

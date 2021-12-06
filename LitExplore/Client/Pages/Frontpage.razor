@@ -1,0 +1,16 @@
+@page "/Test"
+@inject HttpClient Http
+
+@foreach(var paper in _allPapers) 
+{
+    <p>@paper.Title</p>
+}
+
+@code {
+    private PaperDTO[] _allPapers = new PaperDTO[0];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
+    }
+}

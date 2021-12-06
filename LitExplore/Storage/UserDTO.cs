@@ -8,7 +8,7 @@ public record UserCreateDTO
     public string Name { get; set; }    
 }
 
-public record UserDTO(int id, string oid, string Name, IEnumerable<int> ConnectionIDs, IEnumerable<int> TeamIDs);
+public record UserDTO(int id, string? oid, string? Name, IEnumerable<int>? ConnectionIDs, IEnumerable<int>? TeamIDs);
 
 public record UserUpdateDTO : UserCreateDTO {
     public int Id { get; set; }

@@ -33,23 +33,6 @@ public class UserRepository : IUserRepository
                         );
     }
 
-    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
-
-    public async Task<Status> DeleteAsync(string userId)
-    {
-        var entity = FindUser(userId);
-
-        if (entity == null)
-        {
-            return NotFound;
-        }
-
-        _context.Users.Remove(entity);
-        await _context.SaveChangesAsync();
-
-        return Deleted;
-    }
-
     public async Task<Option<UserDTO>> ReadAsync(string userId)
     {
         var users = from u in _context.Users
@@ -64,4 +47,45 @@ public class UserRepository : IUserRepository
 
         return await users.FirstOrDefaultAsync();
     }
+
+    public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(string userId)
+        => (await _context.Connections
+                          .Where(c => c.Creator.Equals(FindUserOid(userId)))
+                          .Select(c => new ConnectionDTO(
+                                c.Id,
+                                c.Paper1.Id,
+                                c.Paper2.Id,
+                                c.ConnectionType,
+                                c.Description,
+                                null))
+                          .ToListAsync())
+                          .AsReadOnly();
+
+    public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(string userId)
+        => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))
+                                .Select(t => new TeamDTO(
+                                        t.Id,
+                                        t.TeamName,
+                                        t.Colour,
+                                        null, null, null))
+                                .ToListAsync())
+                                .AsReadOnly();
+    
+    public async Task<Status> DeleteAsync(string userId)
+    {
+        var entity = FindUserOid(userId);
+
+        if (entity == null)
+        {
+            return NotFound;
+        }
+
+        _context.Users.Remove(entity);
+        await _context.SaveChangesAsync();
+
+        return Deleted;
+    }
+    
+    private User FindUser(int userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
+    private User FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
 }

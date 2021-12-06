@@ -5,6 +5,6 @@ public static class Model {
     public static IEnumerable<TeamDTO>? currentUserTeams { get; set; }
     public static IEnumerable<ConnectionDTO>? currentUserConnections { get; set; }
 
-    public static IEnumerable<PaperDTO> allPapers { get; set; } = Enumerable.Empty<PaperDTO>();
-    public static IEnumerable<ConnectionDTO> publicConnections { get; set; } = Enumerable.Empty<ConnectionDTO>();
+    public static PaperDTO[]? allPapers { get; set; }
+    public static ConnectionDTO[]? publicConnections { get; set; }
 }

@@ -8,10 +8,10 @@ public static class GraphPositions {
     private static bool initialised = false;
     public async static void initialise(HttpClient Http) 
     {
-        papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/PaperManager");
+        papers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
 
         for (int i = 0; i<12; i++)
-        {
+        { 
             paperToPositions[papers[i].Id] = positions[i];
         }
 
