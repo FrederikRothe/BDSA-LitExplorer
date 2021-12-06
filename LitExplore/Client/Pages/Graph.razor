@@ -5,11 +5,15 @@
 @using System.Security.Claims
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
 
 
 <PageTitle>LitExplore</PageTitle>
 
-<div>
+<AuthorizeView>
+  <Authorized>
+  <div>
     @if (Model.allPapers != null && _dataIsLoaded )
     {
         @foreach (PaperDTO p in Model.allPapers) 
@@ -34,7 +38,11 @@
     <PaperInfoWindow paper=@_selectedPaper/>
     <ConnectionInfoWindow connection=@_selectedConnection/>
     <TeamCustomisation team=@_selectedTeam/>
-</div>
+  </div>
+  </Authorized>
+  <NotAuthorized>
+  </NotAuthorized>
+</AuthorizeView>
 
 
 @code {
@@ -46,22 +54,22 @@
     {
         _selectedConnection = connection;
     }
-    private int getLeftPosPaper(PaperDTO p) 
-    {
-        return GraphPositions.paperToPositions[p.Id].Item1;
-    }
-    private int getTopPosPaper(PaperDTO p) 
-    {
-        return GraphPositions.paperToPositions[p.Id].Item2;
-    }
+    private int getLeftPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item1;
+
+    private int getTopPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item2;
+
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-        string userId = string.Empty;
 
-        if (user.Identity?.IsAuthenticated == true)
+        if (user.Identity?.IsAuthenticated != true)
         {
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}Login");
+        } 
+        else 
+        {
+            string userId = string.Empty;
             claims = user.Claims;
             foreach (var claim in claims) 
             {
@@ -93,15 +101,14 @@
             Model.currentUserTeams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
             Model.currentUserConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
             _dataIsLoaded = true;
+            
+            GraphPositions.initialise(Http);
+
+            Model.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
+            _selectedPaper = Model.allPapers.ElementAt(0);
+            Model.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
+            //_selectedConnection = Model.publicConnections.ElementAt(0);
         }
-
-
-        GraphPositions.initialise(Http);
-
-        Model.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
-        _selectedPaper = Model.allPapers.ElementAt(0);
-        Model.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
-        //_selectedConnection = Model.publicConnections.ElementAt(0);
     }
 
     private PaperDTO _selectedPaper = TestEntities.paperDTO;

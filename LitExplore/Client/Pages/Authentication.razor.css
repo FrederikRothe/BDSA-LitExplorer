@@ -1,0 +1,48 @@
+.background {
+    width: 100vw;
+    height: 100vh;
+    margin: -62px -32px;
+    background-image: linear-gradient(
+    var(--grey),
+    var(--background)
+    );
+    display: flex;
+    justify-content: center;
+}
+
+.content {
+    position: fixed;
+    top: 30vh;
+    text-align: center;
+}
+
+::deep p {
+    letter-spacing: 0.4rem;
+    font-size: 14pt;
+    margin-bottom: 3rem;
+    text-transform: lowercase;
+}
+
+.text {
+    letter-spacing: 0.6rem;
+    text-transform: uppercase;
+}
+
+.litexplore {
+    text-transform: lowercase;
+    letter-spacing: 1rem;
+    font-size: 18pt;
+    margin: 0px 10px;
+}
+
+button {
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+    width: 300px;
+    height: 80px;
+    font-size: 14pt;
+    letter-spacing: 1rem;
+    text-transform: uppercase;
+}
