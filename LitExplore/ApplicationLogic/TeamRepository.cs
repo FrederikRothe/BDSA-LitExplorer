@@ -13,12 +13,13 @@ public class TeamRepository : ITeamRepository
     public async Task<TeamDTO> CreateAsync(TeamCreateDTO team, string creatorId)
     {
         if (team == null) return null;
+        var teamLeader = _context.Users.Where(u => u.oid == creatorId).SingleOrDefault();
         var entity = new Team
         {
-            TeamLeader = _context.Users.Where(u => u.oid == creatorId).SingleOrDefault(),
+            TeamLeader = teamLeader,
             TeamName = team.TeamName,
             Colour = team.Colour,
-            Users = new List<User>(),
+            Users = new List<User>() {teamLeader},
             Connections = new List<Connection>()
         };
 
@@ -36,10 +37,6 @@ public class TeamRepository : ITeamRepository
                         );
     }
 
-    private Team FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).First();
-    private User FindUser(int userId) => _context.Users.Where(u => u.Id == userId).First();
-    private User FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
-
     public async Task<Option<TeamDTO>> ReadAsync(int teamId)
     {
         var teams = from t in _context.Teams
@@ -55,18 +52,6 @@ public class TeamRepository : ITeamRepository
 
         return await teams.FirstOrDefaultAsync();
     }
-
-    public async Task<IReadOnlyCollection<TeamDTO>> ReadUserTeamsAsync(string userId)
-        => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))
-                                .Select(t => new TeamDTO(
-                                        t.Id,
-                                        t.TeamLeader.Id,
-                                        t.TeamName,
-                                        t.Colour,
-                                        t.Users.Select(u => u.Id),
-                                        t.Connections.Select(c => c.Id)))
-                                .ToListAsync())
-                                .AsReadOnly();
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(int teamId)
         => (await FindTeam(id).Connections.Select(
@@ -120,4 +105,6 @@ public class TeamRepository : ITeamRepository
 
         return Deleted;
     }
+
+    private Team FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).First();
 }
