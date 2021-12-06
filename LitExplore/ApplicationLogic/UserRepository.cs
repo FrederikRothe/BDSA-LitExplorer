@@ -12,25 +12,31 @@ public class UserRepository : IUserRepository
     public async Task<UserDTO> CreateAsync(UserCreateDTO user)
     {
         if (user == null) return null;
-        var entity = new User
+        
+        var entity = FindUserOid(user.oid);
+
+        if (entity == null) 
         {
-            oid = user.oid,
-            Name = user.Name,
-            Connections = new List<Connection>(),
-            Teams = new List<Team>()
-        };
+            entity = new User
+            {
+                oid = user.oid,
+                Name = user.Name,
+                Connections = new List<Connection>(),
+                Teams = new List<Team>()
+            };
 
-        _context.Users.Add(entity);
+            _context.Users.Add(entity);
 
-        await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  
+        }
 
         return new UserDTO(
-                            entity.Id,
-                            entity.oid,
-                            entity.Name,
-                            entity.Connections.Select(c => c.Id),
-                            entity.Teams.Select(t => t.Id)
-                        );
+                        entity.Id,
+                        entity.oid,
+                        entity.Name,
+                        entity.Connections.Select(c => c.Id),
+                        entity.Teams.Select(t => t.Id)
+                    );
     }
 
     public async Task<Option<UserDTO>> ReadAsync(string userId)
