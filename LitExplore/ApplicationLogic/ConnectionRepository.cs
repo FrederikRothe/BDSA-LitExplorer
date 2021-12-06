@@ -67,15 +67,17 @@ public class ConnectionRepository : IConnectionRepository
                           .ToListAsync())
                           .AsReadOnly();
 
-    public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(int connectionId)
-        => (await FindConnection(connectionId).Teams
-                                              .Select(t => new TeamDTO(
-                                                    t.Id,
-                                                    t.TeamName,
-                                                    t.Colour,
-                                                    null, null, null))
-                                              .ToListAsync())
-                                              .AsReadOnly();
+    public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(int connectionId) 
+        => (await _context.Teams
+                          .Where(t => t.Connections.Contains(FindConnection(connectionId)))
+                          .Select(t => new TeamDTO(
+                                t.Id,
+                                t.TeamName,
+                                t.Colour,
+                                null, null, null))
+                          .ToListAsync())
+                          .AsReadOnly();
+    
 
     public async Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection)
     {

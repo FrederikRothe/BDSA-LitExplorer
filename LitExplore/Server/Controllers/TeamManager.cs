@@ -43,7 +43,7 @@ public class TeamManager : ControllerBase
     [ProducesResponseType(typeof(IReadOnlyCollection<UserDTO>), 200)]
     [ProducesResponseType(401)]
     [HttpGet("users/{id}")]
-    public async Task<IReadOnlyCollection<UserDTO>> GetTeamUsers(int id) => await _repository.ReadConnectionsAsync(id);
+    public async Task<IReadOnlyCollection<UserDTO>> GetTeamUsers(int id) => await _repository.ReadUsersAsync(id);
 
     // Update
     [ProducesResponseType(404)]

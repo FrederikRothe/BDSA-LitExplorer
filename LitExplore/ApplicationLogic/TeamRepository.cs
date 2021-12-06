@@ -54,26 +54,28 @@ public class TeamRepository : ITeamRepository
     }
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(int teamId)
-        => (await FindTeam(teamId).Connections
-                                  .Select(c => new ConnectionDTO(
-                                        c.Id,
-                                        c.Paper1.Id,
-                                        c.Paper2.Id,
-                                        c.ConnectionType,
-                                        c.Description,
-                                        null))
-                                  .ToListAsync())
-                                  .AsReadOnly();
+        => (await _context.Connections
+                          .Where(c => c.Teams.Contains(FindTeam(teamId)))
+                          .Select(c => new ConnectionDTO(
+                                c.Id,
+                                c.Paper1.Id,
+                                c.Paper2.Id,
+                                c.ConnectionType,
+                                c.Description,
+                                null))
+                          .ToListAsync())
+                          .AsReadOnly();
     
     public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId)
-        => (await FindTeam(teamId).Users.Select(
-                                            u => new UserDTO(
-                                                u.Id,
-                                                null,
-                                                u.Name,
-                                                null, null))
-                                        .ToListAsync())
-                                        .AsReadOnly();
+        => (await _context.Users
+                          .Where(u => (u.Teams.Contains(FindTeam(teamId)) || u.IsLeaderOf.Contains(FindTeam(teamId))))
+                          .Select(u => new UserDTO(
+                                u.Id,
+                                null,
+                                u.Name,
+                                null, null))
+                          .ToListAsync())
+                          .AsReadOnly();
 
     public async Task<Status> UpdateAsync(int teamId, TeamUpdateDTO team)
     {

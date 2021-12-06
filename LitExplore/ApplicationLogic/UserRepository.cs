@@ -48,22 +48,18 @@ public class UserRepository : IUserRepository
         return await users.FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<ConnectionDTO>> ReadConnectionsAsync(string userId)
-    {
-        var user = FindUserOid(userId);
-
-        var connections = from c in user.Connections
-                          select new ConnectionDTO(
-                             c.Id,
-                             c.Paper1.Id,
-                             c.Paper2.Id,
-                             c.ConnectionType,
-                             c.Description,
-                             null
-                          );
-
-        return connections;
-    }
+    public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(string userId)
+        => (await _context.Connections
+                          .Where(c => c.Creator.Equals(FindUserOid(userId)))
+                          .Select(c => new ConnectionDTO(
+                                c.Id,
+                                c.Paper1.Id,
+                                c.Paper2.Id,
+                                c.ConnectionType,
+                                c.Description,
+                                null))
+                          .ToListAsync())
+                          .AsReadOnly();
 
     public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(string userId)
         => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))
