@@ -12,7 +12,9 @@ public record TeamCreateDTO
     public int Colour { get; init; }
     
 }
-public record TeamDTO(int Id, int TeamLeaderId, string TeamName, int Colour, IEnumerable<int> UserIDs, IEnumerable<int> ConnectionIDs);
+
+public record TeamDTO(int Id, int? TeamLeaderId, string? TeamName, int? Colour, IEnumerable<int>? UserIDs, IEnumerable<int>? ConnectionIDs);
+
 public record TeamUpdateDTO : TeamCreateDTO
 {
     public int Id { get; set; }

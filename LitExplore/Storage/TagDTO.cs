@@ -8,7 +8,7 @@ public record TagCreateDTO
     public ICollection<int> PaperIDs { get; init; }
 }
 
-public record TagDTO(int Id, string Name, ICollection<int> PaperIDs);
+public record TagDTO(int Id, string? Name, ICollection<int>? PaperIDs);
 
 public record TagUpdateDTO : TagCreateDTO
 {
