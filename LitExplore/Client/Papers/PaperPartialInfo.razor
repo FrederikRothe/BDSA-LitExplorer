@@ -1,6 +1,6 @@
 <h2>Authours</h2>
 <p>@_authors</p>
-@if (paper.TagNames != null) {
+@if (paper.TagNames.Count() > 0) {
     <h2>Tags</h2>
     <p>@_tags</p>
 }
