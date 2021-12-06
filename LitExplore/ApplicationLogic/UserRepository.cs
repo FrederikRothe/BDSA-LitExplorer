@@ -9,6 +9,7 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
+    
     public async Task<UserDTO> CreateAsync(UserCreateDTO user)
     {
         if (user == null) return null;
@@ -93,5 +94,5 @@ public class UserRepository : IUserRepository
     }
     
     private User FindUser(int userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
-    private User FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
+    private User? FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
 }
