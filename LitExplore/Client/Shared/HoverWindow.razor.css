@@ -2,7 +2,7 @@
     background-color: var(--white);
     color: var(--background);
     position: relative;
-    
+    box-shadow: 0px 0px 2rem -0.5rem black;
     width: 150pt;
     border-radius: 5pt;
     padding: 10pt;
