@@ -29,8 +29,6 @@ public class ConnectionController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ConnectionDTO>> Get(int id) => (await _repository.ReadAsync(id)).ToActionResult();
 
-    [ProducesResponseType(404)]
-    [ProducesResponseType(401)]
     [ProducesResponseType(typeof(IReadOnlyCollection<ConnectionDTO>), 200)]
     [HttpGet]
     public async Task<IReadOnlyCollection<ConnectionDTO>> GetAllConnections() => await _repository.ReadPredefinedAsync();

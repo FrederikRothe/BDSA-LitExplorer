@@ -7,4 +7,5 @@ public static class Model {
 
     public static PaperDTO[]? allPapers { get; set; }
     public static ConnectionDTO[]? publicConnections { get; set; }
+    public static TeamDTO? selectedTeam { get; set; }
 }

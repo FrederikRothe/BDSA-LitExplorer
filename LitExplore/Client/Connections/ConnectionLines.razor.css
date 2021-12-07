@@ -1,11 +1,12 @@
 .connection {
     position: fixed;
-    margin-left: 23pt;
-    margin-top: 30pt;
+    left: 32px;
+    top: 50px;
 }
 
-line {
-    stroke-width: 3pt;
+.bottom {
+    stroke-width: 8px;
+    stroke: var(--background);
 }
 
 .c-0 {
@@ -13,7 +14,7 @@ line {
 }
 
 .c-1 {
-    stroke: var(--cyan);
+    stroke: var(--red);
 }
 
 .c-2 {
@@ -28,6 +29,10 @@ line {
     stroke: var(--green);
 }
 
-.c-5 {
-    stroke: var(--red);
+.top {
+    stroke-width: 5px;
+}
+
+.top:hover {
+    stroke: var(--cyan);
 }

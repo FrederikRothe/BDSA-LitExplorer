@@ -101,8 +101,42 @@ public static class SeedExtensions
             Paper12.Authors = new List<Author>{Wayne, Dofensmirtz};
             Paper12.Tags = new List<Tag>{Python, Programming, Weapons};
 
-            // Add to context.
-            context.Papers.AddRange(Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12);
+            var papers = new List<Paper>() {Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12};
+            context.Papers.AddRange(papers);
+
+            var conns = new List<Connection>();
+
+            for(int i = 0; i < papers.Count; i++)
+            {
+                var p1 = papers[i];
+                for(int j = i + 1; j < papers.Count; j++)
+                {
+                    var p2 = papers[j];
+                    var connType = new List<String>();
+                    foreach(Author a in p1.Authors) 
+                    {
+                        if(p2.Authors.Contains(a))
+                        {
+                            connType.Add("author");
+                            break;
+                        } 
+                    }
+                    foreach(Tag a in p1.Tags) 
+                    {
+                        if(p2.Tags.Contains(a)) 
+                        {
+                            connType.Add("tag");
+                            break;
+                        }    
+                    }
+                    if(connType.Count() > 0)
+                    {
+                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray()), Description = ""});
+                    }
+                }
+            }
+
+            context.Connections.AddRange(conns);
             await context.SaveChangesAsync();
         }
     }
