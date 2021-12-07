@@ -101,7 +101,6 @@ public static class SeedExtensions
             Paper12.Authors = new List<Author>{Wayne, Dofensmirtz};
             Paper12.Tags = new List<Tag>{Python, Programming, Weapons};
 
-            Console.WriteLine("yoooo");
             var papers = new List<Paper>() {Paper1, Paper2, Paper3, Paper4, Paper5, Paper6, Paper7, Paper8, Paper9, Paper10, Paper11, Paper12};
             context.Papers.AddRange(papers);
 
@@ -109,7 +108,6 @@ public static class SeedExtensions
 
             for(int i = 0; i < papers.Count; i++)
             {
-                Console.WriteLine("Starting with i = " + i);
                 var p1 = papers[i];
                 for(int j = i + 1; j < papers.Count; j++)
                 {
@@ -133,7 +131,6 @@ public static class SeedExtensions
                     }
                     if(connType.Count() > 0)
                     {
-                        Console.WriteLine("Yes we found a connection");
                         conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray()), Description = ""});
                     }
                 }
