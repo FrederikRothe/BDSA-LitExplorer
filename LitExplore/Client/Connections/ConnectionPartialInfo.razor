@@ -1,4 +1,5 @@
 @inject HttpClient Http
+
 @if (connection.ConnectionType.Contains("author")) {
     <h2>Authors</h2>
     <p>@_authors</p>
@@ -9,26 +10,24 @@
 }
 @if (connection.ConnectionType.Contains("reference")) {
     <h2>Reference</h2>
-    <p><i>@_paper1.Title</i> references <i>@_paper2.Title</i></p>
+    <p><i>@paper1.Title</i> references <i>@paper2.Title</i></p>
 }
 
 
 
 @code {
-    [Parameter]
-    public ConnectionDTO? connection { get; set; }
-
-    private PaperDTO? _paper1;
-    private PaperDTO? _paper2;
+    [Parameter] public ConnectionDTO? connection { get; set; }
+    [Parameter] public PaperDTO paper1 { get; set; }
+    [Parameter] public PaperDTO paper2 { get; set; }
     
     private string _authors 
     {
         get 
         {
             string result = "";
-            foreach (var authorName in _paper1.AuthorNames) 
+            foreach (var authorName in paper1.AuthorNames) 
             {
-                if (_paper2.AuthorNames.Contains(authorName)) {
+                if (paper2.AuthorNames.Contains(authorName)) {
                     result += authorName + ", ";
                 }
             }
@@ -40,9 +39,9 @@
         get
         {
             string result = "";
-            foreach (var tagName in _paper1.TagNames) 
+            foreach (var tagName in paper1.TagNames) 
             {
-                if (_paper2.TagNames.Contains(tagName)) {
+                if (paper2.TagNames.Contains(tagName)) {
                     result += tagName + ", ";
                 }
             }

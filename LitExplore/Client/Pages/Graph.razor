@@ -25,18 +25,13 @@
     }
     @if (Model.publicConnections != null && _dataIsLoaded )
     {
-        @foreach (ConnectionDTO c in Model.publicConnections) {
-            <div class="connectionbutton" @onclick="() => setSelectedConnection(c)">
-                <ConnectionLine connection=@c />
-            </div>
-        }
+        <ConnectionLines connections=@Model.publicConnections />
     }   
 
     <div class="teams">
         <button type="button" @onClick="() => setSelectedTeam()" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <ConnectionInfoWindow connection=@_selectedConnection/>
     <TeamCustomisation team=@_selectedTeam/>
   </div>
   </Authorized>
@@ -46,18 +41,7 @@
 
 
 @code {
-
-    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
     private bool _dataIsLoaded = false;
-    private ConnectionDTO _selectedConnection = TestEntities.connectionDTO;
-    private void setSelectedConnection(ConnectionDTO connection) 
-    {
-        _selectedConnection = connection;
-    }
-    private int getLeftPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item1;
-
-    private int getTopPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item2;
-
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -70,7 +54,7 @@
         else 
         {
             string userId = string.Empty;
-            claims = user.Claims;
+            var claims = user.Claims;
             foreach (var claim in claims) 
             {
                 if (claim.Type.Equals("oid"))
@@ -98,17 +82,29 @@
             GraphPositions.initialise(Http);
 
             Model.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
-            _selectedPaper = Model.allPapers.ElementAt(0);
+            setSelectedPaper(Model.allPapers.ElementAt(0));
             Model.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
-            //_selectedConnection = Model.publicConnections.ElementAt(0);
+            setSelectedConnection(Model.publicConnections.ElementAt(0));
             _dataIsLoaded = true;
         }
     }
+
+    private int getLeftPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item1;
+    private int getTopPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item2;
 
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
     private void setSelectedPaper(PaperDTO paper) 
     {
         _selectedPaper = paper;
+    }
+    private ConnectionDTO _selectedConnection = TestEntities.connectionDTO;
+    private PaperDTO _connpaper1 = TestEntities.paperDTO;
+    private PaperDTO _connpaper2 = TestEntities.paperDTO;
+    private void setSelectedConnection(ConnectionDTO connection) 
+    {
+        _selectedConnection = connection;
+        _connpaper1 = Model.allPapers.Where(p => p.Id == connection.PaperOneId).Single();
+        _connpaper2 = Model.allPapers.Where(p => p.Id == connection.PaperTwoId).Single();
     }
     private TeamDTO _selectedTeam = TestEntities.teamDTO;
     private void setSelectedTeam(TeamDTO team) 

@@ -3,11 +3,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title" id="connectionModalLabel">"@_paper1.Title" and "@_paper2.Title"</h1>
+                <h1 class="modal-title" id="connectionModalLabel">"@paper1.Title" and "@paper2.Title"</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ConnectionPartialInfo connection=@connection />
+                <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
                 @if (connection.Description != null) {
                     <h2>Description</h2>
                     <p>@_description</p>
@@ -22,9 +22,8 @@
 </div>
 
 @code {
-    [Parameter]
-    public ConnectionDTO connection {get;set;} = null!;
+    [Parameter] public ConnectionDTO connection { get; set; } = null!;
+    [Parameter] public PaperDTO paper1 { get; set; }
+    [Parameter] public PaperDTO paper2 { get; set; }
     private string? _description { get => connection.Description; }
-    private PaperDTO _paper1 = TestEntities.paperDTO;
-    private PaperDTO _paper2 = TestEntities.paperDTO;
 }
