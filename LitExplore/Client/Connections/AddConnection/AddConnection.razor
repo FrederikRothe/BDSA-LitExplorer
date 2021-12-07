@@ -1,0 +1,54 @@
+<div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
+
+@if (Model.Graph.allPapers != null) 
+{
+<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="AddConnectionModal" style="display: none;" tabindex="-1" aria-labelledby="AddConnectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="AddConnectionModalLabel">Add a connection</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="dropdowns">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+              Select the first paper
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+              @foreach (var paper in Model.Graph.allPapers)
+              {
+                <li @onclick="() => _paper1 = paper">@paper.Title</li>
+              }
+            </ul>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+              Select the second paper
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+              @foreach (var paper in Model.Graph.allPapers)
+              {
+                <li @onclick="() => _paper2 = paper">@paper.Title</li>
+              }
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button>update connection</button>
+        <button>delete connection</button>
+      </div>
+      </div>
+  </div>
+</div>
+}
+
+@* <ConnectionForm UpdateForm=false Paper1=@p1Title/> *@
+
+@code {
+    private PaperDTO? _paper1;
+    private PaperDTO? _paper2;
+}

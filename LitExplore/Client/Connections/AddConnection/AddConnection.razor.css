@@ -1,0 +1,20 @@
+.dropdowns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.addconnbutton {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    background-color: var(--blue);
+    width: 250px;
+    height: 50px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: center;
+    text-align: center;
+    letter-spacing: 0.2rem;
+    text-transform: lowercase;
+}
