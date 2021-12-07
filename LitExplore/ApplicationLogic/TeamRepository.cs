@@ -58,6 +58,7 @@ public class TeamRepository : ITeamRepository
                           .Where(c => c.Teams.Contains(FindTeam(teamId)))
                           .Select(c => new ConnectionDTO(
                                 c.Id,
+                                null,
                                 c.Paper1.Id,
                                 c.Paper2.Id,
                                 c.ConnectionType,

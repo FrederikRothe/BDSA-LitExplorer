@@ -1,4 +1,7 @@
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
 <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="connectionInfoWindow" style="display: none;" tabindex="-1" aria-labelledby="connectionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -14,8 +17,11 @@
                 }
             </div>
             <div class="modal-footer">
-                <button>update connection</button>
-                <button>delete connection</button>
+                @if (connection.CreatorId == Model.CurrentUser.userOid)
+                {
+                    <button>update connection</button>
+                    <button @onclick="delete">delete connection</button>
+                }
             </div>
         </div>
     </div>
@@ -26,4 +32,13 @@
     [Parameter] public PaperDTO paper1 { get; set; }
     [Parameter] public PaperDTO paper2 { get; set; }
     private string? _description { get => connection.Description; }
+
+    private async Task delete()
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete the connection?"))
+        {
+            await Http.DeleteAsync($"api/Connection/{connection.Id}");
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+        }
+    }
 }

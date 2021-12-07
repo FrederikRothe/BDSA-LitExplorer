@@ -1,0 +1,26 @@
+.dropdowns {
+    display: flex;
+    justify-content: space-between;
+}
+
+select {
+    background-color: var(--grey);
+    color: var(--white);
+    border: none;
+    margin: 0px 3px;
+    letter-spacing: 1px;
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f0eee7' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+h2 {
+    margin-top: 2rem;
+}
+
+textarea {
+    background-color: var(--white);
+    color: var(--background);
+    letter-spacing: 1px;
+}

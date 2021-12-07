@@ -1,11 +1,11 @@
 @inject HttpClient Http
 
 @if (connection.ConnectionType.Contains("author")) {
-    <h2>Authors</h2>
+    <h2>Authors in common</h2>
     <p>@_authors</p>
 }
 @if (connection.ConnectionType.Contains("tag")) {
-    <h2>Tags</h2>
+    <h2>Tags in common</h2>
     <p>@_tags</p>
 }
 @if (connection.ConnectionType.Contains("reference")) {

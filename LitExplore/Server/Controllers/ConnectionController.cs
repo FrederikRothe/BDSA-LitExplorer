@@ -16,11 +16,14 @@ public class ConnectionController : ControllerBase
     }
 
     // Create
-    [ProducesResponseType(404)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(typeof(ConnectionDTO), 201)]
+    [Authorize]
     [HttpPost]
-    public async Task<Option<ConnectionDTO>> Post(ConnectionCreateDTO ccdto) => await _repository.CreateAsync(ccdto);
+    [ProducesResponseType(typeof(ConnectionDTO), 201)]
+    public async Task<IActionResult> Post(ConnectionCreateDTO ccdto) 
+    {
+        var created = await _repository.CreateAsync(ccdto);
+        return CreatedAtAction(nameof(Get), new { created.Id }, created);
+    }
     
     // Read
     [ProducesResponseType(404)]

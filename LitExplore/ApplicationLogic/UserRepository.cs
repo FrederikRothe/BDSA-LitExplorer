@@ -60,6 +60,7 @@ public class UserRepository : IUserRepository
                           .Where(c => c.Creator.Equals(FindUserOid(userId)))
                           .Select(c => new ConnectionDTO(
                                 c.Id,
+                                (c.Creator == null? null : c.Creator.oid),
                                 c.Paper1.Id,
                                 c.Paper2.Id,
                                 c.ConnectionType,

@@ -1,0 +1,84 @@
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="modal fade modal-dialog modal-dialog-centered" id="AddConnectionModal" style="display: none;" tabindex="-1" aria-labelledby="AddConnectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="AddConnectionModalLabel">Add a connection</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => _errorMessage = string.Empty"></button>
+      </div>
+      <div class="modal-body">
+
+        <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
+          <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
+          
+          <div class="dropdowns">
+
+            <select class="form-select" @bind="connection.PaperOneId" aria-label="paper1select">
+              @foreach (var paper in Model.Graph.allPapers)
+                {
+                  <option value=@paper.Id>@paper.Title</option>
+                }
+            </select>
+            <select class="form-select" @bind="connection.PaperTwoId" aria-label="paper2select">
+              @foreach (var paper in Model.Graph.allPapers)
+                {
+                  <option value=@paper.Id>@paper.Title</option>
+                }
+            </select>
+
+          </div>
+
+          <div>
+            <h2>Description</h2>
+            <textarea class="form-control" @bind="connection.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
+          </div>
+
+          <button class="btn btn-success">Create</button>
+        </EditForm>
+
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+      </div>
+  </div>
+</div>
+
+@code {
+    private ConnectionCreateDTO connection = new();
+    private string _errorMessage = string.Empty;
+    private string _successMessage = string.Empty;
+    
+
+    private async Task HandleValidSubmit()
+    {
+        if (connection.PaperOneId == connection.PaperTwoId)
+        {
+          _errorMessage = "Please select two different papers.";
+          return;
+        }
+
+        connection.CreatorId = Model.CurrentUser.userOid == null? null : Model.CurrentUser.userOid;
+        connection.ConnectionType = "other";
+
+        var response = await Http.PostAsJsonAsync("api/Connection", connection);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _errorMessage = "";
+            _successMessage = "Created!";
+            var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
+            if (Model.CurrentUser.connections != null) 
+            {
+                Model.CurrentUser.connections.Append(created);
+            }
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+        } 
+        else 
+        {
+            _errorMessage = $"An error occured.";
+        }
+    }
+}
