@@ -19,10 +19,33 @@
             <div class="modal-footer">
                 @if (connection.CreatorId == Model.CurrentUser.userOid)
                 {
-                    <button>update connection</button>
+                    <button class="btn btn-primary" data-bs-target="#connectionUpdateWindow" data-bs-toggle="modal" data-bs-dismiss="modal">update connection</button>
                     <button @onclick="delete">delete connection</button>
                 }
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="connectionUpdateWindow" style="display: none;" tabindex="-1" aria-labelledby="connectionUpdateWindowLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="connectionUpdateWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <EditForm Model="@connection" OnValidSubmit="@update">
+                <div class="modal-body">
+                    <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
+                    <h2>Description</h2>
+                    <textarea class="form-control" @bind="_updateDTO.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    @if (connection.CreatorId == Model.CurrentUser.userOid)
+                    {
+                        <button type="submit" class="btn btn-primary" data-bs-target="#connectionInfoWindow" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+                    }
+                </div>
+            </EditForm>
         </div>
     </div>
 </div>
@@ -33,6 +56,13 @@
     [Parameter] public PaperDTO paper2 { get; set; }
     private string? _description { get => connection.Description; }
 
+    private ConnectionUpdateDTO _updateDTO = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
+        await base.OnParametersSetAsync();
+    }
     private async Task delete()
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete the connection?"))
@@ -40,5 +70,11 @@
             await Http.DeleteAsync($"api/Connection/{connection.Id}");
             NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
         }
+    }
+
+    private async Task update()
+    {
+        var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
+        NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
     }
 }
