@@ -3,7 +3,12 @@
         @foreach (var c in connections)
         {
             <line class="bottom" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
-            <line class="top" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+            <line class="c-0 top" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+        }
+        @foreach (var c in teamConnections)
+        {
+            <line class="bottom" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+            <line class="c-@colour(c) top" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
         }
     </svg>
     
@@ -16,13 +21,14 @@
 
 @code {
     [Parameter] public ConnectionDTO[] connections { get; set; } = null!;
+    [Parameter] public ConnectionDTO[] teamConnections { get; set; } = new ConnectionDTO[0];
 
     private PaperDTO getPaper(int id) => Model.allPapers.Where(p => p.Id == id).Single();
     
     private bool _showHoverWindow = false;
     private string _hoverWindowLeftS() => ((x1(_hoverconnection)+x2(_hoverconnection))/2)+"vw";
     private string _hoverWindowTopS() => ((y1(_hoverconnection)+y2(_hoverconnection))/2)+"vh";
-
+    private int colour(ConnectionDTO c) => Model.selectedTeam != null? Model.selectedTeam.Colour : 0;
     private (int,int) position1(ConnectionDTO c) => GraphPositions.paperToPositions[c.PaperOneId];
     private (int,int) position2(ConnectionDTO c) => GraphPositions.paperToPositions[c.PaperTwoId];
     private int x1(ConnectionDTO c) => (position1(c).Item1); 
