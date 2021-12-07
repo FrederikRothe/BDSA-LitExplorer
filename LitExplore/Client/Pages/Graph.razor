@@ -1,5 +1,6 @@
 @page "/"
 @using LitExplore.Client.Connections
+@using LitExplore.Client.Connections.AddConnection
 @using LitExplore.Client.Papers
 @using LitExplore.Client.Teams
 @using System.Security.Claims
@@ -14,18 +15,18 @@
 <AuthorizeView>
   <Authorized>
   <div>
-    @if (Model.allPapers != null && _dataIsLoaded )
+    @if (Model.Graph.allPapers != null && _dataIsLoaded )
     {
-        @foreach (PaperDTO p in Model.allPapers) 
+        @foreach (PaperDTO p in Model.Graph.allPapers) 
         {
             <div class="paperbutton" @onclick="() => setSelectedPaper(p)">
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
     }
-    @if (Model.publicConnections != null && _dataIsLoaded )
+    @if (Model.Graph.publicConnections != null && _dataIsLoaded )
     {
-        <ConnectionLines connections=@Model.publicConnections />
+        <ConnectionLines connections=@Model.Graph.publicConnections />
     }   
 
     <div class="teams">
@@ -33,10 +34,9 @@
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
     <TeamCustomisation team=@_selectedTeam/>
+    <AddConnection />
   </div>
   </Authorized>
-  <NotAuthorized>
-  </NotAuthorized>
 </AuthorizeView>
 
 
@@ -73,24 +73,24 @@
 
             if (response.IsSuccessStatusCode)
             {
-                Model.currentUser = await response.Content.ReadFromJsonAsync<UserDTO>();
+                Model.CurrentUser.user = await response.Content.ReadFromJsonAsync<UserDTO>();
             }
 
-            Model.currentUserTeams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
-            Model.currentUserConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
+            Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
+            Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
 
-            GraphPositions.initialise(Http);
+            Model.Graph.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
+            Model.Graph.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
 
-            Model.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
-            setSelectedPaper(Model.allPapers.ElementAt(0));
-            Model.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
-            setSelectedConnection(Model.publicConnections.ElementAt(0));
+            Model.Graph.initialise(Http);
+            setSelectedPaper(Model.Graph.allPapers.ElementAt(0));
+            setSelectedConnection(Model.Graph.publicConnections.ElementAt(0));
             _dataIsLoaded = true;
         }
     }
 
-    private int getLeftPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item1;
-    private int getTopPosPaper(PaperDTO p) => GraphPositions.paperToPositions[p.Id].Item2;
+    private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
+    private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
     private void setSelectedPaper(PaperDTO paper) 
@@ -103,8 +103,8 @@
     private void setSelectedConnection(ConnectionDTO connection) 
     {
         _selectedConnection = connection;
-        _connpaper1 = Model.allPapers.Where(p => p.Id == connection.PaperOneId).Single();
-        _connpaper2 = Model.allPapers.Where(p => p.Id == connection.PaperTwoId).Single();
+        _connpaper1 = Model.Graph.allPapers.Where(p => p.Id == connection.PaperOneId).Single();
+        _connpaper2 = Model.Graph.allPapers.Where(p => p.Id == connection.PaperTwoId).Single();
     }
     private TeamDTO _selectedTeam = TestEntities.teamDTO;
     private void setSelectedTeam(TeamDTO team) 

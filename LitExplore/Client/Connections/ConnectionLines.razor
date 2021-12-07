@@ -23,14 +23,14 @@
     [Parameter] public ConnectionDTO[] connections { get; set; } = null!;
     [Parameter] public ConnectionDTO[] teamConnections { get; set; } = new ConnectionDTO[0];
 
-    private PaperDTO getPaper(int id) => Model.allPapers.Where(p => p.Id == id).Single();
+    private PaperDTO getPaper(int id) => Model.Graph.allPapers.Where(p => p.Id == id).Single();
     
     private bool _showHoverWindow = false;
     private string _hoverWindowLeftS() => ((x1(_hoverconnection)+x2(_hoverconnection))/2)+"vw";
     private string _hoverWindowTopS() => ((y1(_hoverconnection)+y2(_hoverconnection))/2)+"vh";
-    private int colour(ConnectionDTO c) => Model.selectedTeam != null? Model.selectedTeam.Colour : 0;
-    private (int,int) position1(ConnectionDTO c) => GraphPositions.paperToPositions[c.PaperOneId];
-    private (int,int) position2(ConnectionDTO c) => GraphPositions.paperToPositions[c.PaperTwoId];
+    private int colour(ConnectionDTO c) => Model.CurrentUser.selectedTeam != null? Model.CurrentUser.selectedTeam.Colour : 0;
+    private (int,int) position1(ConnectionDTO c) => Model.Graph.paperToPositions[c.PaperOneId];
+    private (int,int) position2(ConnectionDTO c) => Model.Graph.paperToPositions[c.PaperTwoId];
     private int x1(ConnectionDTO c) => (position1(c).Item1); 
     private int y1(ConnectionDTO c) => (position1(c).Item2); 
     private int x2(ConnectionDTO c) => (position2(c).Item1); 
