@@ -19,13 +19,22 @@
 @code {
     [Parameter] public PaperDTO? paper { get; set; }
     [Parameter] public ConnectionDTO? connection { get; set; }
-    [Parameter] public PaperDTO? connpaper1 { get; set; }
-    [Parameter] public PaperDTO? connpaper2 { get; set; }
+    public PaperDTO? connpaper1 { get; set; }
+    public PaperDTO? connpaper2 { get; set; }
     [Parameter] public string? left { get; set; }
     [Parameter] public string? top { get; set; }
     
-    [Parameter]
-    public bool hidden { get;set; }
+    [Parameter] public bool hidden { get;set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (connection != null)
+        {
+            connpaper1 = Model.Graph.allPapers.Where(p => p.Id == connection.PaperOneId).Single();
+            connpaper2 = Model.Graph.allPapers.Where(p => p.Id == connection.PaperTwoId).Single();
+        }
+        await base.OnParametersSetAsync();
+    }
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
     private string style { get => left == null? "" : $"left:{left}; top:{top};"; }
     private string conndescription

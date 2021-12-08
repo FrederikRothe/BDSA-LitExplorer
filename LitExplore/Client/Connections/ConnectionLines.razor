@@ -2,21 +2,21 @@
     <svg style="width: 90vw; height: 90vh;">
         @foreach (var c in connections)
         {
-            <line class="bottom" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
-            <line class="c-0 top" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+            <line class="bottom" @onclick="() => setParameters(c)" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+            <line class="c-0 top" @onclick="() => setParameters(c)" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
         }
         @foreach (var c in extraConnections)
         {
-            <line class="bottom" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
-            <line class="c-@colour(c) top" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+            <line class="bottom" @onclick="() => setParameters(c)" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
+            <line class="c-@colour(c) top" @onclick="() => setParameters(c)" data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" @onmouseover="() => hoversOn(c)" @onmouseout="() => hoversOn(c)" x1=@x1s(c) y1=@y1s(c) x2=@x2s(c) y2=@y2s(c) />
         }
     </svg>
     
 </div>
 @if (_showHoverWindow) {
-    <HoverWindow connection=@_hoverconnection connpaper1=@_paper1 connpaper2=@_paper2 left=@_hoverWindowLeftS() top=@_hoverWindowTopS()/>
+    <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeftS() top=@_hoverWindowTopS()/>
 } 
-<ConnectionInfoWindow connection=@_hoverconnection paper1=@_paper1 paper2=@_paper2/>
+<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2/>
 
 
 @code {
@@ -40,12 +40,17 @@
     private string x2s(ConnectionDTO c) => x2(c)+"vw"; 
     private string y2s(ConnectionDTO c) => y2(c)+"vh"; 
     private void hoversOn(ConnectionDTO c) {
-        _paper1 = getPaper(c.PaperOneId);
-        _paper2 = getPaper(c.PaperTwoId);
-        _hoverconnection = c;
         _showHoverWindow = !_showHoverWindow;
+        _hoverconnection = c;
     }
 
+    private void setParameters(ConnectionDTO c) {
+        _connectionForConnectionWindow = _hoverconnection;
+        _paper1 = getPaper(c.PaperOneId);
+        _paper2 = getPaper(c.PaperTwoId);
+    }
+
+    private ConnectionDTO _connectionForConnectionWindow = TestEntities.connectionDTO;
     private PaperDTO _paper1 = TestEntities.paperDTO;
     private PaperDTO _paper2 = TestEntities.paperDTO;
     private ConnectionDTO _hoverconnection = TestEntities.connectionDTO;
