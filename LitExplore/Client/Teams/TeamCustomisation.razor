@@ -1,6 +1,5 @@
-@page "/teamcustomisation"
-
-<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;"
+  tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,15 +7,15 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <button id="redbutton" disabled = @isTeamOwner></button>
-        <button id="yellowbutton" disabled = @isTeamOwner></button>
-        <button id="greenbutton" disabled = @isTeamOwner></button>
-        <button id="orangebutton" disabled = @isTeamOwner></button>
+        <button id="redbutton" disabled=@isTeamOwner></button>
+        <button id="yellowbutton" disabled=@isTeamOwner></button>
+        <button id="greenbutton" disabled=@isTeamOwner></button>
+        <button id="orangebutton" disabled=@isTeamOwner></button>
       </div>
       <div class="modal-footer">
-        @foreach(var user in team.UserIDs) 
+        @foreach (var user in team.UserIDs)
         {
-            <button id="user" @onclick="() => removeUser(user)">@user</button>
+          <button id="user" @onclick="() => removeUser(user)">@user</button>
         }
       </div>
     </div>
@@ -24,16 +23,16 @@
 </div>
 
 @code {
-    [Parameter]
-    public TeamDTO team { get; set; } = null!;
-    [Parameter]
-    public bool isTeamOwner { get; set; } = false;
-    private void removeUser(int userId) 
+  [Parameter]
+  public TeamDTO team { get; set; } = null!;
+  [Parameter]
+  public bool isTeamOwner { get; set; } = false;
+  private void removeUser(int userId)
+  {
+    if (isTeamOwner)
     {
-        if (isTeamOwner)
-        {
-            //currentTeam.UserIDs.Remove(currentTeam.UserIDs.Where(u => u == userId).First());
-        }
+      //currentTeam.UserIDs.Remove(currentTeam.UserIDs.Where(u => u == userId).First());
     }
-    
+  }
+
 }
