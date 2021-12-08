@@ -9,9 +9,28 @@
     stroke: var(--background);
 }
 
+.c-0 {
+    stroke: var(--blue);
+}
+
+.c-1 {
+    stroke: var(--red);
+}
+
+.c-2 {
+    stroke: var(--yellow);
+}
+
+.c-3 {
+    stroke: var(--orange);
+}
+
+.c-4 {
+    stroke: var(--green);
+}
+
 .top {
     stroke-width: 5px;
-    stroke: var(--blue);
 }
 
 .top:hover {
