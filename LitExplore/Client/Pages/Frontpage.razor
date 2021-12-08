@@ -1,0 +1,27 @@
+@page "/Login"
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<div class="background">
+  <div class="content">
+    <p class="uppercase">Welcome to <span class="litexplore">LitExplore</span></p>
+    <a href="authentication/login"><button class="uppercase">Log in</button></a>
+  </div>
+</div>
+
+@code {
+    private PaperDTO[] _allPapers = new PaperDTO[0];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}");
+        }
+
+    }
+}

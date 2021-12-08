@@ -2,16 +2,26 @@
 @using LitExplore.Client.BurgerMenu
 
 <div class="page">
-
-    <main>
+  <AuthorizeView>
+    <Authorized>
+      <main>
         <div class="top-row px-4 auth">
-            <BurgerMenu />
-            <SearchBar />
-            <LoginDisplay />
+          <BurgerMenu />
+          <SearchBar />
+          <LoginDisplay />
         </div>
 
         <article class="content px-4">
             @Body
         </article>
-    </main>
+      </main>
+    </Authorized>
+    <NotAuthorized>
+      <main>
+        <article class="content px-4">
+          @Body
+        </article>
+      </main>
+    </NotAuthorized>
+  </AuthorizeView>
 </div>

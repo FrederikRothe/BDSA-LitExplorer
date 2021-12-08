@@ -1,47 +1,51 @@
-@if (connection.Connections.Contains(ConnectionType.Author)) {
-    <p>author(s): <i>@authors</i></p>
+@inject HttpClient Http
+
+@if (connection.ConnectionType.Contains("author")) {
+    <h2>Authors in common</h2>
+    <p>@_authors</p>
 }
-@if (connection.Connections.Contains(ConnectionType.Tag)) {
-    <p>tag(s): <i>@tags</i></p>
+@if (connection.ConnectionType.Contains("tag")) {
+    <h2>Tags in common</h2>
+    <p>@_tags</p>
 }
-@if (connection.Connections.Contains(ConnectionType.Reference)) {
-    <p><i>@connection.Paper1.Title</i> references <i>@connection.Paper2.Title</i></p>
-}
-@if (connection.Connections.Contains(ConnectionType.Other)) {
-    <p><i>you have connected these papers yourself.</i></p>
+@if (connection.ConnectionType.Contains("reference")) {
+    <h2>Reference</h2>
+    <p><i>@paper1.Title</i> references <i>@paper2.Title</i></p>
 }
 
 
 
 @code {
-    [Parameter]
-    public Connection connection { get; set; } = TestEntities.testconn1;
-    private string authors 
+    [Parameter] public ConnectionDTO? connection { get; set; }
+    [Parameter] public PaperDTO paper1 { get; set; }
+    [Parameter] public PaperDTO paper2 { get; set; }
+    
+    private string _authors 
     {
         get 
         {
             string result = "";
-            foreach (string author in connection.Paper1.Authors) 
+            foreach (var authorName in paper1.AuthorNames) 
             {
-                if (connection.Paper2.Authors.Contains(author)) {
-                    result += author + ", ";
+                if (paper2.AuthorNames.Contains(authorName)) {
+                    result += authorName + ", ";
                 }
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
-    private string tags
+    private string _tags
     {
         get
         {
             string result = "";
-            foreach (string tag in connection.Paper1.Tags) 
+            foreach (var tagName in paper1.TagNames) 
             {
-                if (connection.Paper2.Tags.Contains(tag)) {
-                    result += tag + ", ";
+                if (paper2.TagNames.Contains(tagName)) {
+                    result += tagName + ", ";
                 }
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
 }

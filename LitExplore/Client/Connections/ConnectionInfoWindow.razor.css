@@ -1,0 +1,12 @@
+button {
+    border: none;
+    border-radius: 5pt;
+    background-color: var(--grey);
+    padding: 7pt 10pt;
+    color: var(--white);
+}
+
+.btn-close {
+    background-color: transparent;
+    margin: 0px 0px 0px 3px;
+}

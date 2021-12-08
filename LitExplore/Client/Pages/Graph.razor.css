@@ -75,6 +75,24 @@
     background-color: var(--blue);
     border: none;
 }
+<<<<<<< HEAD
 .addteambutton {
     background-color: var(--green) !important; 
+=======
+
+.addconnbutton {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    background-color: var(--blue);
+    width: 250px;
+    height: 50px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    letter-spacing: 0.2rem;
+    text-transform: lowercase;
+>>>>>>> 88f63f296b9e17b2973f41998ae7bc380ad96aaa
 }

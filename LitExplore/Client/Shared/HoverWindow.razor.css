@@ -2,29 +2,41 @@
     background-color: var(--white);
     color: var(--background);
     position: relative;
-    
-    width: 140pt;
-    border-radius: 5pt;
-    padding: 5pt;
+    box-shadow: 0px 0px 2rem -0.5rem black;
+    width: 220px;
+    border-radius: 10px;
+    padding: 15px;
+    z-index: 10;
 }
 
 
 .connwindow {
-    left: 0pt;
-    top: 30pt;
+    margin-left: -75px;
+    margin-top: -30px;
 }
 
 .paperwindow {
-    left: -47pt;
+    left: -52pt;
     top: 65pt;
 }
 
 ::deep p {
     font-size: 12pt;
-    margin-top: 8pt;
-    margin-bottom: 0pt;
 }
-::deep .title {
+
+::deep p:last-of-type {
+    margin-bottom: 0;
+}
+
+::deep h1 {
+    font-size: 13pt;
     font-weight: bold;
-    margin-top: 0pt;
+}
+
+::deep h2 {
+    font-size: 8pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2pt;
+    margin-bottom: 3pt;
 }

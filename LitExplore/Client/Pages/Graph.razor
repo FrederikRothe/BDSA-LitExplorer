@@ -2,6 +2,11 @@
 @using LitExplore.Client.Connections
 @using LitExplore.Client.Papers
 @using LitExplore.Client.Teams
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
 
 <PageTitle>LitExplore</PageTitle>
 
@@ -29,8 +34,41 @@
 </div>
 
 
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}Login");
+        } 
+        else 
+        {
+            if (!Model.CurrentUser.initialised()) 
+            {
+                string userId = string.Empty;
+                var claims = user.Claims;
+                foreach (var claim in claims) 
+                {
+                    if (claim.Type.Equals("oid"))
+                    {
+                        userId = claim.Value;
+                    }
+                }
 
+                var userDTO = new UserCreateDTO
+                {
+                    oid = userId,
+                    Name = user.Identity?.Name
+                };
+                
+                var response = await Http.PostAsJsonAsync("api/User", userDTO);
+                Model.CurrentUser.userOid = userId;
+                if (Model.CurrentUser.teams == null) Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
+                if (Model.CurrentUser.connections == null) Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
+            }
 
 @code {
     private Paper _paper = TestEntities.genericPaper;
@@ -49,4 +87,18 @@
         _selectedTeam = team;
     }
 
+    private bool _dataIsLoaded = false;
+
+    
+    private ConnectionLines? _connectionLines;
+    private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
+    private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
+
+    private ConnectionDTO[]? _userOrTeamConnections;
+    private PaperDTO _selectedPaper = TestEntities.paperDTO;
+    private TeamDTO _selectedTeam = TestEntities.teamDTO;
+    private void setSelectedTeam(TeamDTO team) 
+    {
+        _selectedTeam = team;
+    }
 }

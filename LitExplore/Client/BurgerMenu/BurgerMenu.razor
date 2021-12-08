@@ -1,4 +1,9 @@
 @using LitExplore.Client.BurgerMenu
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
 
 <nav role="navigation">
   <div class="menuToggle">
@@ -10,10 +15,30 @@
     <span></span>
 
     <ul class="menu">
-      <a href="#"><li>What</li></a>
-      <a href="#"><li>Should</li></a>
-      <a href="#"><li>We put</li></a>
-      <a href="#"><li>In here?</li></a>
+      <h1>Lit Explore</h1>
+      <li>About</li>
+      <li>Contact</li>
+      <AuthorizeView>
+        <Authorized>
+            <li @onclick="BeginLogout">Log out</li>
+        </Authorized>
+        <NotAuthorized>
+            <li><a href="authentication/login">Log in</a></li>
+        </NotAuthorized>
+      </AuthorizeView>
     </ul>
   </div>
 </nav>
+
+
+
+
+
+
+@code{
+    private async Task BeginLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

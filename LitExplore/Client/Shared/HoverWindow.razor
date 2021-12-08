@@ -1,22 +1,41 @@
 @using LitExplore.Client.Connections
 @using LitExplore.Client.Papers
+@inject HttpClient Http
 
-<div class=@styleclass hidden=@hidden>
+<div class=@styleclass data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" style=@style hidden=@hidden>
     @if (paper != null) {
+        <h1>@paper.Title</h1>
         <PaperPartialInfo paper=@paper />
     }
     @if (connection != null) {
-        <p class="title">Connection</p>
-        <ConnectionPartialInfo connection=@connection />
+        <ConnectionPartialInfo connection=@connection paper1=@connpaper1 paper2=@connpaper2 />
+        @if (connection.ConnectionType.Contains("other")) {
+            <h2>Description</h2>
+            <p>@conndescription</p>
+        }
     }
 </div>
 
 @code {
+    [Parameter] public PaperDTO? paper { get; set; }
+    [Parameter] public ConnectionDTO? connection { get; set; }
+    [Parameter] public PaperDTO? connpaper1 { get; set; }
+    [Parameter] public PaperDTO? connpaper2 { get; set; }
+    [Parameter] public string? left { get; set; }
+    [Parameter] public string? top { get; set; }
+    
     [Parameter]
-    public Paper? paper {get;set;}
-    [Parameter]
-    public Connection? connection {get;set;}
-    [Parameter]
-    public bool hidden {get;set;}
+    public bool hidden { get;set; }
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
+    private string style { get => left == null? "" : $"left:{left}; top:{top};"; }
+    private string conndescription
+    {
+        get
+        {
+            if (connection.Description.Length > 20) {
+                return connection.Description.Substring(0,20)+"...";
+            } 
+            return connection.Description;
+        }
+    }
 }

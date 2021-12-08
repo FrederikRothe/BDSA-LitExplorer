@@ -1,34 +1,35 @@
-<p class="title">@paper.Title</p>
-<p>by: <i>@authors</i></p>
-@if (paper.Tags != null) {
-    <p>tags: <i>@tags</i></p>
+<h2>Authours</h2>
+<p>@_authors</p>
+@if (paper.TagNames.Count() > 0) {
+    <h2>Tags</h2>
+    <p>@_tags</p>
 }
 
 @code {
     [Parameter]
-    public Paper paper { get; set; } = TestEntities.genericPaper;
-    private string authors 
+    public PaperDTO paper { get; set; } = null!;
+    private string _authors 
     {
         get 
         {
             string result = "";
-            foreach (string author in paper.Authors) 
+            foreach (string author in paper.AuthorNames) 
             {
                 result += author + ", ";
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
-    private string tags
+    private string _tags
     {
         get
         {
             string result = "";
-            foreach (string tag in paper.Tags) 
+            foreach (string tag in paper.TagNames) 
             {
                 result += tag + ", ";
             }
-            return result.Substring(0,result.Length-2);
+            return result.Substring(0,Math.Max(result.Length-2,0));
         }
     }
 }
