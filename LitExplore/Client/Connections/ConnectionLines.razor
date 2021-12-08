@@ -45,7 +45,7 @@
     }
 
     private void setParameters(ConnectionDTO c) {
-        _connectionForConnectionWindow = _hoverconnection;
+        _connectionForConnectionWindow = c;
         _paper1 = getPaper(c.PaperOneId);
         _paper2 = getPaper(c.PaperTwoId);
     }
