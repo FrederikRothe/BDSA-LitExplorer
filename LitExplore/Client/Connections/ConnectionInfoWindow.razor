@@ -19,8 +19,8 @@
             <div class="modal-footer">
                 @if (connection.CreatorId == Model.CurrentUser.userOid)
                 {
-                    <Button onButtonClick="() => _description = connection.Description" buttonText="Update connection" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
                     <Button onButtonClick="delete" buttonText="Delete connection" colour="red" />
+                    <Button onButtonClick="() => _description = connection.Description" buttonText="Update connection" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
                 }
             </div>
         </div>
