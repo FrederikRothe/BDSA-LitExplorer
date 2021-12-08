@@ -30,7 +30,7 @@ public class TeamRepositoryTests : IDisposable
         {
             TeamLeaderId = 1,
             TeamName = "Popsicle",
-            Colour = 1,
+            Colour = 1
         };
 
         var created = await _repository.CreateAsync(team, "1");
@@ -43,6 +43,46 @@ public class TeamRepositoryTests : IDisposable
         Assert.Equal(new List<int>(), created.ConnectionIDs);
     }
 
+    [Fact] 
+    public async Task ReadAsync_returns_team_with_given_id()
+    {
+        /*var team = new TeamDTO
+        {
+            Id = 1,
+            TeamName = "Potato",
+            Colour = 1,
+            TeamLeaderId = 1,
+            UserIDs = new List<int>{1,2},
+            ConnectionIDs = new List<int>{1,3}
+        };*/
+
+        var team = new TeamDTO(1, "Potato", 1, 1, new List<int>{1,2}, new List<int>{1,3});
+
+        var found = await _repository.ReadAsync(1);
+
+        found = found.Value;
+
+        Assert.Equal(team.Id, found.Value.Id);
+        Assert.Equal(team.TeamName, found.Value.TeamName);
+        Assert.Equal(team.Colour, found.Value.Colour);
+        Assert.Equal(team.TeamLeaderId, found.Value.TeamLeaderId);
+        Assert.Equal(team.UserIDs, found.Value.UserIDs);
+        Assert.Equal(team.ConnectionIDs, found.Value.ConnectionIDs);
+    }
+
+    [Fact]
+    public async Task ReadConnectionsAsync_returns_all_connections_of_a_team_with_given_id()
+    {
+        var connections = new List<ConnectionDTO>
+        {
+            new ConnectionDTO(1, "1", 1, 2, "Math", "1", new List<int>{1}),
+            new ConnectionDTO(3, "3", 1, 2, "Physics", "3", new List<int>{2,3})
+        }.AsReadOnly();
+        
+        var teams = await _repository.ReadConnectionsAsync(1);
+
+        Assert.Equal(connections, teams);
+    }
     protected virtual void Dispose(bool disposing)
     {
         if (!disposed)
