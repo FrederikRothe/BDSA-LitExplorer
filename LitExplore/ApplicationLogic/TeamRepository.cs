@@ -31,7 +31,7 @@ public class TeamRepository : ITeamRepository
                             entity.Id,
                             entity.TeamName,
                             entity.Colour,
-                            entity.TeamLeader.Id,
+                            entity.TeamLeader.oid,
                             entity.Users.Select(u => u.Id),
                             entity.Connections.Select(c => c.Id)
                         );
@@ -45,7 +45,7 @@ public class TeamRepository : ITeamRepository
                             t.Id,
                             t.TeamName,
                             t.Colour,
-                            t.TeamLeader.Id,
+                            t.TeamLeader.oid,
                             t.Users.Select(u => u.Id),
                             t.Connections.Select(c => c.Id)
                          );

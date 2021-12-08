@@ -13,7 +13,7 @@ public record TeamCreateDTO
     
 }
 
-public record TeamDTO(int Id, string TeamName, int Colour, int? TeamLeaderId, IEnumerable<int>? UserIDs, IEnumerable<int>? ConnectionIDs);
+public record TeamDTO(int Id, string TeamName, int Colour, string? TeamLeaderId, IEnumerable<int>? UserIDs, IEnumerable<int>? ConnectionIDs);
 
 public record TeamUpdateDTO : TeamCreateDTO
 {
