@@ -52,10 +52,34 @@ public class TeamController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, TeamUpdateDTO tcdto) => (await _repository.UpdateAsync(id, tcdto)).ToActionResult();
 
+    [ProducesResponseType(404)]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(401)]
+    [HttpPut("{id}/user/{userOid")]
+    public async Task<IActionResult> ShareConnection(int id, string userOid) => (await _repository.AddUserToTeamAsync(id, userOid)).ToActionResult();
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(401)]
+    [HttpPut("{id}/connection/{connectionId")]
+    public async Task<IActionResult> ShareConnection(int id, int connectionId) => (await _repository.ShareConnectionAsync(id, connectionId)).ToActionResult();
+
     // Delete
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id) => (await _repository.DeleteAsync(id)).ToActionResult();
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(401)]
+    [HttpDelete("{id}/user/{userOid}")]
+    public async Task<IActionResult> RemoveUser(int id, string userOid) => (await _repository.RemoveUserAsync(id, userOid)).ToActionResult();
+
+    [ProducesResponseType(404)]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(401)]
+    [HttpDelete("{id}/connection/{connectionId}")]
+    public async Task<IActionResult> RemoveConnection(int id, int connectionId) => (await _repository.RemoveConnectionAsync(id, connectionId)).ToActionResult();
 }
