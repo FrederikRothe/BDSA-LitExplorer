@@ -1,23 +1,73 @@
 @page "/teamcustomisation"
+@inject HttpClient Http
 
 <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
+        <h1 class="modal-title" id="exampleModalLabel">De seje sysdabbere</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <button id="redbutton" disabled = @isTeamOwner></button>
-        <button id="yellowbutton" disabled = @isTeamOwner></button>
-        <button id="greenbutton" disabled = @isTeamOwner></button>
-        <button id="orangebutton" disabled = @isTeamOwner></button>
+        <div class="content">
+          <div class="teamName">
+            <p>team name</p>
+            <p><b>De seje sysdabbere</b></p>
+          </div>
+          <hr/>
+          <div class="colours">
+            <p>team colour</p>            
+            <div class="colourChoices">
+              <button class="colourButton redbutton" disabled = @isTeamOwner></button>
+              <button class="colourButton yellowbutton" disabled = @isTeamOwner></button>
+              <button class="colourButton greenbutton" disabled = @isTeamOwner></button>
+              <button class="colourButton orangebutton" disabled = @isTeamOwner></button>
+            </div>
+          </div>
+          <hr/>
+          <div class="members">
+            <p>team members</p>
+            <div>
+              <ul class="memberList">
+                @foreach (var member in members)
+                {
+                  <li class="userRow">
+                    <p>@member.Name</p>
+                    <button class="oi oi-ban"></button>
+                  </li>
+                }
+                <li class="userRow">
+                    <p>theis stensgaard</p>
+                    <button class="oi oi-ban"></button>
+                </li>
+                <li class="userRow">
+                    <p>nadija koch</p>
+                    <button class="oi oi-ban"></button>
+                  </li>
+                  <li class="userRow">
+                    <p>fredi rothe</p>
+                    <button class="oi oi-ban"></button>
+                  </li>
+                  <li class="userRow">
+                    <p>sebastian vestman</p>
+                    <button class="oi oi-ban"></button>
+                  </li>
+                  <li class="userRow">
+                    <p>cåsper marschall</p>
+                    <button class="oi oi-ban"></button>
+                  </li>
+                  <li class="userRow">
+                    <p>emil hulborg</p>
+                    <button class="oi oi-ban"></button>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        @foreach(var user in team.UserIDs) 
-        {
-            <button id="user" @onclick="() => removeUser(user)">@user</button>
-        }
+        <button type="button" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -35,5 +85,15 @@
             //currentTeam.UserIDs.Remove(currentTeam.UserIDs.Where(u => u == userId).First());
         }
     }
+
+    public List<UserDTO> members = new List<UserDTO>();
+
+    protected override async Task OnInitializedAsync() 
+    {
+      foreach(var userId in team.UserIDs){
+        UserDTO? user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userId}");
+        members.Add(user);
+      }
+    } 
     
 }

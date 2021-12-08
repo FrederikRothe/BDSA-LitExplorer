@@ -1,90 +1,90 @@
 .paperbutton {
-    position: fixed; 
-    z-index: 3;
+  position: fixed;
+  z-index: 3;
 }
 
 ::deep .paperbutton:nth-child(1) {
-    left: 12vw;
-    top: 15vh;
+  left: 12vw;
+  top: 15vh;
 }
 ::deep .paperbutton:nth-child(2) {
-    left: 27vw;
-    top: 24vh;
+  left: 27vw;
+  top: 24vh;
 }
 ::deep .paperbutton:nth-child(3) {
-    left: 45vw;
-    top: 23vh;
+  left: 45vw;
+  top: 23vh;
 }
 ::deep .paperbutton:nth-child(4) {
-    left: 43vw;
-    top: 48vh;
+  left: 43vw;
+  top: 48vh;
 }
 ::deep .paperbutton:nth-child(5) {
-    left: 55vw;
-    top: 60vh;
+  left: 55vw;
+  top: 60vh;
 }
 ::deep .paperbutton:nth-child(6) {
-    left: 73vw;
-    top: 35vh;
+  left: 73vw;
+  top: 35vh;
 }
 ::deep .paperbutton:nth-child(7) {
-    left: 62vw;
-    top: 15vh;
+  left: 62vw;
+  top: 15vh;
 }
 ::deep .paperbutton:nth-child(8) {
-    left: 15vw;
-    top: 75vh;
+  left: 15vw;
+  top: 75vh;
 }
 ::deep .paperbutton:nth-child(9) {
-    left: 38vw;
-    top: 83vh;
+  left: 38vw;
+  top: 83vh;
 }
 ::deep .paperbutton:nth-child(10) {
-    left: 28vw;
-    top: 58vh;
+  left: 28vw;
+  top: 58vh;
 }
 ::deep .paperbutton:nth-child(11) {
-    left: 70vw;
-    top: 73vh;
+  left: 70vw;
+  top: 73vh;
 }
 ::deep .paperbutton:nth-child(12) {
-    left: 85vw;
-    top: 51vh;
+  left: 85vw;
+  top: 51vh;
 }
 .paperbutton:hover {
-    z-index: 10;
+  z-index: 10;
 }
-.connectionbutton:hover {
-    z-index: 10;
+.connectionbutton:hover  {
+  z-index: 10;
 }
 
 .teams {
-    position: fixed;
-    top: 4.5rem;
-    right: 1rem;
-    z-index: 10;
+  position: fixed;
+  top: 4.5rem;
+  right: 1rem;
+  z-index: 10;
 }
 
 .teams button {
-    border-radius: 50%;
-    width: 50pt;
-    height: 50pt;
-    background-color: var(--blue);
-    border: none;
+  border-radius: 50%;
+  width: 50pt;
+  height: 50pt;
+  background-color: var(--blue);
+  border: none;
 }
 
 .addconnbutton {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    background-color: var(--blue);
-    width: 250px;
-    height: 50px;
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    letter-spacing: 0.2rem;
-    text-transform: lowercase;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  background-color: var(--blue);
+  width: 250px;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  letter-spacing: 3px;
+  text-transform: lowercase;
 }
