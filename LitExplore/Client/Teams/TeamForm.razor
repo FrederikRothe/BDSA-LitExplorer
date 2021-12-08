@@ -1,0 +1,65 @@
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="addTeamModal"
+    style="display: none;" tabindex="-1" aria-labelledby="addTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <EditForm Model="@team" OnValidSubmit="@HandleValidSubmit">
+                <div class="modal-body">
+
+                    <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
+                    <div>
+                        <h2>Team Name</h2>
+                        <input class="form-control" type="text" id="teamname" @bind=team.TeamName/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <Button type="submit" buttonText="Create"/>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string adminId {get;set;} = null!;
+    private TeamCreateDTO team = new();
+    private string _errorMessage = string.Empty;
+    private string _successMessage = string.Empty;
+    private async Task HandleValidSubmit()
+    {
+        if (team.TeamName == null || team.TeamName == "")
+        {
+            _errorMessage = "Please enter a team name";
+            return;   
+        }
+        team.TeamLeaderId = adminId;
+        team.Colour = 1;
+
+        var response = await Http.PostAsJsonAsync("api/Team", team);
+
+        if (response.IsSuccessStatusCode)
+        {
+            _errorMessage = "";
+            _successMessage = "Created!";
+            var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
+            if (Model.CurrentUser.teams != null) 
+            {
+                Model.CurrentUser.teams.Append(created);
+            }
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+        } 
+        else 
+        {
+            _errorMessage = $"An error occured.";
+        }
+    }
+    
+
+}

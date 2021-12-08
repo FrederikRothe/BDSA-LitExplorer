@@ -5,4 +5,10 @@
     border-radius: 4pt;
 }
 
-
+span {
+    color: var(--background);
+    font-size: 40px;
+    left: 10px;
+    top: 9px;
+    opacity: 69%;
+}
