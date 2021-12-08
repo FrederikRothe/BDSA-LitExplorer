@@ -19,8 +19,8 @@
             <div class="modal-footer">
                 @if (connection.CreatorId == Model.CurrentUser.userOid)
                 {
-                    <button class="btn btn-primary" @onclick="() => _description = connection.Description" data-bs-target="#connectionUpdateWindow" data-bs-toggle="modal" data-bs-dismiss="modal">update connection</button>
-                    <button @onclick="delete">delete connection</button>
+                    <Button onButtonClick="delete" buttonText="Delete connection" colour="red" />
+                    <Button onButtonClick="() => _description = connection.Description" buttonText="Update connection" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
                 }
             </div>
         </div>
@@ -42,7 +42,7 @@
                 <div class="modal-footer">
                     @if (connection.CreatorId == Model.CurrentUser.userOid)
                     {
-                        <button type="submit" class="btn btn-primary" data-bs-target="#connectionInfoWindow" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+                        <Button buttonText="Save" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
                     }
                 </div>
             </EditForm>
