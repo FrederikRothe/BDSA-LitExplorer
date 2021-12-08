@@ -10,19 +10,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <EditForm Model="@team" OnValidSubmit="@HandleValidSubmit">
-                <div class="modal-body">
+            <div class="modal-body">
 
-                    <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
-                    <div>
-                        <h2>Team Name</h2>
-                        <input class="form-control" type="text" id="teamname" @bind=team.TeamName/>
-                    </div>
+                <EditForm Model="@team" OnValidSubmit="@HandleValidSubmit">
+                <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
+                <div>
+                    <h2>Team Name</h2>
+                    <input class="form-control" type="text" id="teamname" @bind=team.TeamName placeholder="Team name"/>
                 </div>
-                <div class="modal-footer">
-                    <Button type="submit" buttonText="Create"/>
-                </div>
+                <button class="btn btn-success">Create</button>
             </EditForm>
+
+            </div>
         </div>
     </div>
 </div>
