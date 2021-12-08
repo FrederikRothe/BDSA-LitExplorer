@@ -5,65 +5,75 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">De seje sysdabbere</h1>
+        <h1 class="modal-title" id="exampleModalLabel">@teamName</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="content">
-          <div class="teamName">
-            <p>team name</p>
-            <p><b>De seje sysdabbere</b></p>
-          </div>
-          <hr/>
-          <div class="colours">
-            <p>team colour</p>            
-            <div class="colourChoices">
-              <button class="colourButton redbutton" disabled = @isTeamOwner></button>
-              <button class="colourButton yellowbutton" disabled = @isTeamOwner></button>
-              <button class="colourButton greenbutton" disabled = @isTeamOwner></button>
-              <button class="colourButton orangebutton" disabled = @isTeamOwner></button>
+        <EditForm Model="@teamUpdated" OnValidSubmit="@HandleValidSubmit">
+          <div class="content">
+            <div class="teamName">
+              <p>team name</p>
+              <input class="nameInput" type="text" value=@teamName>
+            </div>
+            <hr/>
+            <div class="colours">
+              <p>team colour</p>
+                <div class="colourChoices btn-group-toggle" @bind="colour" data-toggle="buttons">
+                  <label>
+                    <input class="redbutton" type="radio" name="options" id="red" autocomplete="off" value=1 checked=@(@team.Colour==1)>
+                  </label>
+                  <label>
+                    <input class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" value=2 checked=@(@team.Colour==2)>
+                  </label>
+                  <label>
+                    <input class="greenbutton" type="radio" name="options" id="green" autocomplete="off" value=3 checked=@(@team.Colour==3)>
+                  </label>
+                  <label>
+                    <input class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" value=4 checked=@(@team.Colour==4)>
+                  </label>
+                </div>
+            </div>
+            <hr/>
+            <div class="members">
+              <p>team members</p>
+              <div>
+                <ul class="memberList">
+                  @foreach (var member in members)
+                  {
+                    <li class="userRow">
+                      <p>@member.Name</p>
+                      <button class="oi oi-ban"></button>
+                    </li>
+                  }
+                  <li class="userRow">
+                      <p>theis stensgaard</p>
+                      <button class="oi oi-ban"></button>
+                  </li>
+                  <li class="userRow">
+                      <p>nadija koch</p>
+                      <button class="oi oi-ban"></button>
+                    </li>
+                    <li class="userRow">
+                      <p>fredi rothe</p>
+                      <button class="oi oi-ban"></button>
+                    </li>
+                    <li class="userRow">
+                      <p>sebastian vestman</p>
+                      <button class="oi oi-ban"></button>
+                    </li>
+                    <li class="userRow">
+                      <p>cåsper marschall</p>
+                      <button class="oi oi-ban"></button>
+                    </li>
+                    <li class="userRow">
+                      <p>emil hulborg</p>
+                      <button class="oi oi-ban"></button>
+                    </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <hr/>
-          <div class="members">
-            <p>team members</p>
-            <div>
-              <ul class="memberList">
-                @foreach (var member in members)
-                {
-                  <li class="userRow">
-                    <p>@member.Name</p>
-                    <button class="oi oi-ban"></button>
-                  </li>
-                }
-                <li class="userRow">
-                    <p>theis stensgaard</p>
-                    <button class="oi oi-ban"></button>
-                </li>
-                <li class="userRow">
-                    <p>nadija koch</p>
-                    <button class="oi oi-ban"></button>
-                  </li>
-                  <li class="userRow">
-                    <p>fredi rothe</p>
-                    <button class="oi oi-ban"></button>
-                  </li>
-                  <li class="userRow">
-                    <p>sebastian vestman</p>
-                    <button class="oi oi-ban"></button>
-                  </li>
-                  <li class="userRow">
-                    <p>cåsper marschall</p>
-                    <button class="oi oi-ban"></button>
-                  </li>
-                  <li class="userRow">
-                    <p>emil hulborg</p>
-                    <button class="oi oi-ban"></button>
-                  </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        </EditForm>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger">Delete</button>
@@ -74,10 +84,15 @@
 </div>
 
 @code {
+
+    private TeamUpdateDTO teamUpdated = new();
     [Parameter]
     public TeamDTO team { get; set; } = null!;
     [Parameter]
     public bool isTeamOwner { get; set; } = false;
+    public int colour { get; set; }
+
+    public string teamName {get; set;}
     private void removeUser(int userId) 
     {
         if (isTeamOwner)
@@ -94,6 +109,19 @@
         UserDTO? user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userId}");
         members.Add(user);
       }
+
+      teamName = team.TeamName;
     } 
     
+    private async Task HandleValidSubmit()
+    {
+      if(teamName != "")
+      {
+        teamUpdated.TeamName = teamName;
+      }
+
+      teamUpdated.Colour = colour;
+      teamUpdated.TeamLeaderId = team.TeamLeaderId == null ? null : team.TeamLeaderId;
+
+    }
 }
