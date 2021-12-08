@@ -1,13 +1,13 @@
 namespace LitExplore.Infrastructure.Tests;
 
-public class TeamRepositoryTests : IDisposable 
+public class ConnectionRepositoryTests : IDisposable 
 {
     private readonly ILitExploreContext _context;
-    private readonly TeamRepository _repository;
+    private readonly ConnectionRepository _repository;
 
     private bool disposed;
 
-    public TeamRepositoryTests()
+    public ConnectionRepositoryTests()
     {
         var connection = new SqliteConnection("Filename=:memory:");
         connection.Open();
@@ -20,7 +20,7 @@ public class TeamRepositoryTests : IDisposable
         context = SeedInMemoryDB(context);
 
         _context = context;
-        _repository = new TeamRepository(_context);
+        _repository = new ConnectionRepository(_context);
     }
 
     protected virtual void Dispose(bool disposing)
