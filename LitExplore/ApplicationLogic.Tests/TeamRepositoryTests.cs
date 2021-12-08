@@ -23,6 +23,26 @@ public class TeamRepositoryTests : IDisposable
         _repository = new TeamRepository(_context);
     }
 
+    [Fact]
+    public async Task CreateAsync_creates_new_team_with_generated_id() 
+    {
+        var team = new TeamCreateDTO
+        {
+            TeamLeaderId = 1,
+            TeamName = "Popsicle",
+            Colour = 1,
+        };
+
+        var created = await _repository.CreateAsync(team, "1");
+
+        Assert.Equal(4, created.Id);
+        Assert.Equal(team.TeamName, created.TeamName);
+        Assert.Equal(team.Colour, created.Colour);
+        Assert.Equal(team.TeamLeaderId, created.TeamLeaderId);
+        Assert.Equal(new List<int>{1}, created.UserIDs);
+        Assert.Equal(new List<int>(), created.ConnectionIDs);
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposed)
