@@ -67,17 +67,25 @@ public class TeamRepository : ITeamRepository
                           .ToListAsync())
                           .AsReadOnly();
     
-    public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId)
-        => (await _context.Users
-                          .Where(u => (u.Teams.Contains(FindTeam(teamId)) || u.IsLeaderOf.Contains(FindTeam(teamId))))
-                          .Select(u => new UserDTO(
-                                u.Id,
-                                null,
-                                u.Name,
-                                null, null))
-                          .ToListAsync())
-                          .AsReadOnly();
+    public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId){
+        var matches = (from t in _context.Teams
+                      where t.Id == teamId
+                      select t.Id).Count();
+        if(matches == 0) return new List<UserDTO>().AsReadOnly();
 
+        var users =  (await _context.Users
+                            .Where(u => (u.Teams.Contains(FindTeam(teamId)) || u.IsLeaderOf.Contains(FindTeam(teamId))))
+                            .Select(u => new UserDTO(
+                                    u.Id,
+                                    u.oid,
+                                    u.Name,
+                                    u.Connections.Select(c => c.Id), 
+                                    u.Teams.Select(t => t.Id)))
+                            .ToListAsync())
+                            .AsReadOnly();
+        
+        return users;            
+    }
     public async Task<Status> UpdateAsync(int teamId, TeamUpdateDTO team)
     {
         var entity = FindTeam(teamId);
