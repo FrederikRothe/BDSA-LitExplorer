@@ -46,10 +46,10 @@ public class Seeder {
         Math.Teams = new List<Team>{Potato};
 
         Science.Creator = Suzie;
-        Science.Teams = new List<Team>{Potato, Orange};
+        Science.Teams = new List<Team>{Orange, Candy};
 
         Physics.Creator = Robert;
-        Physics.Teams = new List<Team>{Orange, Candy};
+        Physics.Teams = new List<Team>{Potato, Orange};
 
         Bob.IsLeaderOf = new List<Team>{Potato};
         Bob.Teams = new List<Team>{Potato};

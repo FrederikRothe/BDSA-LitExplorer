@@ -46,16 +46,6 @@ public class TeamRepositoryTests : IDisposable
     [Fact] 
     public async Task ReadAsync_returns_team_with_given_id()
     {
-        /*var team = new TeamDTO
-        {
-            Id = 1,
-            TeamName = "Potato",
-            Colour = 1,
-            TeamLeaderId = 1,
-            UserIDs = new List<int>{1,2},
-            ConnectionIDs = new List<int>{1,3}
-        };*/
-
         var team = new TeamDTO(1, "Potato", 1, 1, new List<int>{1,2}, new List<int>{1,3});
 
         var found = await _repository.ReadAsync(1);
@@ -73,16 +63,27 @@ public class TeamRepositoryTests : IDisposable
     [Fact]
     public async Task ReadConnectionsAsync_returns_all_connections_of_a_team_with_given_id()
     {
-        var connections = new List<ConnectionDTO>
+        var conns = new List<ConnectionDTO>
         {
             new ConnectionDTO(1, "1", 1, 2, "Math", "1", new List<int>{1}),
             new ConnectionDTO(3, "3", 1, 2, "Physics", "3", new List<int>{2,3})
         }.AsReadOnly();
         
-        var teams = await _repository.ReadConnectionsAsync(1);
+        var connections = await _repository.ReadConnectionsAsync(1);
 
-        Assert.Equal(connections, teams);
+        Assert.Collection(conns, 
+            conn => Assert.Equal(conns[0], conn),
+            conn => Assert.Equal(conns[1], conn)
+        );
     }
+
+    [Fact]
+    public async Task ReadUsersAsync_returns_all_users_of_a_team_with_a_giving_id()
+    {
+    
+    }
+
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposed)
