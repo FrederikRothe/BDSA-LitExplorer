@@ -11,17 +11,16 @@ public class ConnectionRepository : IConnectionRepository
 
     public async Task<ConnectionDTO> CreateAsync(ConnectionCreateDTO connection)
     {
-        if (connection == null) return null;
-
-        var paper1 = FindPaper(connection.PaperOneId);
-        var paper2 = FindPaper(connection.PaperTwoId);
-
         var entity = new Connection
         {
-            Paper1 = paper1,
-            Paper2 = paper2,
+            Creator = connection.CreatorId == null? null : FindUser(connection.CreatorId),
+            Paper1 = FindPaper(connection.PaperOneId),
+            Paper1Id = connection.PaperOneId,
+            Paper2 = FindPaper(connection.PaperTwoId),
+            Paper2Id = connection.PaperTwoId,
             ConnectionType = connection.ConnectionType,
-            Description = connection.Description
+            Description = connection.Description == null? "" : connection.Description,
+            Teams = new List<Team>()
         };
 
         _context.Connections.Add(entity);
@@ -30,6 +29,7 @@ public class ConnectionRepository : IConnectionRepository
 
         return new ConnectionDTO(
                             entity.Id,
+                            (entity.Creator == null? null : entity.Creator.oid),
                             entity.Paper1.Id,
                             entity.Paper2.Id,
                             entity.ConnectionType,
@@ -44,6 +44,7 @@ public class ConnectionRepository : IConnectionRepository
                           where c.Id == connectionId
                           select new ConnectionDTO(
                              c.Id,
+                             (c.Creator == null? null : c.Creator.oid),
                              c.Paper1.Id,
                              c.Paper2.Id,
                              c.ConnectionType,
@@ -59,6 +60,7 @@ public class ConnectionRepository : IConnectionRepository
                           .Where(c => c.Creator == null)
                           .Select(c => new ConnectionDTO(
                                 c.Id,
+                                (c.Creator == null? null : c.Creator.oid),
                                 c.Paper1.Id,
                                 c.Paper2.Id,
                                 c.ConnectionType,
@@ -91,7 +93,7 @@ public class ConnectionRepository : IConnectionRepository
         entity.Paper1 = FindPaper(connection.PaperOneId);
         entity.Paper2 = FindPaper(connection.PaperTwoId);
         entity.ConnectionType = connection.ConnectionType;
-        entity.Description = connection.Description;
+        entity.Description = connection.Description == null? "" : connection.Description;
 
         await _context.SaveChangesAsync();
 
@@ -115,6 +117,6 @@ public class ConnectionRepository : IConnectionRepository
 
     private Paper FindPaper(int id) => _context.Papers.Where(p => p.Id == id).First();
     private Connection FindConnection(int id) => _context.Connections.Where(c => c.Id == id).First();
-    private User FindUser(string userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
+    private User FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).First();
 
 }
