@@ -10,28 +10,39 @@
 
 <PageTitle>LitExplore</PageTitle>
 
-<div>
-    @for (int i=0; i<12; i++) {
-        <div class="paperbutton" @onclick="() => setSelectedPaper(_paper)">
-            <PaperNode paper=@_paper/>
-        </div>
-    }
-    <div class="connectionbutton" @onclick="() => setSelectedConnection(_connection)">
-        <ConnectionLine connection=@_connection/>
-    </div>
+<AuthorizeView>
+  <Authorized>
+  <div>
+    @if ( _dataIsLoaded )
+    {
+        @foreach (PaperDTO p in Model.Graph.allPapers) 
+        {
+            <div class="paperbutton" @onclick="() => _selectedPaper = p">
+                <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
+            </div>
+        }
+        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
+        <AddConnectionWindow />
+    }   
 
     <div class="teams">
-        @foreach (var team in teams)
+        @if (Model.CurrentUser.teams != null)
         {
-            <button type="button" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" @onclick="() => setSelectedTeam(team)"/>        
+            foreach (var team in Model.CurrentUser.teams)
+            {
+                <button type="button" class="c-@colour(team) teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" @onclick="() => setSelectedTeam(team)"/>
+            }
+            <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
         }
-        <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"/>
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <ConnectionInfoWindow connection=@_selectedConnection/>
-    <TeamCustomisation currentTeam=@_selectedTeam/>
-    <TeamForm/>
-</div>
+    <TeamCustomisation team=@_selectedTeam/>
+    <TeamForm adminId=@_currentUserId/>
+    <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
+    
+  </div>
+  </Authorized>
+</AuthorizeView>
 
 
 @code {
@@ -66,30 +77,27 @@
                 
                 var response = await Http.PostAsJsonAsync("api/User", userDTO);
                 Model.CurrentUser.userOid = userId;
-                if (Model.CurrentUser.teams == null) Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
-                if (Model.CurrentUser.connections == null) Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
+                Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
+                Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
             }
 
-@code {
-    private Paper _paper = TestEntities.genericPaper;
-    private Connection _connection = TestEntities.testconn1;
-    private Paper _selectedPaper = TestEntities.genericPaper;
-    private void setSelectedPaper(Paper paper) {
-        _selectedPaper = paper;
-    }
-    private Connection _selectedConnection = TestEntities.testconn1;
-    private void setSelectedConnection(Connection connection) {
-        _selectedConnection = connection;
-    }
-    private List<Team> teams = new List<Team>() {TestEntities.team1, TestEntities.team2};
-    private Team _selectedTeam = TestEntities.team1;
-    private void setSelectedTeam(Team team) {
-        _selectedTeam = team;
+            _userOrTeamConnections = Model.CurrentUser.connections;
+
+            if (!Model.Graph.initialised()) 
+            {
+                Model.Graph.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
+                Model.Graph.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
+                Model.Graph.initialise();
+            }
+            _selectedPaper = Model.Graph.allPapers.ElementAt(0);
+            _currentUserId = Model.CurrentUser.userOid;
+            _dataIsLoaded = true;
+        }
     }
 
     private bool _dataIsLoaded = false;
 
-    
+    private string _currentUserId;
     private ConnectionLines? _connectionLines;
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
@@ -101,4 +109,5 @@
     {
         _selectedTeam = team;
     }
+    private int colour(TeamDTO team) => team.Colour;
 }

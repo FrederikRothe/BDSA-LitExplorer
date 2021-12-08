@@ -72,14 +72,16 @@
     border-radius: 50%;
     width: 50pt;
     height: 50pt;
-    background-color: var(--blue);
     border: none;
 }
-<<<<<<< HEAD
 .addteambutton {
-    background-color: var(--green) !important; 
-=======
-
+    background-color: var(--blue);
+}
+.addTeamButtonText {
+    font-size: 18pt;
+    color: white;
+    padding-top: 6px;
+}
 .addconnbutton {
     position: fixed;
     right: 1rem;
@@ -94,5 +96,28 @@
     text-align: center;
     letter-spacing: 0.2rem;
     text-transform: lowercase;
->>>>>>> 88f63f296b9e17b2973f41998ae7bc380ad96aaa
+}
+
+.c-0 {
+    background-color: var(--blue); 
+}
+
+.c-1 {
+    background-color: var(--red);
+}
+
+.c-2 {
+    background-color: var(--yellow);
+}
+
+.c-3 {
+    background-color: var(--orange);
+}
+
+.c-4 {
+    background-color: var(--green);
+}
+
+.c-5 {
+    background-color: var(--purple);
 }

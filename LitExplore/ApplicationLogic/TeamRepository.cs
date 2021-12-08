@@ -88,7 +88,7 @@ public class TeamRepository : ITeamRepository
         }
 
         entity.Id = team.Id;
-        entity.TeamLeader = _context.Users.Where(u => u.Id == team.TeamLeaderId).Single();
+        entity.TeamLeader = _context.Users.Where(u => u.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
 
         await _context.SaveChangesAsync();
