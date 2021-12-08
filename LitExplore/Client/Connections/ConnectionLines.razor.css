@@ -29,6 +29,10 @@
     stroke: var(--green);
 }
 
+.c-5 {
+    stroke: var(--purple);
+}
+
 .top {
     stroke-width: 5px;
 }
