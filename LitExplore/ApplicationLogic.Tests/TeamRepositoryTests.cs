@@ -44,7 +44,7 @@ public class TeamRepositoryTests : IDisposable
     }
 
     [Fact] 
-    public async Task ReadAsync_returns_team_with_given_id()
+    public async Task ReadAsync_given_valid_team_id_returns_team()
     {
         var team = new TeamDTO(1, "Potato", 1, 1, new List<int>{1,2}, new List<int>{1,2});
 
@@ -61,7 +61,15 @@ public class TeamRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task ReadConnectionsAsync_returns_all_connections_of_a_team_with_given_id()
+    public async Task ReadAsync_given_invalid_team_id_returns_null()
+    {
+        var found = await _repository.ReadAsync(5);
+
+        Assert.True(found.IsNone);    
+    }
+
+    [Fact]
+    public async Task ReadConnectionsAsync_given_valid_team_id_returns_all_connections_of_the_team()
     {
         var conns = new List<ConnectionDTO>
         {
@@ -78,7 +86,17 @@ public class TeamRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task ReadUsersAsync_returns_all_users_of_a_team_with_a_giving_id()
+    public async Task ReadConnectionsAsync_given_invalid_team_id_returns_empty_connection_readonly_list()
+    {
+        var empty = new List<ConnectionDTO>().AsReadOnly();
+
+        var returned = await _repository.ReadConnectionsAsync(4);
+
+        Assert.Equal(empty, returned);
+    }
+
+    [Fact]
+    public async Task ReadUsersAsync_given_valid_team_id_returns_all_users_of_the_team()
     {
         var Users = new List<UserDTO>
         {
@@ -95,16 +113,66 @@ public class TeamRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task ReadUserAsync_returns_empty_user_readonly_list_when_given_invalid_id()
+    public async Task ReadUserAsync_returns_given_valid_id_returns_empty_user_readonly_list()
     {
         var empty = new List<UserDTO>().AsReadOnly();
 
         var returned = await _repository.ReadUsersAsync(4);
 
         Assert.Equal(empty, returned);
-
     }
 
+    [Fact]
+    public async Task UpdateAsync_given_valid_team_id_returns_updated_status()
+    {
+        var update = new TeamUpdateDTO
+        {
+            Id = 1,
+            TeamLeaderId = 1,
+            TeamName = "Coca-Cola",
+            Colour = 4,
+            UserIDs = new List<int>{1,2},
+            ConnectionIDs = new List<int>{1,2},
+        };
+
+        var response = await _repository.UpdateAsync(1, update);
+
+        Assert.Equal(Updated, response);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_given_invalid_team_id_returns_notfound_status()
+    {
+        var update = new TeamUpdateDTO
+        {
+            Id = 1,
+            TeamLeaderId = 1,
+            TeamName = "Coca-Cola",
+            Colour = 4,
+            UserIDs = new List<int>{1,2},
+            ConnectionIDs = new List<int>{1,2},
+        };
+
+        var response = await _repository.UpdateAsync(5, update);
+
+        Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_given_valid_team_id_returns_deleted_status()
+    {
+        var response = await _repository.DeleteAsync(1);
+
+        Assert.Equal(Deleted, response);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_given_invalid_team_id_returns_notfound_status()
+    {
+        var response = await _repository.DeleteAsync(5);
+
+        Assert.Equal(NotFound, response);
+    }
 
     protected virtual void Dispose(bool disposing)
     {
