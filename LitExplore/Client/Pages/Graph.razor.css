@@ -3,6 +3,23 @@
     z-index: 3;
 }
 
+.loadinglabel {
+    text-transform: uppercase;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 16px;
+}
+
+.loadingcontainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    left: 0;
+    right: 0;
+    height: 90vh;
+}
+
 ::deep .paperbutton:nth-child(1) {
     left: 12vw;
     top: 15vh;

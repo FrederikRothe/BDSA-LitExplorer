@@ -23,7 +23,13 @@
         }
         <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
         <AddConnectionWindow />
-    }   
+    } 
+    else 
+    {
+        <div class="loadingcontainer">
+            <div class="loadinglabel">Loading ...</div>
+        </div>
+    }
 
     <div class="teams">
         <button type="button" @onClick="() => setSelectedTeam()" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />
