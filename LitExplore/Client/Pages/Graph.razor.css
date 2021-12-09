@@ -1,140 +1,140 @@
 .paperbutton {
-    position: fixed; 
-    z-index: 3;
+  position: fixed;
+  z-index: 3;
 }
 
 .loadinglabel {
-    text-transform: uppercase;
-    font-size: 20px;
-    text-align: center;
-    letter-spacing: 16px;
+  text-transform: uppercase;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 16px;
 }
 
 .loadingcontainer {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    left: 0;
-    right: 0;
-    height: 90vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  left: 0;
+  right: 0;
+  height: 90vh;
 }
 
 ::deep .paperbutton:nth-child(1) {
-    left: 12vw;
-    top: 15vh;
+  left: 12vw;
+  top: 15vh;
 }
 ::deep .paperbutton:nth-child(2) {
-    left: 27vw;
-    top: 24vh;
+  left: 27vw;
+  top: 24vh;
 }
 ::deep .paperbutton:nth-child(3) {
-    left: 45vw;
-    top: 23vh;
+  left: 45vw;
+  top: 23vh;
 }
 ::deep .paperbutton:nth-child(4) {
-    left: 43vw;
-    top: 48vh;
+  left: 43vw;
+  top: 48vh;
 }
 ::deep .paperbutton:nth-child(5) {
-    left: 55vw;
-    top: 60vh;
+  left: 55vw;
+  top: 60vh;
 }
 ::deep .paperbutton:nth-child(6) {
-    left: 73vw;
-    top: 35vh;
+  left: 73vw;
+  top: 35vh;
 }
 ::deep .paperbutton:nth-child(7) {
-    left: 62vw;
-    top: 15vh;
+  left: 62vw;
+  top: 15vh;
 }
 ::deep .paperbutton:nth-child(8) {
-    left: 15vw;
-    top: 75vh;
+  left: 15vw;
+  top: 75vh;
 }
 ::deep .paperbutton:nth-child(9) {
-    left: 38vw;
-    top: 83vh;
+  left: 38vw;
+  top: 83vh;
 }
 ::deep .paperbutton:nth-child(10) {
-    left: 28vw;
-    top: 58vh;
+  left: 28vw;
+  top: 58vh;
 }
 ::deep .paperbutton:nth-child(11) {
-    left: 70vw;
-    top: 73vh;
+  left: 70vw;
+  top: 73vh;
 }
 ::deep .paperbutton:nth-child(12) {
-    left: 85vw;
-    top: 51vh;
+  left: 85vw;
+  top: 51vh;
 }
 .paperbutton:hover {
-    z-index: 10;
+  z-index: 10;
 }
-.connectionbutton:hover {
-    z-index: 10;
+.connectionbutton:hover  {
+  z-index: 10;
 }
 
 .teams {
-    position: fixed;
-    top: 4.5rem;
-    right: 1rem;
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  position: fixed;
+  top: 4.5rem;
+  right: 1rem;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .teams button {
-    border-radius: 50%;
-    width: 50pt;
-    height: 50pt;
-    border: none;
+  border-radius: 50%;
+  width: 50pt;
+  height: 50pt;
+  border: none;
 }
 .addteambutton {
-    background-color: var(--blue);
+  background-color: var(--blue);
 }
 .addTeamButtonText {
-    font-size: 18pt;
-    color: white;
-    padding-top: 6px;
+  font-size: 18pt;
+  color: white;
+  padding-top: 6px;
 }
 .addconnbutton {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    background-color: var(--blue);
-    width: 250px;
-    height: 50px;
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    letter-spacing: 0.2rem;
-    text-transform: lowercase;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  background-color: var(--blue);
+  width: 250px;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  letter-spacing: 0.2rem;
+  text-transform: lowercase;
 }
 
 .c-0 {
-    background-color: var(--blue); 
+  background-color: var(--blue);
 }
 
 .c-1 {
-    background-color: var(--red);
+  background-color: var(--red);
 }
 
 .c-2 {
-    background-color: var(--yellow);
+  background-color: var(--yellow);
 }
 
 .c-3 {
-    background-color: var(--orange);
+  background-color: var(--orange);
 }
 
 .c-4 {
-    background-color: var(--green);
+  background-color: var(--green);
 }
 
 .c-5 {
-    background-color: var(--purple);
+  background-color: var(--purple);
 }

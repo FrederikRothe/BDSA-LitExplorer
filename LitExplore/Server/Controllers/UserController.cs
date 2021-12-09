@@ -33,7 +33,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> Get(string id) => (await _repository.ReadAsync(id)).ToActionResult();
 
-    [ProducesResponseType(404)]
+        [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(IReadOnlyCollection<ConnectionDTO>), 200)]
     [HttpGet("connections/{id}")]
