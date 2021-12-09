@@ -8,9 +8,9 @@
         <h1 class="modal-title" id="AddConnectionModalLabel">Add a connection</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => _errorMessage = string.Empty"></button>
       </div>
-      <div class="modal-body">
+      <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
+        <div class="modal-body">
 
-        <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
           <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
           
           <div class="dropdowns">
@@ -34,14 +34,11 @@
             <h2>Description</h2>
             <textarea class="form-control" @bind="connection.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
           </div>
-
-          <button class="btn btn-success">Create</button>
+        </div>
+        <div class="modal-footer">
+          <Button type="submit" buttonText="Create"/>
+        </div>
         </EditForm>
-
-      </div>
-      <div class="modal-footer">
-        
-      </div>
       </div>
   </div>
 </div>

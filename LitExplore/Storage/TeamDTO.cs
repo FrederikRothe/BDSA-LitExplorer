@@ -2,14 +2,14 @@ namespace LitExplore.Storage;
 public record TeamCreateDTO
 {
     [Required]
-    public int TeamLeaderId { get; init; }
+    public string TeamLeaderId { get; set; }
 
     [Required]
     [StringLength(50)]
-    public string TeamName { get; init; }
+    public string TeamName { get; set; }
 
     [Required]
-    public int Colour { get; init; }
+    public int Colour { get; set; }
     
 }
 

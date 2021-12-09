@@ -13,14 +13,14 @@
                 <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
                 @if (connection.Description != null) {
                     <h2>Description</h2>
-                    <p>@_description</p>
+                    <p>@connection.Description</p>
                 }
             </div>
             <div class="modal-footer">
                 @if (connection.CreatorId == Model.CurrentUser.userOid)
                 {
-                    <button class="btn btn-primary" data-bs-target="#connectionUpdateWindow" data-bs-toggle="modal" data-bs-dismiss="modal">update connection</button>
-                    <button @onclick="delete">delete connection</button>
+                    <Button onButtonClick="delete" buttonText="Delete connection" colour="red" />
+                    <Button onButtonClick="() => _description = connection.Description" buttonText="Update connection" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
                 }
             </div>
         </div>
@@ -37,12 +37,12 @@
                 <div class="modal-body">
                     <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
                     <h2>Description</h2>
-                    <textarea class="form-control" @bind="_updateDTO.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
+                    <textarea class="form-control" @bind="_description" aria-label="With textarea" placeholder="write here ..."></textarea>
                 </div>
                 <div class="modal-footer">
                     @if (connection.CreatorId == Model.CurrentUser.userOid)
                     {
-                        <button type="submit" class="btn btn-primary" data-bs-target="#connectionInfoWindow" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+                        <Button buttonText="Save" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
                     }
                 </div>
             </EditForm>
@@ -54,15 +54,10 @@
     [Parameter] public ConnectionDTO connection { get; set; } = null!;
     [Parameter] public PaperDTO paper1 { get; set; }
     [Parameter] public PaperDTO paper2 { get; set; }
-    private string? _description { get => connection.Description; }
+    private string? _description; 
 
     private ConnectionUpdateDTO _updateDTO = new();
 
-    protected override async Task OnParametersSetAsync()
-    {
-        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
-        await base.OnParametersSetAsync();
-    }
     private async Task delete()
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete the connection?"))
@@ -74,6 +69,8 @@
 
     private async Task update()
     {
+        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
+        _updateDTO.Description = _description;
         var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
         NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
     }
