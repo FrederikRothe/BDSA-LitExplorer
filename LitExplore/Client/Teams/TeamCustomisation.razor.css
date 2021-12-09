@@ -1,15 +1,115 @@
-#redbutton {
-    background-color: var(--red);
+.redbutton {
+  background-color: var(--red);
 }
 
-#greenbutton {
-    background-color: var(--green);
+.greenbutton {
+  background-color: var(--green);
 }
 
-#yellowbutton {
-    background-color: var(--yellow);
+.yellowbutton {
+  background-color: var(--yellow);
 }
 
-#orangebutton {
-    background-color: var(--orange);
+.orangebutton {
+  background-color: var(--orange);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.teamName {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nameInput {
+  border: none;
+  background-color: var(--background);
+  color: var(--white);
+  padding-left: 5px;
+}
+
+.colours {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.colourChoices {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.members {
+  display: flex;
+  flex-direction: column;
+}
+
+.memberList {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #43495a;
+  list-style-type: none;
+  padding: 20px;
+  gap: 25px;
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 200px;
+  scroll-behavior: smooth;
+}
+
+.userRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.memberList::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.memberList::-webkit-scrollbar-track {
+  background-color: var(--background);
+  border-radius: 10px;
+}
+
+.memberList::-webkit-scrollbar-thumb {
+  background-color: var(--white);
+  border-radius: 10px;
+}
+
+.oi {
+  border: none;
+  background: none;
+  color: var(--white);
+  height: 35px;
+  width: 35px;
+}
+
+.btn-danger {
+  background-color: var(--red);
+}
+
+input[type="radio"]:checked:before {
+  border: 5px solid var(--cyan);
+  height: 34px;
+  width: 34px;
+}
+
+input[type="radio"]:before {
+  content: "";
+  display: block;
+  border-radius: 50%;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
 }
