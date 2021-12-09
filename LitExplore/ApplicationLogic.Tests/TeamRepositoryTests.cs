@@ -28,7 +28,7 @@ public class TeamRepositoryTests : IDisposable
     {
         var team = new TeamCreateDTO
         {
-            TeamLeaderId = 1,
+            TeamLeaderId = "1",
             TeamName = "Popsicle",
             Colour = 1
         };
@@ -46,7 +46,7 @@ public class TeamRepositoryTests : IDisposable
     [Fact] 
     public async Task ReadAsync_given_valid_team_id_returns_team()
     {
-        var team = new TeamDTO(1, "Potato", 1, 1, new List<int>{1,2}, new List<int>{1,2});
+        var team = new TeamDTO(1, "Potato", 1, "1", new List<int>{1,2}, new List<int>{1,2});
 
         var found = await _repository.ReadAsync(1);
 
@@ -128,7 +128,7 @@ public class TeamRepositoryTests : IDisposable
         var update = new TeamUpdateDTO
         {
             Id = 1,
-            TeamLeaderId = 1,
+            TeamLeaderId = "1",
             TeamName = "Coca-Cola",
             Colour = 4,
             UserIDs = new List<int>{1,2},
@@ -146,7 +146,7 @@ public class TeamRepositoryTests : IDisposable
         var update = new TeamUpdateDTO
         {
             Id = 1,
-            TeamLeaderId = 1,
+            TeamLeaderId = "1",
             TeamName = "Coca-Cola",
             Colour = 4,
             UserIDs = new List<int>{1,2},
