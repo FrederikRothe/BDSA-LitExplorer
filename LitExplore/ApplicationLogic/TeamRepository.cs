@@ -43,7 +43,7 @@ public class TeamRepository : ITeamRepository
                       where t.Id == teamId
                       select t.Id).Count();
         if(matches == 0) return null;
-        
+
         var teams = from t in _context.Teams
                          where t.Id == teamId
                          select new TeamDTO(
@@ -109,7 +109,7 @@ public class TeamRepository : ITeamRepository
         var entity = FindTeam(teamId);
 
         entity.Id = team.Id;
-        entity.TeamLeader = _context.Users.Where(t => t.Id == team.TeamLeaderId).Single();
+        entity.TeamLeader = _context.Users.Where(t => t.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
         entity.Colour = team.Colour;
         entity.Users = _context.Users.Where(u => team.UserIDs.Contains(u.Id)).ToList();
@@ -137,3 +137,4 @@ public class TeamRepository : ITeamRepository
 
     private Team FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).First();
 }
+

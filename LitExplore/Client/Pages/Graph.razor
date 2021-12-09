@@ -23,13 +23,27 @@
         }
         <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
         <AddConnectionWindow />
-    }   
+    } 
+    else 
+    {
+        <div class="loadingcontainer">
+            <div class="loadinglabel">Loading ...</div>
+        </div>
+    }
 
     <div class="teams">
-        <button type="button" @onClick="() => setSelectedTeam()" class="teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" />
+        @if (Model.CurrentUser.teams != null)
+        {
+            foreach (var team in Model.CurrentUser.teams)
+            {
+                <button type="button" class="c-@colour(team) teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" @onclick="() => setSelectedTeam(team)"/>
+            }
+            <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
+        }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
     <TeamCustomisation team=@_selectedTeam/>
+    <TeamForm adminId=@_currentUserId/>
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
     
   </div>
@@ -69,8 +83,8 @@
                 
                 var response = await Http.PostAsJsonAsync("api/User", userDTO);
                 Model.CurrentUser.userOid = userId;
-                if (Model.CurrentUser.teams == null) Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
-                if (Model.CurrentUser.connections == null) Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
+                Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
+                Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
             }
 
             _userOrTeamConnections = Model.CurrentUser.connections;
@@ -82,13 +96,14 @@
                 Model.Graph.initialise();
             }
             _selectedPaper = Model.Graph.allPapers.ElementAt(0);
+            _currentUserId = Model.CurrentUser.userOid;
             _dataIsLoaded = true;
         }
     }
 
     private bool _dataIsLoaded = false;
 
-    
+    private string _currentUserId;
     private ConnectionLines? _connectionLines;
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
@@ -100,4 +115,5 @@
     {
         _selectedTeam = team;
     }
+    private int colour(TeamDTO team) => team.Colour;
 }

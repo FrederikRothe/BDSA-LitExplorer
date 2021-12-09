@@ -3,6 +3,23 @@
     z-index: 3;
 }
 
+.loadinglabel {
+    text-transform: uppercase;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 16px;
+}
+
+.loadingcontainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    left: 0;
+    right: 0;
+    height: 90vh;
+}
+
 ::deep .paperbutton:nth-child(1) {
     left: 12vw;
     top: 15vh;
@@ -62,17 +79,26 @@
     position: fixed;
     top: 4.5rem;
     right: 1rem;
-    z-index: 10;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .teams button {
     border-radius: 50%;
     width: 50pt;
     height: 50pt;
-    background-color: var(--blue);
     border: none;
 }
-
+.addteambutton {
+    background-color: var(--blue);
+}
+.addTeamButtonText {
+    font-size: 18pt;
+    color: white;
+    padding-top: 6px;
+}
 .addconnbutton {
     position: fixed;
     right: 1rem;
@@ -87,4 +113,28 @@
     text-align: center;
     letter-spacing: 0.2rem;
     text-transform: lowercase;
+}
+
+.c-0 {
+    background-color: var(--blue); 
+}
+
+.c-1 {
+    background-color: var(--red);
+}
+
+.c-2 {
+    background-color: var(--yellow);
+}
+
+.c-3 {
+    background-color: var(--orange);
+}
+
+.c-4 {
+    background-color: var(--green);
+}
+
+.c-5 {
+    background-color: var(--purple);
 }
