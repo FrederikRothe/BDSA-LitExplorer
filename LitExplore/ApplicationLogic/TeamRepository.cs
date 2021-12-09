@@ -32,7 +32,7 @@ public class TeamRepository : ITeamRepository
                             entity.TeamName,
                             entity.Colour,
                             entity.TeamLeader.oid,
-                            entity.Users.Select(u => u.Id),
+                            entity.Users.Select(u => u.oid),
                             entity.Connections.Select(c => c.Id)
                         );
     }
@@ -51,7 +51,7 @@ public class TeamRepository : ITeamRepository
                             t.TeamName,
                             t.Colour,
                             t.TeamLeader.oid,
-                            t.Users.Select(u => u.Id),
+                            t.Users.Select(u => u.oid),
                             t.Connections.Select(c => c.Id)
                          );
 
