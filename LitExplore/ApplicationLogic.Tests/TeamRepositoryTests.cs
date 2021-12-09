@@ -39,14 +39,14 @@ public class TeamRepositoryTests : IDisposable
         Assert.Equal(team.TeamName, created.TeamName);
         Assert.Equal(team.Colour, created.Colour);
         Assert.Equal(team.TeamLeaderId, created.TeamLeaderId);
-        Assert.Equal(new List<int>{1}, created.UserIDs);
+        Assert.Equal(new List<string>{"1"}, created.UserIDs);
         Assert.Equal(new List<int>(), created.ConnectionIDs);
     }
 
     [Fact] 
     public async Task ReadAsync_given_valid_team_id_returns_team()
     {
-        var team = new TeamDTO(1, "Potato", 1, "1", new List<int>{1,2}, new List<int>{1,2});
+        var team = new TeamDTO(1, "Potato", 1, "1", new List<string>{"1", "2"}, new List<int>{1,2});
 
         var found = await _repository.ReadAsync(1);
 
@@ -131,7 +131,7 @@ public class TeamRepositoryTests : IDisposable
             TeamLeaderId = "1",
             TeamName = "Coca-Cola",
             Colour = 4,
-            UserIDs = new List<int>{1,2},
+            UserIDs = new List<string>{"1", "2"},
             ConnectionIDs = new List<int>{1,2},
         };
 
@@ -149,7 +149,7 @@ public class TeamRepositoryTests : IDisposable
             TeamLeaderId = "1",
             TeamName = "Coca-Cola",
             Colour = 4,
-            UserIDs = new List<int>{1,2},
+            UserIDs = new List<string>{"1", "2"},
             ConnectionIDs = new List<int>{1,2},
         };
 

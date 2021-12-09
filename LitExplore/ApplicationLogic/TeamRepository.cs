@@ -112,7 +112,7 @@ public class TeamRepository : ITeamRepository
         entity.TeamLeader = _context.Users.Where(t => t.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
         entity.Colour = team.Colour;
-        entity.Users = _context.Users.Where(u => team.UserIDs.Contains(u.Id)).ToList();
+        entity.Users = _context.Users.Where(u => team.UserIDs.Contains(u.oid)).ToList();
         entity.Connections = _context.Connections.Where(c => team.ConnectionIDs.Contains(c.Id)).ToList();
         
         await _context.SaveChangesAsync();
