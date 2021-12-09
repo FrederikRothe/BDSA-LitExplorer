@@ -13,11 +13,11 @@ public record TeamCreateDTO
     
 }
 
-public record TeamDTO(int Id, string TeamName, int Colour, string? TeamLeaderId, IEnumerable<int>? UserIDs, IEnumerable<int>? ConnectionIDs);
+public record TeamDTO(int Id, string TeamName, int Colour, string? TeamLeaderId, IEnumerable<string>? UserIDs, IEnumerable<int>? ConnectionIDs);
 
 public record TeamUpdateDTO : TeamCreateDTO
 {
     public int Id { get; set; }
-    public IEnumerable<int> UserIDs { get; init; }
+    public IEnumerable<string> UserIDs { get; init; }
     public IEnumerable<int> ConnectionIDs { get; init; }
 };

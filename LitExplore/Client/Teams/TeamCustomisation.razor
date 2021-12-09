@@ -3,91 +3,74 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
-          <div class="content">
-            <div class="teamName">
-              <p>team name</p>
-              <input disabled=@isNotTeamOwner @bind="teamName" class="nameInput" type="text">
-            </div>
-            <hr/>
-            <div class="colours">
-              <p>team colour</p>
-                <div class="colourChoices btn-group-toggle" data-toggle="buttons" id="options">
-                  <label>
-                    <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" value=1 checked=@(@team.Colour==1)>
-                  </label>
-                  <label>
-                    <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" value=2 checked=@(@team.Colour==2)>
-                  </label>
-                  <label>
-                    <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" value=3 checked=@(@team.Colour==3)>
-                  </label>
-                  <label>
-                    <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" value=4 checked=@(@team.Colour==4)>
-                  </label>
+  <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      @if(team != null)
+      {
+        <div class="modal-header">
+          <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
+          <button @onclick="OnCloseClicked" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
+            <div class="content">
+              <div class="teamName">
+                <p>team name</p>
+                <input disabled=@isNotTeamOwner @bind="teamName" class="nameInput" type="text">
+              </div>
+              <hr/>
+              <div class="colours">
+                <p>team colour</p>
+                  <div class="colourChoices btn-group-toggle" data-toggle="buttons" id="options">
+                    <label>
+                      <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" value=1 checked=@(@team.Colour==1)>
+                    </label>
+                    <label>
+                      <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" value=2 checked=@(@team.Colour==2)>
+                    </label>
+                    <label>
+                      <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" value=3 checked=@(@team.Colour==3)>
+                    </label>
+                    <label>
+                      <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" value=4 checked=@(@team.Colour==4)>
+                    </label>
+                  </div>
+              </div>
+              <hr/>
+              <div class="members">
+                <p>team members</p>
+                <div>
+                  <ul class="memberList">
+                    @foreach (var member in members)
+                    {
+                      <li class="userRow">
+                        <p>@member.Name</p>
+                        <button disabled=@isNotTeamOwner @onclick="() => RemoveFromTeam(member.oid)" class="oi oi-ban"></button>
+                      </li>
+                    }
+                  </ul>
                 </div>
-            </div>
-            <hr/>
-            <div class="members">
-              <p>team members</p>
-              <div>
-                <ul class="memberList">
-                  @foreach (var member in members)
-                  {
-                    <li class="userRow">
-                      <p>@member.Name</p>
-                      <button disabled=@isNotTeamOwner @onclick="() => RemoveFromTeam(member.oid)" class="oi oi-ban"></button>
-                    </li>
-                  }
-                  <li class="userRow">
-                      <p>thejs stensgaard</p>
-                      <button class="oi oi-ban"></button>
-                  </li>
-                  <li class="userRow">
-                      <p>nadija koch</p>
-                      <button class="oi oi-ban"></button>
-                    </li>
-                    <li class="userRow">
-                      <p>fredi rothe</p>
-                      <button class="oi oi-ban"></button>
-                    </li>
-                    <li class="userRow">
-                      <p>sebastian vestman</p>
-                      <button class="oi oi-ban"></button>
-                    </li>
-                    <li class="userRow">
-                      <p>cåsper marschall</p>
-                      <button class="oi oi-ban"></button>
-                    </li>
-                    <li class="userRow">
-                      <p>emil hulborg</p>
-                      <button class="oi oi-ban"></button>
-                    </li>
-                </ul>
               </div>
             </div>
+          </EditForm>
+        </div>
+        @if(!isNotTeamOwner)
+        {
+          <div class="modal-footer">
+            <button @onclick="Delete" disabled=@isNotTeamOwner type="button" class="btn btn-danger">Delete</button>
+            <button @onclick="Update" disabled=@isNotTeamOwner type="submit" class="btn btn-primary">Save</button>
           </div>
-        </EditForm>
-      </div>
-      <div class="modal-footer">
-        <button @onclick="Delete" disabled=@isNotTeamOwner type="button" class="btn btn-danger">Delete</button>
-        <button @onclick="Update" disabled=@isNotTeamOwner type="submit" class="btn btn-primary">Save</button>
+        }
+      } 
       </div>
     </div>
   </div>
-</div>
 
 @code {
 
     private TeamUpdateDTO teamUpdated = new();
+
     [Parameter]
     public TeamDTO team { get; set; } = null!;
 
@@ -96,23 +79,35 @@
     public int colour { get; set; }
 
     public string teamName {get; set;}
+    
+    private bool _loaded { get; set; } = false;
 
     public List<UserDTO> members = new List<UserDTO>();
 
-    protected override async Task OnInitializedAsync() 
-    {
-      foreach(var userId in team.UserIDs){
-        UserDTO? user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userId}");
-        members.Add(user);
-      }
+    [Parameter] public EventCallback OnClose { get; set; }
 
-      teamName = team.TeamName;
-    } 
+    protected async Task OnCloseClicked() 
+    {
+        await OnClose.InvokeAsync();
+    }
 
     protected override async Task OnParametersSetAsync()
     {
-      isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
-      await base.OnParametersSetAsync();
+      if(team != null)
+      {
+        isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
+        if(team.UserIDs != null)
+        {
+          var users = await Http.GetFromJsonAsync<UserDTO[]>($"api/Team/users/{team.Id}");
+          members = users.ToList();
+          teamName = team.TeamName; 
+        } else 
+        {
+          teamName = "Unknown Team";
+        }
+        _loaded = true;
+        await base.OnParametersSetAsync();
+      }
     }
     
     private async Task Update()

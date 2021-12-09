@@ -42,10 +42,9 @@
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation team=@_selectedTeam/>
+    <TeamCustomisation OnClose="() => _selectedTeam = null" team=@_selectedTeam/>
     <TeamForm adminId=@_currentUserId/>
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
-    
   </div>
   </Authorized>
 </AuthorizeView>
@@ -110,10 +109,12 @@
 
     private ConnectionDTO[]? _userOrTeamConnections;
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
-    private TeamDTO _selectedTeam = TestEntities.teamDTO;
-    private void setSelectedTeam(TeamDTO team) 
+    private TeamDTO? _selectedTeam = null;
+
+    private async void setSelectedTeam(TeamDTO team) 
     {
-        _selectedTeam = team;
+        _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+        StateHasChanged();
     }
     private int colour(TeamDTO team) => team.Colour;
 }
