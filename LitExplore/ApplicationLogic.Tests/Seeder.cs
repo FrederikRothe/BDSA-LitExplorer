@@ -17,9 +17,9 @@ public class Seeder {
         Connection Physics = new Connection{Id = 3, Creator = null,  Paper1 = Fit, Paper1Id = 1, Paper2 = Obese, Paper2Id = 2, ConnectionType = "Physics", Description = "3", Teams = new List<Team>()};
         
         // Users 
-        User Bob = new User{Id = 1, oid = "1", Name = "Bob", IsLeaderOf = new List<Team>(), Connections = new List<Connection>{Math, Science}, Teams = new List<Team>()};
-        User Suzie = new User{Id = 2, oid = "2", Name = "Suzie", IsLeaderOf = new List<Team>(), Connections = new List<Connection>{Physics}, Teams = new List<Team>()};
-        User Robert = new User{Id = 3, oid = "3", Name = "Robert", IsLeaderOf = new List<Team>(), Connections = new List<Connection>{Science}, Teams = new List<Team>()};
+        User Bob = new User{Id = 1, oid = "1", Name = "Bob", IsLeaderOf = new List<Team>(), Connections = new List<Connection>{Math}, Teams = new List<Team>()};
+        User Suzie = new User{Id = 2, oid = "2", Name = "Suzie", IsLeaderOf = new List<Team>(), Connections = new List<Connection>{Science}, Teams = new List<Team>()};
+        User Robert = new User{Id = 3, oid = "3", Name = "Robert", IsLeaderOf = new List<Team>(), Connections = new List<Connection>{Physics}, Teams = new List<Team>()};
 
         // Authors
         Author ABob = new Author{Id = 1, Name = "Bob", Papers = new List<Paper>()};
@@ -27,9 +27,9 @@ public class Seeder {
         Author ARobert = new Author{Id = 3, Name = "Robert", Papers = new List<Paper>()};
 
         // Teams
-        Team Potato = new Team{Id = 1, TeamLeader = Bob, Colour = 1, Users = new List<User>{Bob, Suzie}, Connections = new List<Connection>{Math, Physics}, TeamName = "Potato"};
+        Team Potato = new Team{Id = 1, TeamLeader = Bob, Colour = 1, Users = new List<User>{Bob, Suzie}, Connections = new List<Connection>{Math, Science}, TeamName = "Potato"};
         Team Orange = new Team{Id = 2, TeamLeader = Suzie, Colour = 2, Users = new List<User>{Robert, Suzie}, Connections = new List<Connection>{Science, Physics}, TeamName = "Orange"};
-        Team Candy = new Team{Id = 3, TeamLeader = Robert, Colour = 3, Users = new List<User>{Robert}, Connections = new List<Connection>{Science}, TeamName = "Candy"};
+        Team Candy = new Team{Id = 3, TeamLeader = Robert, Colour = 3, Users = new List<User>{Robert}, Connections = new List<Connection>{Physics}, TeamName = "Candy"};
        
         // Update dependices in entities
         Health.Papers = new List<Paper>{Fit, Obese};
