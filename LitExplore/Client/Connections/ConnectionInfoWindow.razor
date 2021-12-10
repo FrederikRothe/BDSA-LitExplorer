@@ -11,7 +11,8 @@
             </div>
             <div class="modal-body">
                 <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
-                @if (connection.Description != null) {
+                @if (connection.Description != null && connection.Description.Length != 0) 
+                {
                     <h2>Description</h2>
                     <p>@connection.Description</p>
                 }
