@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <Button type="submit" buttonText="Create"/>
+                    <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create"/>
                 </div>
             </EditForm>
         </div>
@@ -40,7 +40,8 @@
             return;   
         }
         team.TeamLeaderId = adminId;
-        team.Colour = 1;
+        var rand = new Random();
+        team.Colour = rand.Next(1, 5);
 
         var response = await Http.PostAsJsonAsync("api/Team", team);
 

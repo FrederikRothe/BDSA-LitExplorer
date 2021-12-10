@@ -1,0 +1,19 @@
+<button class=@colour @onclick="onButtonClicked" type=@type data-bs-target=@data_bs_target data-bs-toggle=@data_bs_toggle data-bs-dismiss=@data_bs_dismiss>
+    <span class=@icon data-toggle="tooltip" data-placement="top" title=@tooltip />
+</button>
+
+@code 
+{
+    [Parameter] public EventCallback onButtonClick { get; set; }
+    protected async Task onButtonClicked() 
+    {
+        await onButtonClick.InvokeAsync();
+    }
+    [Parameter] public string icon { get; set; } = null!;
+    [Parameter] public string tooltip { get; set; } = null!;
+    [Parameter] public string type { get; set; } = "";
+    [Parameter] public string data_bs_target { get; set; } = "";
+    [Parameter] public string data_bs_toggle { get; set; } = "";
+    [Parameter] public string data_bs_dismiss { get; set; } = "";
+    [Parameter] public string colour { get; set; } = "cta"; // set colour="red" to make 'danger' button
+}

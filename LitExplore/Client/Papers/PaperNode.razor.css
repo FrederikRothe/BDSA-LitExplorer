@@ -1,14 +1,18 @@
 .paper {
     background-color: var(--white);
-    width: 46pt;
-    height: 60pt;
-    border-radius: 4pt;
+    width: 62px;
+    height: 82px;
+    border-radius: 8px;
 }
 
 span {
     color: var(--background);
-    font-size: 40px;
+    font-size: 31pt;
     left: 10px;
     top: 9px;
     opacity: 69%;
+}
+
+.paper:hover span {
+    opacity: 90%;
 }

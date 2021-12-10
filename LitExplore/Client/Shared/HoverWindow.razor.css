@@ -11,13 +11,13 @@
 
 
 .connwindow {
-    margin-left: -75px;
-    margin-top: -30px;
+    margin-left: -110px;
+    margin-top: -50px;
 }
 
 .paperwindow {
-    left: -52pt;
-    top: 65pt;
+    left: -79px;
+    top: 45px;
 }
 
 ::deep p {
@@ -37,6 +37,6 @@
     font-size: 8pt;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2pt;
-    margin-bottom: 3pt;
+    letter-spacing: 4px;
+    margin-bottom: 6px;
 }

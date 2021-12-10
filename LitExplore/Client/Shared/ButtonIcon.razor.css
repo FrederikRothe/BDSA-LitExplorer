@@ -1,12 +1,10 @@
 button {
     border: none;
     border-radius: 50px;
-    min-width: 100px;
     
     padding: 10px 16px;
     color: var(--white);
     text-transform: lowercase;
-    letter-spacing: 1px;
 }
 
 .cta {

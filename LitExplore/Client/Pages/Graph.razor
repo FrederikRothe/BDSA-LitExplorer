@@ -21,7 +21,7 @@
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
-        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
+        <ConnectionLines @ref="_connectionLines" connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
         <AddConnectionWindow />
     } 
     else 
@@ -103,7 +103,7 @@
     private bool _dataIsLoaded = false;
 
     private string _currentUserId;
-    private ConnectionLines? _connectionLines;
+    private ConnectionLines _connectionLines;
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
@@ -114,6 +114,10 @@
     private async void setSelectedTeam(TeamDTO team) 
     {
         _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+        Model.CurrentUser.selectedTeam = _selectedTeam;
+        _userOrTeamConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/Team/connections/{_selectedTeam.Id}");
+
+        _connectionLines.Refresh();
         StateHasChanged();
     }
     private int colour(TeamDTO team) => team.Colour;

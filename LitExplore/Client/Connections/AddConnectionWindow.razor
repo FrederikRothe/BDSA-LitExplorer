@@ -16,12 +16,14 @@
           <div class="dropdowns">
 
             <select class="form-select" @bind="connection.PaperOneId" aria-label="paper1select">
+              <option disabled selected value> -- select a paper -- </option>
               @foreach (var paper in Model.Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
                 }
             </select>
             <select class="form-select" @bind="connection.PaperTwoId" aria-label="paper2select">
+              <option disabled selected value> -- select a paper -- </option>
               @foreach (var paper in Model.Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
@@ -34,9 +36,17 @@
             <h2>Description</h2>
             <textarea class="form-control" @bind="connection.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
           </div>
+
+          <select class="form-select" @bind="_selectedTeamId" aria-label="teamselect">
+              <option disabled selected value> -- select an option -- </option>
+              @foreach (var team in Model.CurrentUser.teams)
+                {
+                  <option value=@team.Id>@team.TeamName</option>
+                }
+            </select>
         </div>
         <div class="modal-footer">
-          <Button type="submit" buttonText="Create"/>
+          <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create"/>
         </div>
         </EditForm>
       </div>
@@ -47,6 +57,7 @@
     private ConnectionCreateDTO connection = new();
     private string _errorMessage = string.Empty;
     private string _successMessage = string.Empty;
+    private string _selectedTeamId;
     
 
     private async Task HandleValidSubmit()
@@ -71,6 +82,7 @@
             {
                 Model.CurrentUser.connections.Append(created);
             }
+            var updated = await Http.PutAsJsonAsync($"api/team/{_selectedTeamId}/connection/{created.Id}", created.Id);
             NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
         } 
         else 

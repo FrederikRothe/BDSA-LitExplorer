@@ -64,7 +64,8 @@ public class ConnectionRepository : IConnectionRepository
                                 c.Paper1.Id,
                                 c.Paper2.Id,
                                 c.ConnectionType,
-                                null, null))
+                                c.Description, 
+                                c.Teams.Select(t => t.Id)))
                           .ToListAsync())
                           .AsReadOnly();
 
@@ -75,10 +76,13 @@ public class ConnectionRepository : IConnectionRepository
                                 t.Id,
                                 t.TeamName,
                                 t.Colour,
-                                null, null, null))
+                                t.TeamLeader.oid, 
+                                t.Users.Select(u => u.oid), 
+                                t.Connections.Select(t => t.Id)))
                           .ToListAsync())
                           .AsReadOnly();
-    
+        
+
 
     public async Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection)
     {
@@ -116,7 +120,7 @@ public class ConnectionRepository : IConnectionRepository
     }
 
     private Paper FindPaper(int id) => _context.Papers.Where(p => p.Id == id).First();
-    private Connection FindConnection(int id) => _context.Connections.Where(c => c.Id == id).First();
+    private Connection FindConnection(int id) => _context.Connections.Where(c => c.Id == id).FirstOrDefault();
     private User FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).First();
 
 }

@@ -108,13 +108,48 @@ public class TeamRepository : ITeamRepository
         
         var entity = FindTeam(teamId);
 
-        entity.Id = team.Id;
         entity.TeamLeader = _context.Users.Where(t => t.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
         entity.Colour = team.Colour;
-        entity.Users = _context.Users.Where(u => team.UserIDs.Contains(u.oid)).ToList();
+
+        var teamUsers = _context.Users.Where(u => team.UserIDs.Contains(u.oid)).ToList();
+        if(entity.Users.Equals(teamUsers))
+        {
+            entity.Users = teamUsers;
+        }
+
         entity.Connections = _context.Connections.Where(c => team.ConnectionIDs.Contains(c.Id)).ToList();
         
+        await _context.SaveChangesAsync();
+
+        return Updated;
+    }
+
+    public async Task<Status> AddUserToTeamAsync(int teamId, string userOid)
+    {
+        var entity = FindTeam(teamId);
+
+        if (entity == null)
+        {
+            return NotFound;
+        }
+
+        entity.Users.Add(FindUser(userOid));
+        await _context.SaveChangesAsync();
+
+        return Updated;
+    }
+
+    public async Task<Status> ShareConnectionAsync(int teamId, int connectionId)
+    {
+        var entity = FindTeam(teamId);
+
+        if (entity == null)
+        {
+            return NotFound;
+        }
+
+        entity.Connections.Add(FindConnection(connectionId));
         await _context.SaveChangesAsync();
 
         return Updated;
@@ -135,6 +170,38 @@ public class TeamRepository : ITeamRepository
         return Deleted;
     }
 
+    public async Task<Status> RemoveConnectionAsync(int teamId, int connectionId)
+    {
+        var entity = FindTeam(teamId);
+
+        if (entity == null)
+        {
+            return NotFound;
+        }
+
+        entity.Connections.Remove(FindConnection(connectionId));
+        await _context.SaveChangesAsync();
+
+        return Deleted;
+    }
+
+    public async Task<Status> RemoveUserAsync(int teamId, string userOid)
+    {
+        var entity = FindTeam(teamId);
+
+        if (entity == null)
+        {
+            return NotFound;
+        }
+
+        entity.Users.Remove(FindUser(userOid));
+        await _context.SaveChangesAsync();
+
+        return Deleted;
+    }
+
     private Team FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).First();
+    private User FindUser(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
+    private Connection FindConnection(int connectionId) => _context.Connections.Where(c => c.Id == connectionId).First();
 }
 
