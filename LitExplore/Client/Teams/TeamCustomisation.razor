@@ -74,14 +74,13 @@
 
     private TeamUpdateDTO teamUpdated = new();
 
-    [Parameter]
-    public TeamDTO? team { get; set; }
+    [Parameter] public TeamDTO team { get; set; } = null!;
 
     public bool isNotTeamOwner { get; set; } = false;
 
     public int colour { get; set; }
 
-    public string teamName {get; set;}
+    public string teamName { get; set; } = "";
     
     private bool _loaded { get; set; } = false;
 
@@ -98,13 +97,13 @@
 
     protected override async Task OnParametersSetAsync()
     {
-      if(team != null)
+      if (team != null)
       {
         isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
-        if(team.UserIDs != null)
+        if (team.UserIDs != null)
         {
           var users = await Http.GetFromJsonAsync<UserDTO[]>($"api/Team/users/{team.Id}");
-          members = users.ToList();
+          if (users != null) members = users.ToList();
           teamName = team.TeamName; 
         } 
         else 
@@ -127,7 +126,7 @@
 
       teamUpdated.Colour = colour;
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
-      refreshGraph.InvokeAsync();
+      await refreshGraph.InvokeAsync();
       //NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
 
     }
@@ -147,7 +146,7 @@
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
             Model.CurrentUser.teams.Remove(team);
-            refreshGraph.InvokeAsync();
+            await refreshGraph.InvokeAsync();
         }
     }
 }

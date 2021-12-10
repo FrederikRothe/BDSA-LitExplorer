@@ -58,8 +58,8 @@
 
 @code {
     [Parameter] public ConnectionDTO connection { get; set; } = null!;
-    [Parameter] public PaperDTO paper1 { get; set; }
-    [Parameter] public PaperDTO paper2 { get; set; }
+    [Parameter] public PaperDTO paper1 { get; set; } = null!;
+    [Parameter] public PaperDTO paper2 { get; set; } = null!;
     [Parameter] public EventCallback refreshGraph { get; set; }
     private string? _description; 
 
@@ -71,7 +71,7 @@
         {
             await Http.DeleteAsync($"api/Connection/{connection.Id}");
             Model.CurrentUser.connections.Remove(connection);
-            refreshGraph.InvokeAsync();
+            await refreshGraph.InvokeAsync();
         }
     }
 
@@ -80,7 +80,7 @@
         _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
         _updateDTO.Description = _description;
         var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
-        refreshGraph.InvokeAsync();
+        await refreshGraph.InvokeAsync();
 
     }
 }

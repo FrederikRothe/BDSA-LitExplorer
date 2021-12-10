@@ -41,10 +41,17 @@
     {
         get
         {
-            if (connection.Description.Length > 20) {
-                return connection.Description.Substring(0,20)+"...";
-            } 
-            return connection.Description;
+            if (connection != null && connection.Description != null)
+            {
+                if (connection.Description.Length > 20) {
+                    return connection.Description.Substring(0,20)+"...";
+                } 
+                return connection.Description;  
+            }
+            else 
+            {
+                return "";
+            }
         }
     }
 }

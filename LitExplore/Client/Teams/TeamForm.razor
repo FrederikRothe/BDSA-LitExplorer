@@ -56,11 +56,11 @@
             _errorMessage = "";
             _successMessage = "Created!";
             var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
-            if (Model.CurrentUser.teams != null) 
+            if (Model.CurrentUser.teams != null && created != null) 
             {
                 Model.CurrentUser.teams.Add(created);
             }
-            refreshGraph.InvokeAsync();
+            await refreshGraph.InvokeAsync();
             clear();
         } 
         else 
