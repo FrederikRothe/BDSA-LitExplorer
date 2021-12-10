@@ -58,13 +58,13 @@
             </div>
           </EditForm>
         </div>
-        @if(!isNotTeamOwner)
-        {
-          <div class="modal-footer">
-            <button @onclick="Delete" disabled=@isNotTeamOwner type="button" class="btn btn-danger">Delete</button>
-            <button @onclick="Update" disabled=@isNotTeamOwner type="submit" class="btn btn-primary">Save</button>
-          </div>
-        }
+        <div class="modal-footer">
+          @if(!isNotTeamOwner)
+          {
+            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" />
+            <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" />
+          } 
+        </div>
       } 
       </div>
     </div>
