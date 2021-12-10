@@ -1,4 +1,4 @@
-<div class="connection">
+<div class="connection" @onmousemove="@Mouse_Move">
     <svg style="width: 90vw; height: 90vh;">
         @foreach (var c in connections)
         {
@@ -14,7 +14,7 @@
     
 </div>
 @if (_showHoverWindow) {
-    <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeftS() top=@_hoverWindowTopS()/>
+    <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeftS top=@_hoverWindowTopS/>
 } 
 <ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2/>
 
@@ -26,8 +26,15 @@
     private PaperDTO getPaper(int id) => Model.Graph.allPapers.Where(p => p.Id == id).Single();
     
     private bool _showHoverWindow = false;
-    private string _hoverWindowLeftS() => ((x1(_hoverconnection)+x2(_hoverconnection))/2)+"vw";
-    private string _hoverWindowTopS() => ((y1(_hoverconnection)+y2(_hoverconnection))/2)+"vh";
+
+    private string _hoverWindowLeftS { get; set; }
+    private string _hoverWindowTopS { get; set; }
+
+    protected void Mouse_Move(MouseEventArgs e)
+    {
+        _hoverWindowLeftS = e.ClientX+"px";
+        _hoverWindowTopS = e.ClientY+"px";
+    }
     private int colour(ConnectionDTO c) => Model.CurrentUser.selectedTeam != null? Model.CurrentUser.selectedTeam.Colour : 5;
     private (int,int) position1(ConnectionDTO c) => Model.Graph.paperToPositions[c.PaperOneId];
     private (int,int) position2(ConnectionDTO c) => Model.Graph.paperToPositions[c.PaperTwoId];
