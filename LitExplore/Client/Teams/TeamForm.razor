@@ -40,7 +40,8 @@
             return;   
         }
         team.TeamLeaderId = adminId;
-        team.Colour = 1;
+        var rand = new Random();
+        team.Colour = rand.Next(1, 5);
 
         var response = await Http.PostAsJsonAsync("api/Team", team);
 

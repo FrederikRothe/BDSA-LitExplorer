@@ -61,4 +61,8 @@
     private PaperDTO _paper1 = TestEntities.paperDTO;
     private PaperDTO _paper2 = TestEntities.paperDTO;
     private ConnectionDTO _hoverconnection = TestEntities.connectionDTO;
+    public void Refresh() 
+    {
+        StateHasChanged();
+    }
 }
