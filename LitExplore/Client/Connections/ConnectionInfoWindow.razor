@@ -3,8 +3,8 @@
 @inject NavigationManager NavigationManager
 
 <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="connectionInfoWindow" style="display: none;" tabindex="-1" aria-labelledby="connectionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="connectionModalLabel">"@paper1.Title" and "@paper2.Title"</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -16,11 +16,16 @@
                     <p>@connection.Description</p>
                 }
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer info">
                 @if (connection.CreatorId == Model.CurrentUser.userOid)
                 {
-                    <Button onButtonClick="delete" buttonText="Delete connection" colour="red" />
-                    <Button onButtonClick="() => _description = connection.Description" buttonText="Update connection" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
+                    <div>
+                        <ButtonIcon icon="oi oi-people" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share with team" />
+                    </div>
+                    <div>
+                        <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" tooltip="Delete" />
+                        <ButtonIcon onButtonClick="() => _description = connection.Description" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
+                    </div>
                 }
             </div>
         </div>
@@ -42,7 +47,7 @@
                 <div class="modal-footer">
                     @if (connection.CreatorId == Model.CurrentUser.userOid)
                     {
-                        <Button buttonText="Save" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" />
+                        <ButtonIcon icon="oi oi-check" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Save" />
                     }
                 </div>
             </EditForm>

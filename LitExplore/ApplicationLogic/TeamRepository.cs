@@ -31,22 +31,27 @@ public class TeamRepository : ITeamRepository
                             entity.Id,
                             entity.TeamName,
                             entity.Colour,
-                            entity.TeamLeader.Id,
-                            entity.Users.Select(u => u.Id),
+                            entity.TeamLeader.oid,
+                            entity.Users.Select(u => u.oid),
                             entity.Connections.Select(c => c.Id)
                         );
     }
 
     public async Task<Option<TeamDTO>> ReadAsync(int teamId)
     {
+         var matches = (from t in _context.Teams
+                      where t.Id == teamId
+                      select t.Id).Count();
+        if(matches == 0) return null;
+
         var teams = from t in _context.Teams
                          where t.Id == teamId
                          select new TeamDTO(
                             t.Id,
                             t.TeamName,
                             t.Colour,
-                            t.TeamLeader.Id,
-                            t.Users.Select(u => u.Id),
+                            t.TeamLeader.oid,
+                            t.Users.Select(u => u.oid),
                             t.Connections.Select(c => c.Id)
                          );
 
@@ -54,43 +59,62 @@ public class TeamRepository : ITeamRepository
     }
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(int teamId)
-        => (await _context.Connections
+    {
+        var matches = (from t in _context.Teams
+                      where t.Id == teamId
+                      select t.Id).Count();
+        if(matches == 0) return new List<ConnectionDTO>().AsReadOnly();
+
+        var connections = (await _context.Connections
                           .Where(c => c.Teams.Contains(FindTeam(teamId)))
                           .Select(c => new ConnectionDTO(
                                 c.Id,
-                                null,
+                                c.Creator.oid,
                                 c.Paper1.Id,
                                 c.Paper2.Id,
                                 c.ConnectionType,
                                 c.Description,
-                                null))
+                                c.Teams.Select(t => t.Id)))
                           .ToListAsync())
                           .AsReadOnly();
-    
-    public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId)
-        => (await _context.Users
-                          .Where(u => (u.Teams.Contains(FindTeam(teamId)) || u.IsLeaderOf.Contains(FindTeam(teamId))))
-                          .Select(u => new UserDTO(
-                                u.Id,
-                                null,
-                                u.Name,
-                                null, null))
-                          .ToListAsync())
-                          .AsReadOnly();
+        
+        return connections;
+    }
+    public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId){
+        var matches = (from t in _context.Teams
+                      where t.Id == teamId
+                      select t.Id).Count();
+        if(matches == 0) return new List<UserDTO>().AsReadOnly();
 
+        var users =  (await _context.Users
+                            .Where(u => (u.Teams.Contains(FindTeam(teamId)) || u.IsLeaderOf.Contains(FindTeam(teamId))))
+                            .Select(u => new UserDTO(
+                                    u.Id,
+                                    u.oid,
+                                    u.Name,
+                                    u.Connections.Select(c => c.Id), 
+                                    u.Teams.Select(t => t.Id)))
+                            .ToListAsync())
+                            .AsReadOnly();
+        
+        return users;            
+    }
     public async Task<Status> UpdateAsync(int teamId, TeamUpdateDTO team)
     {
+        var matches = (from t in _context.Teams
+                      where t.Id == teamId
+                      select t.Id).Count();
+        if(matches == 0) return NotFound;
+        
         var entity = FindTeam(teamId);
 
-        if (entity == null)
-        {
-            return NotFound;
-        }
-
         entity.Id = team.Id;
-        entity.TeamLeader = _context.Users.Where(u => u.oid == team.TeamLeaderId).Single();
+        entity.TeamLeader = _context.Users.Where(t => t.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
-
+        entity.Colour = team.Colour;
+        entity.Users = _context.Users.Where(u => team.UserIDs.Contains(u.oid)).ToList();
+        entity.Connections = _context.Connections.Where(c => team.ConnectionIDs.Contains(c.Id)).ToList();
+        
         await _context.SaveChangesAsync();
 
         return Updated;
@@ -128,12 +152,12 @@ public class TeamRepository : ITeamRepository
 
     public async Task<Status> DeleteAsync(int teamId)
     {
+        var matches = (from t in _context.Teams
+                      where t.Id == teamId
+                      select t.Id).Count();
+        if(matches == 0) return NotFound;
+        
         var entity = FindTeam(teamId);
-
-        if (entity == null)
-        {
-            return NotFound;
-        }
 
         _context.Teams.Remove(entity);
         await _context.SaveChangesAsync();
@@ -175,3 +199,4 @@ public class TeamRepository : ITeamRepository
     private User FindUser(string userOid) => _context.Users.Where(u => u.oid == userOid).First();
     private Connection FindConnection(int connectionId) => _context.Connections.Where(c => c.Id == connectionId).First();
 }
+

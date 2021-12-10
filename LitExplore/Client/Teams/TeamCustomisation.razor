@@ -1,38 +1,148 @@
-<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;"
-  tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <button id="redbutton" disabled=@isTeamOwner></button>
-        <button id="yellowbutton" disabled=@isTeamOwner></button>
-        <button id="greenbutton" disabled=@isTeamOwner></button>
-        <button id="orangebutton" disabled=@isTeamOwner></button>
-      </div>
-      <div class="modal-footer">
-        @foreach (var user in team.UserIDs)
-        {
-          <button id="user" @onclick="() => removeUser(user)">@user</button>
-        }
+@page "/teamcustomisation"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+  <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="teamModal" style="display: none;" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      @if(team != null)
+      {
+        <div class="modal-header">
+          <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
+          <button @onclick="OnCloseClicked" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
+            <div class="content">
+              <div class="teamName">
+                <p>team name</p>
+                <input disabled=@isNotTeamOwner @bind="teamName" class="nameInput" type="text">
+              </div>
+              <hr/>
+              <div class="colours">
+                <p>team colour</p>
+                  <div class="colourChoices btn-group-toggle" data-toggle="buttons" id="options">
+                    <label>
+                      <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" value=1 checked=@(@team.Colour==1)>
+                    </label>
+                    <label>
+                      <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" value=2 checked=@(@team.Colour==2)>
+                    </label>
+                    <label>
+                      <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" value=3 checked=@(@team.Colour==3)>
+                    </label>
+                    <label>
+                      <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" value=4 checked=@(@team.Colour==4)>
+                    </label>
+                  </div>
+              </div>
+              <hr/>
+              <div class="members">
+                <p>team members</p>
+                <div>
+                  <ul class="memberList">
+                    @foreach (var member in members)
+                    {
+                      <li class="userRow">
+                        <p>@member.Name</p>
+                        @if(member.oid != team.TeamLeaderId)
+                        {
+                          <button disabled=@isNotTeamOwner @onclick="() => RemoveFromTeam(member.oid)" class="oi oi-ban"></button>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </EditForm>
+        </div>
+        <div class="modal-footer">
+          @if(!isNotTeamOwner)
+          {
+            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" />
+            <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" />
+          } 
+        </div>
+      } 
       </div>
     </div>
   </div>
-</div>
 
 @code {
-  [Parameter]
-  public TeamDTO team { get; set; } = null!;
-  [Parameter]
-  public bool isTeamOwner { get; set; } = false;
-  private void removeUser(int userId)
-  {
-    if (isTeamOwner)
-    {
-      //currentTeam.UserIDs.Remove(currentTeam.UserIDs.Where(u => u == userId).First());
-    }
-  }
 
+    private TeamUpdateDTO teamUpdated = new();
+
+    [Parameter]
+    public TeamDTO team { get; set; } = null!;
+
+    public bool isNotTeamOwner { get; set; } = false;
+
+    public int colour { get; set; }
+
+    public string teamName {get; set;}
+    
+    private bool _loaded { get; set; } = false;
+
+    public List<UserDTO> members = new List<UserDTO>();
+
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    protected async Task OnCloseClicked() 
+    {
+        await OnClose.InvokeAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+      if(team != null)
+      {
+        isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
+        if(team.UserIDs != null)
+        {
+          var users = await Http.GetFromJsonAsync<UserDTO[]>($"api/Team/users/{team.Id}");
+          members = users.ToList();
+          teamName = team.TeamName; 
+        } else 
+        {
+          teamName = "Unknown Team";
+        }
+        _loaded = true;
+        await base.OnParametersSetAsync();
+      }
+    }
+    
+    private async Task Update()
+    {
+
+      teamUpdated = await Http.GetFromJsonAsync<TeamUpdateDTO>($"api/Team/{team.Id}") ?? new();
+      if(teamName != "")
+      {
+        teamUpdated.TeamName = teamName;
+      }
+
+      teamUpdated.Colour = colour;
+      var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+
+    }
+
+    private async Task RemoveFromTeam(string oId)
+    {
+      if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this team member?"))
+        {
+            await Http.DeleteAsync($"api/Team/{team.Id}/user/{oId}");
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+        }
+    }
+
+    private async Task Delete()
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this team?"))
+        {
+            await Http.DeleteAsync($"api/Team/{team.Id}");
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+        }
+    }
 }

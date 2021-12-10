@@ -43,7 +43,7 @@ public class UserRepository : IUserRepository
     public async Task<Option<UserDTO>> ReadAsync(string userId)
     {
         var users = from u in _context.Users
-                    where u.Id.Equals(userId)
+                    where u.oid == userId
                     select new UserDTO(
                         u.Id,
                         u.oid,
@@ -65,7 +65,7 @@ public class UserRepository : IUserRepository
                                 c.Paper2.Id,
                                 c.ConnectionType,
                                 c.Description,
-                                null))
+                                c.Teams.Select(t => t.Id)))
                           .ToListAsync())
                           .AsReadOnly();
 
@@ -75,24 +75,11 @@ public class UserRepository : IUserRepository
                                         t.Id,
                                         t.TeamName,
                                         t.Colour,
-                                        null, null, null))
+                                        t.TeamLeader.oid, 
+                                        t.Users.Select(u => u.oid), 
+                                        t.Connections.Select(c => c.Id)))
                                 .ToListAsync())
                                 .AsReadOnly();
-    
-    public async Task<Status> DeleteAsync(string userId)
-    {
-        var entity = FindUserOid(userId);
-
-        if (entity == null)
-        {
-            return NotFound;
-        }
-
-        _context.Users.Remove(entity);
-        await _context.SaveChangesAsync();
-
-        return Deleted;
-    }
     
     private User FindUser(int userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
     private User? FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
