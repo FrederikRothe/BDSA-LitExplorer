@@ -5,7 +5,7 @@
 
 .loadinglabel {
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 18pt;
   text-align: center;
   letter-spacing: 16px;
 }
@@ -87,8 +87,8 @@
 
 .teams button {
   border-radius: 50%;
-  width: 50pt;
-  height: 50pt;
+  width: 70px;
+  height: 70px;
   border: none;
 }
 .addteambutton {
@@ -111,7 +111,7 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  letter-spacing: 0.2rem;
+  letter-spacing: 4px;
   text-transform: lowercase;
 }
 
