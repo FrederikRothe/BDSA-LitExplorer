@@ -108,11 +108,16 @@ public class TeamRepository : ITeamRepository
         
         var entity = FindTeam(teamId);
 
-        entity.Id = team.Id;
         entity.TeamLeader = _context.Users.Where(t => t.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
         entity.Colour = team.Colour;
-        entity.Users = _context.Users.Where(u => team.UserIDs.Contains(u.oid)).ToList();
+
+        var teamUsers = _context.Users.Where(u => team.UserIDs.Contains(u.oid)).ToList();
+        if(entity.Users.Equals(teamUsers))
+        {
+            entity.Users = teamUsers;
+        }
+
         entity.Connections = _context.Connections.Where(c => team.ConnectionIDs.Contains(c.Id)).ToList();
         
         await _context.SaveChangesAsync();
