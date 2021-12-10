@@ -6,7 +6,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="AddConnectionModalLabel">Add a connection</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => _errorMessage = string.Empty"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="clear"></button>
       </div>
       <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
         <div class="modal-body">
@@ -59,7 +59,7 @@
     private string _successMessage = string.Empty;
     private string _selectedTeamId;
     
-
+    [Parameter] public EventCallback refreshGraph { get; set; }
     private async Task HandleValidSubmit()
     {
         if (connection.PaperOneId == connection.PaperTwoId)
@@ -78,16 +78,20 @@
             _errorMessage = "";
             _successMessage = "Created!";
             var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
-            if (Model.CurrentUser.connections != null) 
-            {
-                Model.CurrentUser.connections.Append(created);
-            }
+            Model.CurrentUser.connections.Add(created);
+            refreshGraph.InvokeAsync();
             var updated = await Http.PutAsJsonAsync($"api/team/{_selectedTeamId}/connection/{created.Id}", created.Id);
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            
         } 
         else 
         {
             _errorMessage = $"An error occured.";
         }
+    }
+    public void clear() 
+    {
+      _errorMessage = string.Empty;
+      _successMessage = string.Empty;
+      connection = new();
     }
 }

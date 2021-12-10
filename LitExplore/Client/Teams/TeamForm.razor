@@ -32,11 +32,17 @@
     private TeamCreateDTO team = new();
     private string _errorMessage = string.Empty;
     private string _successMessage = string.Empty;
+    [Parameter] public EventCallback refreshGraph { get; set; }
     private async Task HandleValidSubmit()
     {
         if (team.TeamName == null || team.TeamName == "")
         {
-            _errorMessage = "Please enter a team name";
+            _errorMessage = "Please enter a team name.";
+            return;   
+        }
+        if (Model.CurrentUser.teams.Count() >= 7) 
+        {
+            _errorMessage = "Too many teams.";
             return;   
         }
         team.TeamLeaderId = adminId;
@@ -52,9 +58,10 @@
             var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
             if (Model.CurrentUser.teams != null) 
             {
-                Model.CurrentUser.teams.Append(created);
+                Model.CurrentUser.teams.Add(created);
             }
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            refreshGraph.InvokeAsync();
+            clear();
         } 
         else 
         {
@@ -62,5 +69,10 @@
         }
     }
     
+    private void clear() {
+        _errorMessage = "";
+        _successMessage = "";
+        team = new();
+    }
 
 }
