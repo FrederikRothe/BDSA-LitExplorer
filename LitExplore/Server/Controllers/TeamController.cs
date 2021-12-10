@@ -56,7 +56,7 @@ public class TeamController : ControllerBase
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
     [HttpPut("{id}/user/{userOid}")]
-    public async Task<IActionResult> ShareConnection(int id, string userOid) => (await _repository.AddUserToTeamAsync(id, userOid)).ToActionResult();
+    public async Task<IActionResult> AddUser(int id, string userOid) => (await _repository.AddUserToTeamAsync(id, userOid)).ToActionResult();
 
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
