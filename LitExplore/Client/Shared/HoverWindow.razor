@@ -2,7 +2,7 @@
 @using LitExplore.Client.Papers
 @inject HttpClient Http
 
-<div class=@styleclass data-bs-toggle="modal" data-bs-target="#connectionInfoWindow" style=@style hidden=@hidden>
+<div class=@styleclass style=@style hidden=@hidden>
     @if (paper != null) {
         <h1>@paper.Title</h1>
         <PaperPartialInfo paper=@paper />
