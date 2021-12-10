@@ -36,7 +36,7 @@ public static class SeedExtensions
             Paper Paper12 = new Paper{Authors = new List<Author>{}, Title = "Python Programming", Date = new DateTime(2009, 1, 27), Tags = new List<Tag>{}, Document = documents[11]};
             
             // Authors
-            Author Sedgewick = new Author{Name = "Robert Sedgewick",Papers = new List<Paper>{Paper1, Paper2, Paper8}};
+            Author Sedgewick = new Author{Name = "Robert Sedgewick",Papers = new List<Paper>{Paper1, Paper2}};
             Author Dijkstra = new Author{Name = "Dijkstra", Papers = new List<Paper>{Paper3}};
             Author KameHame = new Author{Name = "Kame Hame", Papers = new List<Paper>{Paper4, Paper5, Paper9}};
             Author Dofensmirtz = new Author{Name = "Doc. Dofensmirtz", Papers = new List<Paper>{Paper6, Paper12}};
@@ -52,7 +52,7 @@ public static class SeedExtensions
             Tag Physics = new Tag{Name = "Physics", Papers = new List<Paper>{Paper2, Paper3, Paper4}};
             Tag Maths = new Tag{Name = "Maths", Papers = new List<Paper>{Paper4}};
             Tag Drugs = new Tag{Name = "Drugs", Papers = new List<Paper>{Paper5, Paper6}};
-            Tag Pathfinding = new Tag{Name = "Pathfinding", Papers = new List<Paper>{Paper5, Paper8}};
+            Tag Pathfinding = new Tag{Name = "Pathfinding", Papers = new List<Paper>{Paper8}};
             Tag Abuse = new Tag{Name = "Abuse", Papers = new List<Paper>{Paper6}};
             Tag Weapons = new Tag{Name = "Weapons", Papers = new List<Paper>{Paper6, Paper7, Paper12}};
             Tag Football = new Tag{Name = "Football", Papers = new List<Paper>{Paper7}};
@@ -61,7 +61,7 @@ public static class SeedExtensions
             Tag Relational = new Tag{Name = "Relational Database", Papers = new List<Paper>{Paper10}};
             Tag CompSci = new Tag{Name = "Computer Science", Papers = new List<Paper>{Paper10}};
             Tag BlueJ = new Tag{Name = "BlueJ", Papers = new List<Paper>{Paper11}};
-            Tag Programming = new Tag{Name = "Programming", Papers = new List<Paper>{Paper11, Paper12}};
+            Tag Programming = new Tag{Name = "Programming", Papers = new List<Paper>{Paper12}};
             Tag OOP = new Tag{Name = "Object Oriented Programming", Papers = new List<Paper>{Paper11}};
             Tag Python = new Tag{Name = "Python", Papers = new List<Paper>{Paper12}};
 
@@ -78,7 +78,7 @@ public static class SeedExtensions
             Paper4.Tags = new List<Tag>{Physics, Maths, Drugs};
 
             Paper5.Authors = new List<Author>{KameHame};
-            Paper5.Tags = new List<Tag>{Drugs, Pathfinding};
+            Paper5.Tags = new List<Tag>{Drugs};
 
             Paper6.Authors = new List<Author>{Dofensmirtz};
             Paper6.Tags = new List<Tag>{Drugs, Abuse, Weapons};
@@ -96,7 +96,7 @@ public static class SeedExtensions
             Paper10.Tags = new List<Tag>{Database, Relational, CompSci, Java};
 
             Paper11.Authors = new List<Author>{Barnes, Kolling};
-            Paper11.Tags = new List<Tag>{Java, BlueJ, Programming, OOP};
+            Paper11.Tags = new List<Tag>{Java, BlueJ, OOP};
 
             Paper12.Authors = new List<Author>{Wayne, Dofensmirtz};
             Paper12.Tags = new List<Tag>{Python, Programming, Weapons};
