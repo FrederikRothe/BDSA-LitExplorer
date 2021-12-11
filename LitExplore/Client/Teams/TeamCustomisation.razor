@@ -90,7 +90,11 @@
 
     private void OnChange(ChangeEventArgs args)
     {
-        colour = int.Parse(args.Value.ToString());
+      if (args.Value != null)
+      {
+        var arg = args.Value.ToString();
+        if (arg != null) colour = int.Parse(arg);
+      }
     }
 
     protected async Task OnCloseClicked() 
