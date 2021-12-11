@@ -36,7 +36,13 @@
         {
             foreach (var team in Model.CurrentUser.teams)
             {
-                <button type="button" class="c-@colour(team) teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" @onclick="() => setSelectedTeam(team)"/>
+                <div class="teamsection">
+                    @if(_selectedTeam == team)
+                    {
+                        <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal"></button>
+                    }
+                    <button type="button" class="c-@colour(team) teambutton" @onclick="() => setSelectedTeam(team)"/>
+                </div>
             }
             <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
         }
