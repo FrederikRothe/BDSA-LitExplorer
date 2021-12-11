@@ -3,14 +3,19 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
-    top: 50px;
+    top: 3.5rem;
     background-color: var(--background);
     overflow-y: scroll;
-    padding: 20px 20px 20px 100px;
+    padding: 20px 100px 20px 100px;
 }
 
 .box{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
+}
+
+.textbox{
+    text-align: center;
+    width: 55%;
 }
