@@ -11,11 +11,17 @@ main {
 }
 
 .top-row {
+  display: flex;
+  justify-content: space-between;
   background-color: var(--grey);
   height: 3.5rem;
-  display: grid;
-  grid-template-columns: 1fr 8fr 8fr;
   align-items: center;
+}
+
+.left {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 @media (max-width: 640.98px) {
