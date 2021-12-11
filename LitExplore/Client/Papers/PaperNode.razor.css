@@ -12,3 +12,7 @@ span {
     top: 9px;
     opacity: 69%;
 }
+
+.paper:hover span {
+    opacity: 90%;
+}
