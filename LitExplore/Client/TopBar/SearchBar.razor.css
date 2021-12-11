@@ -13,17 +13,13 @@ input {
   font: 1em Hind, sans-serif;
   line-height: 1.5em;
 }
-body,
+
 input {
-  color: #171717;
+  color: var(--white);
 }
-body,
+
 .search-bar {
   display: flex;
-}
-body {
-  background: var(--white);
-  height: 100vh;
 }
 .search-bar input,
 .search-btn,
@@ -31,6 +27,11 @@ body {
 .search-btn:after {
   transition: all 0.25s ease-out;
 }
+
+.search-btn {
+  margin-top: -3px;
+}
+
 .search-bar input,
 .search-btn {
   width: 3em;
@@ -131,13 +132,6 @@ body {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  body,
-  input {
-    color: var(--white);
-  }
-  body {
-    background: #171717;
-  }
   .search-bar input {
     box-shadow: 0 0 0 0.4em var(--white) inset;
   }

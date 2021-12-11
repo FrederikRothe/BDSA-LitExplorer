@@ -1,13 +1,15 @@
 ﻿@inherits LayoutComponentBase
-@using LitExplore.Client.BurgerMenu
+@using LitExplore.Client.TopBar
 
 <div class="page">
   <AuthorizeView>
     <Authorized>
       <main>
-        <div class="top-row px-4 auth">
-          <BurgerMenu />
-          <SearchBar />
+        <div class="top-row px-4 auth topbar">
+          <div class="left">
+            <BurgerMenu />
+            <SearchBar />
+          </div>
           <LoginDisplay />
         </div>
 

@@ -24,16 +24,16 @@
                 <p>team colour</p>
                   <div class="colourChoices btn-group-toggle" data-toggle="buttons" id="options">
                     <label>
-                      <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" value=1 checked=@(@team.Colour==1)>
+                      <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" Value=1 checked=@(@team.Colour==1) @onchange="OnChange">
                     </label>
                     <label>
-                      <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" value=2 checked=@(@team.Colour==2)>
+                      <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" Value=2 checked=@(@team.Colour==2) @onchange="OnChange">
                     </label>
                     <label>
-                      <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" value=3 checked=@(@team.Colour==3)>
+                      <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" Value=4 checked=@(@team.Colour==4) @onchange="OnChange">
                     </label>
                     <label>
-                      <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" value=4 checked=@(@team.Colour==4)>
+                      <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" Value=3 checked=@(@team.Colour==3) @onchange="OnChange">
                     </label>
                   </div>
               </div>
@@ -87,6 +87,11 @@
     public List<UserDTO> members = new List<UserDTO>();
 
     [Parameter] public EventCallback OnClose { get; set; }
+
+    private void OnChange(ChangeEventArgs args)
+    {
+        colour = int.Parse(args.Value.ToString());
+    }
 
     protected async Task OnCloseClicked() 
     {
