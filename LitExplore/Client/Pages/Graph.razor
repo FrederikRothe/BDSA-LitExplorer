@@ -36,19 +36,23 @@
         {
             foreach (var team in Model.CurrentUser.teams)
             {
-                <div class="teamsection">
-                    @if(_selectedTeam == team)
+                <div class="teamSection">
+                    @if(_selectedTeam != null && _selectedTeam.Id == team.Id)
                     {
-                        <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal"></button>
+                        <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal">
+                            <span class="oi oi-pencil"></span>
+                        </button>
                     }
-                    <button type="button" class="c-@colour(team) teambutton" @onclick="() => setSelectedTeam(team)"/>
+                    <button type="button" class="c-@colour(team) teamButton" @onclick="() => setSelectedTeam(team)">
+                        <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                    </button>
                 </div>
-            }
+                }
             <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation OnClose="() => _selectedTeam = null" team=@_selectedTeam/>
+    <TeamCustomisation team=@_selectedTeam/>
     <TeamForm adminId=@_currentUserId/>
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>

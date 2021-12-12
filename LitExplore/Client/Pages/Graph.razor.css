@@ -85,20 +85,43 @@
   gap: 10px;
 }
 
+.teamSection {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.edit {
+  height: 35px !important;
+  width: 35px !important;
+  background-color: var(--grey);
+  color: var(--white);
+  align-self: center !important;
+}
+
+.teamButton span {
+  color: var(--white);
+  font-size: 40px;
+}
+
 .teams button {
   border-radius: 50%;
   width: 70px;
   height: 70px;
   border: none;
+  align-self: flex-end;
 }
+
 .addteambutton {
   background-color: var(--blue);
 }
+
 .addTeamButtonText {
   font-size: 18pt;
   color: white;
   padding-top: 6px;
 }
+
 .addconnbutton {
   position: fixed;
   right: 1rem;
