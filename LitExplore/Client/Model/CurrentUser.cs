@@ -6,4 +6,13 @@ public static class CurrentUser {
     public static List<ConnectionDTO> connections { get; set; } = new List<ConnectionDTO>();
     public static bool initialised() => userOid != null && teams != null && connections != null;
     public static TeamDTO? selectedTeam { get; set; }
+
+    public static bool connectionExists(ConnectionCreateDTO conn) 
+    {
+        var exists = connections.Where(c => c.PaperOneId == conn.PaperOneId && c.PaperTwoId == c.PaperTwoId ||
+                                            c.PaperOneId == conn.PaperTwoId && c.PaperTwoId == c.PaperOneId)
+                                .FirstOrDefault();
+        
+        return exists == null;        
+    }
 }
