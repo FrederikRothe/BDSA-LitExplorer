@@ -21,8 +21,8 @@
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
-        <ConnectionLines @ref="_connectionLines" connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
-        <AddConnectionWindow />
+        <ConnectionLines @ref="_connectionLines" connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections refreshGraph=@Refresh/>
+        <AddConnectionWindow refreshGraph=@Refresh/>
     } 
     else 
     {
@@ -43,18 +43,24 @@
                         <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal">
                             <span class="oi oi-pencil"></span>
                         </button>
+                        <button type="button" class="c-@colour(team) teamButton selected" @onclick="() => setSelectedTeam(team)">
+                            <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                        </button>
                     }
-                    <button type="button" class="c-@colour(team) teamButton" @onclick="() => setSelectedTeam(team)">
-                        <span>@team.TeamName.Substring(0,1).ToUpper()</span>
-                    </button>
+                    else 
+                    {
+                        <button type="button" class="c-@colour(team) teamButton" @onclick="() => setSelectedTeam(team)">
+                            <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                        </button>
+                    }
                 </div>
                 }
-            <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
+            <button class="c-0" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation team=@_selectedTeam/>
-    <TeamForm adminId=@_currentUserId/>
+    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh/>
+    <TeamForm adminId=@_currentUserId refreshGraph=@Refresh/>
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>
   </Authorized>
@@ -93,16 +99,16 @@
                 
                 var response = await Http.PostAsJsonAsync("api/User", userDTO);
                 Model.CurrentUser.userOid = userId;
-                Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
-                Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
+                Model.CurrentUser.teams = await Http.GetFromJsonAsync<List<TeamDTO>>($"api/User/teams/{userId}");
+                Model.CurrentUser.connections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{userId}");
             }
 
             _userOrTeamConnections = Model.CurrentUser.connections;
 
             if (!Model.Graph.initialised()) 
             {
-                Model.Graph.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
-                Model.Graph.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
+                Model.Graph.allPapers = await Http.GetFromJsonAsync<List<PaperDTO>>("api/Paper");
+                Model.Graph.publicConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>("api/Connection");
                 Model.Graph.initialise();
             }
             _selectedPaper = Model.Graph.allPapers.ElementAt(0);
@@ -118,7 +124,7 @@
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
-    private ConnectionDTO[]? _userOrTeamConnections;
+    private List<ConnectionDTO>? _userOrTeamConnections;
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
     private TeamDTO? _selectedTeam = null;
 
@@ -128,16 +134,18 @@
         {
             _selectedTeam = null;
             Model.CurrentUser.selectedTeam = null;
-            _userOrTeamConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{_currentUserId}");
+            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{_currentUserId}");
         }
         else
         {
             _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
             Model.CurrentUser.selectedTeam = _selectedTeam;
-            _userOrTeamConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/Team/connections/{_selectedTeam.Id}");
+            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
         }
+        Refresh();
+    }
 
-        _connectionLines.Refresh();
+    private void Refresh() {
         StateHasChanged();
     }
     private int colour(TeamDTO team) => team.Colour;

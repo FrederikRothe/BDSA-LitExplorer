@@ -75,7 +75,7 @@
     private TeamUpdateDTO teamUpdated = new();
 
     [Parameter]
-    public TeamDTO team { get; set; } = null!;
+    public TeamDTO? team { get; set; }
 
     public bool isNotTeamOwner { get; set; } = false;
 
@@ -86,8 +86,6 @@
     private bool _loaded { get; set; } = false;
 
     public List<UserDTO> members = new List<UserDTO>();
-
-    [Parameter] public EventCallback OnClose { get; set; }
 
     private void OnChange(ChangeEventArgs args)
     {
@@ -105,7 +103,8 @@
           var users = await Http.GetFromJsonAsync<UserDTO[]>($"api/Team/users/{team.Id}");
           members = users.ToList();
           teamName = team.TeamName; 
-        } else 
+        } 
+        else 
         {
           teamName = "Unknown Team";
         }
@@ -113,6 +112,8 @@
         await base.OnParametersSetAsync();
       }
     }
+
+    [Parameter] public EventCallback refreshGraph { get; set; }
     
     private async Task Update()
     {
@@ -125,6 +126,7 @@
 
       teamUpdated.Colour = colour;
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      refreshGraph.InvokeAsync();
       NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
 
     }
@@ -143,7 +145,8 @@
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this team?"))
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            Model.CurrentUser.teams.Remove(team);
+            refreshGraph.InvokeAsync();
         }
     }
 }
