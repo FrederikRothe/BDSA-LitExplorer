@@ -25,7 +25,7 @@
           </div>
           <div>
             <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" tooltip="Delete" />
-            <ButtonIcon onButtonClick="() => _description = connection.Description" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
+            <ButtonIcon onButtonClick="startUpdate" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
           </div>
         }
       </div>
@@ -39,17 +39,14 @@
         <h1 class="modal-title" id="connectionUpdateWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <EditForm Model="@connection" OnValidSubmit="@update">
+      <EditForm Model="@_updateDTO" OnValidSubmit="@update">
         <div class="modal-body">
           <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
           <h2>Description</h2>
-          <textarea class="form-control" @bind="_description" aria-label="With textarea" placeholder="write here ..."></textarea>
+          <textarea class="form-control" @bind="_updateDTO.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
         </div>
         <div class="modal-footer">
-          @if (connection.CreatorId == Model.CurrentUser.userOid)
-          {
             <ButtonIcon icon="oi oi-check" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Save" />
-          }
         </div>
       </EditForm>
     </div>
@@ -94,8 +91,7 @@
     [Parameter] public ConnectionDTO connection { get; set; } = null!;
     [Parameter] public PaperDTO paper1 { get; set; } = null!;
     [Parameter] public PaperDTO paper2 { get; set; } = null!;
-    [Parameter] public EventCallback refreshGraph { get; set; }
-    private string? _description; 
+    [Parameter] public EventCallback refreshGraph { get; set; } 
 
     private Dictionary<int, bool> _shareChanges = new Dictionary<int, bool>();
     private void startShare() 
@@ -105,7 +101,12 @@
         _shareChanges[team.Id] = false;
       }
     }
+
     private ConnectionUpdateDTO _updateDTO = new();
+    private async Task startUpdate()
+    {
+        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
+    }
 
     private async Task delete()
     {
@@ -119,8 +120,6 @@
 
     private async Task update()
     {
-        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
-        _updateDTO.Description = _description;
         var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
         await refreshGraph.InvokeAsync();
 
