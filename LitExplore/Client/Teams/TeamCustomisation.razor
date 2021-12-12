@@ -10,7 +10,7 @@
       {
         <div class="modal-header">
           <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-          <button @onclick="OnCloseClicked" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
@@ -87,19 +87,10 @@
 
     public List<UserDTO> members = new List<UserDTO>();
 
-    [Parameter] public EventCallback OnClose { get; set; }
-
     private void OnChange(ChangeEventArgs args)
     {
         colour = int.Parse(args.Value.ToString());
     }
-
-    protected async Task OnCloseClicked() 
-    {
-        await OnClose.InvokeAsync();
-    }
-
-    [Parameter] public EventCallback refreshGraph { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -120,6 +111,8 @@
         await base.OnParametersSetAsync();
       }
     }
+
+    [Parameter] public EventCallback refreshGraph { get; set; }
     
     private async Task Update()
     {
