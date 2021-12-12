@@ -43,13 +43,19 @@
                         <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal">
                             <span class="oi oi-pencil"></span>
                         </button>
+                        <button type="button" class="c-@colour(team) teamButton selected" @onclick="() => setSelectedTeam(team)">
+                            <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                        </button>
                     }
-                    <button type="button" class="c-@colour(team) teamButton" @onclick="() => setSelectedTeam(team)">
-                        <span>@team.TeamName.Substring(0,1).ToUpper()</span>
-                    </button>
+                    else 
+                    {
+                        <button type="button" class="c-@colour(team) teamButton" @onclick="() => setSelectedTeam(team)">
+                            <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                        </button>
+                    }
                 </div>
                 }
-            <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
+            <button class="c-0" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
