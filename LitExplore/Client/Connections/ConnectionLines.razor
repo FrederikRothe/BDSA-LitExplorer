@@ -14,7 +14,7 @@
     
 </div>
 @if (_showHoverWindow) {
-    <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeftS top=@_hoverWindowTopS/>
+    <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeft top=@_hoverWindowTop/>
 } 
 <ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh/>
 
@@ -27,13 +27,13 @@
     
     private bool _showHoverWindow = false;
 
-    private string? _hoverWindowLeftS { get; set; }
-    private string? _hoverWindowTopS { get; set; }
+    private double _hoverWindowLeft { get; set; } = 0;
+    private double _hoverWindowTop { get; set; } = 0;
 
     protected void Mouse_Move(MouseEventArgs e)
     {
-        _hoverWindowLeftS = e.ClientX+"px";
-        _hoverWindowTopS = e.ClientY+"px";
+        _hoverWindowLeft = e.ClientX;
+        _hoverWindowTop = e.ClientY;
     }
     private int colour(ConnectionDTO c) => Model.CurrentUser.selectedTeam != null? Model.CurrentUser.selectedTeam.Colour : 5;
     private (int,int) position1(ConnectionDTO c) => Model.Graph.paperToPositions[c.PaperOneId];
