@@ -11,6 +11,8 @@ public record ConnectionCreateDTO
     [Required]
     public string ConnectionType { get; set; } = null!;
     public string? Description { get; set; }
+
+    public int? TeamId { get; set; }
     
 }
 

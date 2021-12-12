@@ -58,7 +58,7 @@
   private ConnectionCreateDTO connection = new();
   private string _errorMessage = string.Empty;
   private string _successMessage = string.Empty;
-  private string? _selectedTeamId;
+  private int? _selectedTeamId;
   
   [Parameter] public EventCallback refreshGraph { get; set; }
   private async Task HandleValidSubmit()
@@ -69,8 +69,9 @@
       return;
     }
 
-    connection.CreatorId = Model.CurrentUser.userOid == null? null : Model.CurrentUser.userOid;
+    connection.CreatorId = Model.CurrentUser.userOid;
     connection.ConnectionType = "other";
+    connection.TeamId = _selectedTeamId;
 
     var response = await Http.PostAsJsonAsync("api/Connection", connection);
 
@@ -81,10 +82,6 @@
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
         if (created != null) Model.CurrentUser.connections.Add(created);
         await refreshGraph.InvokeAsync();
-        if (_selectedTeamId != null && created != null) 
-        {
-          var updated = await Http.PutAsJsonAsync($"api/team/{_selectedTeamId}/connection/{created.Id}", created.Id);
-        }
     } 
     else 
     {

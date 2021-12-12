@@ -29,6 +29,12 @@ public class ConnectionRepository : IConnectionRepository
             Teams = new List<Team>()
         };
 
+        if (connection.TeamId != null)
+        {
+            var team = FindTeam(connection.TeamId);
+            if (team != null) entity.Teams.Add(team);
+        }
+
         _context.Connections.Add(entity);
 
         await _context.SaveChangesAsync();
@@ -143,5 +149,6 @@ public class ConnectionRepository : IConnectionRepository
     private Paper? FindPaper(int id) => _context.Papers.Where(p => p.Id == id).FirstOrDefault();
     private Connection? FindConnection(int id) => _context.Connections.Where(c => c.Id == id).FirstOrDefault();
     private User? FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).FirstOrDefault();
+    private Team? FindTeam(int? id) => _context.Teams.Where(t => t.Id == id).FirstOrDefault();
 
 }
