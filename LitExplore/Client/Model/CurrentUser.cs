@@ -9,10 +9,10 @@ public static class CurrentUser {
 
     public static bool connectionExists(ConnectionCreateDTO conn) 
     {
-        var exists = connections.Where(c => c.PaperOneId == conn.PaperOneId && c.PaperTwoId == c.PaperTwoId ||
-                                            c.PaperOneId == conn.PaperTwoId && c.PaperTwoId == c.PaperOneId)
+        var exists = connections.Where(c => (c.PaperOneId == conn.PaperOneId && c.PaperTwoId == conn.PaperTwoId) ||
+                                            (c.PaperOneId == conn.PaperTwoId && c.PaperTwoId == conn.PaperOneId))
                                 .FirstOrDefault();
         
-        return exists == null;        
+        return exists != null;        
     }
 }
