@@ -79,9 +79,9 @@
         _errorMessage = "";
         _successMessage = "Created!";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
-        Model.CurrentUser.connections.Add(created);
+        if (created != null) Model.CurrentUser.connections.Add(created);
         await refreshGraph.InvokeAsync();
-        if (_selectedTeamId != null) 
+        if (_selectedTeamId != null && created != null) 
         {
           var updated = await Http.PutAsJsonAsync($"api/team/{_selectedTeamId}/connection/{created.Id}", created.Id);
         }

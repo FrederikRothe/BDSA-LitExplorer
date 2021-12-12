@@ -21,7 +21,7 @@
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
-        <ConnectionLines @ref="_connectionLines" connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections refreshGraph=@Refresh/>
+        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections refreshGraph=@Refresh/>
         <AddConnectionWindow refreshGraph=@Refresh/>
     } 
     else 
@@ -59,8 +59,8 @@
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh/>
-    <TeamForm adminId=@_currentUserId refreshGraph=@Refresh/>
+    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh />
+    <TeamForm adminId=@Model.CurrentUser.userOid refreshGraph=@Refresh />
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>
   </Authorized>
@@ -90,7 +90,6 @@
                         userId = claim.Value;
                     }
                 }
-
                 var userDTO = new UserCreateDTO
                 {
                     oid = userId,
@@ -99,28 +98,30 @@
                 
                 var response = await Http.PostAsJsonAsync("api/User", userDTO);
                 Model.CurrentUser.userOid = userId;
-                Model.CurrentUser.teams = await Http.GetFromJsonAsync<List<TeamDTO>>($"api/User/teams/{userId}");
-                Model.CurrentUser.connections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{userId}");
+
+                var teams = await Http.GetFromJsonAsync<List<TeamDTO>>($"api/User/teams/{userId}");
+                if (teams != null) Model.CurrentUser.teams = teams;
+
+                var userConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{userId}");
+                if (userConnections != null) Model.CurrentUser.connections = userConnections;
             }
 
             _userOrTeamConnections = Model.CurrentUser.connections;
 
             if (!Model.Graph.initialised()) 
             {
-                Model.Graph.allPapers = await Http.GetFromJsonAsync<List<PaperDTO>>("api/Paper");
-                Model.Graph.publicConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>("api/Connection");
+                var papers = await Http.GetFromJsonAsync<List<PaperDTO>>("api/Paper");
+                if (papers != null) Model.Graph.allPapers = papers;
+
+                var connections = await Http.GetFromJsonAsync<List<ConnectionDTO>>("api/Connection");
+                if (connections != null) Model.Graph.publicConnections = connections;
                 Model.Graph.initialise();
             }
-            _selectedPaper = Model.Graph.allPapers.ElementAt(0);
-            _currentUserId = Model.CurrentUser.userOid;
             _dataIsLoaded = true;
         }
     }
 
     private bool _dataIsLoaded = false;
-
-    private string _currentUserId;
-    private ConnectionLines _connectionLines;
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
@@ -134,13 +135,13 @@
         {
             _selectedTeam = null;
             Model.CurrentUser.selectedTeam = null;
-            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{_currentUserId}");
+            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{Model.CurrentUser.userOid}");
         }
         else
         {
             _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
             Model.CurrentUser.selectedTeam = _selectedTeam;
-            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
+            if (_selectedTeam != null) _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
         }
         Refresh();
     }

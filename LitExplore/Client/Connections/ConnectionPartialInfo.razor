@@ -16,19 +16,22 @@
 
 
 @code {
-    [Parameter] public ConnectionDTO? connection { get; set; }
-    [Parameter] public PaperDTO paper1 { get; set; }
-    [Parameter] public PaperDTO paper2 { get; set; }
+    [Parameter] public ConnectionDTO connection { get; set; } = null!;
+    [Parameter] public PaperDTO paper1 { get; set; } = null!;
+    [Parameter] public PaperDTO paper2 { get; set; } = null!;
     
     private string _authors 
     {
         get 
         {
             string result = "";
-            foreach (var authorName in paper1.AuthorNames) 
+            if (paper1.AuthorNames != null && paper2.AuthorNames != null)
             {
-                if (paper2.AuthorNames.Contains(authorName)) {
-                    result += authorName + ", ";
+                foreach (var authorName in paper1.AuthorNames) 
+                {
+                    if (paper2.AuthorNames.Contains(authorName)) {
+                        result += authorName + ", ";
+                    }
                 }
             }
             return result.Substring(0,Math.Max(result.Length-2,0));
@@ -39,10 +42,13 @@
         get
         {
             string result = "";
-            foreach (var tagName in paper1.TagNames) 
+            if (paper1.TagNames != null && paper2.TagNames != null)
             {
-                if (paper2.TagNames.Contains(tagName)) {
-                    result += tagName + ", ";
+                foreach (var tagName in paper1.TagNames) 
+                {
+                    if (paper2.TagNames.Contains(tagName)) {
+                        result += tagName + ", ";
+                    }
                 }
             }
             return result.Substring(0,Math.Max(result.Length-2,0));
