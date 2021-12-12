@@ -26,3 +26,7 @@ img{
     width: 50%;
     height: auto;
 }
+
+.card {
+    background: var(--grey);
+}
