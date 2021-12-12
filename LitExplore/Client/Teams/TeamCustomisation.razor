@@ -127,7 +127,7 @@
       teamUpdated.Colour = colour;
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
       refreshGraph.InvokeAsync();
-      //NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
 
     }
 
