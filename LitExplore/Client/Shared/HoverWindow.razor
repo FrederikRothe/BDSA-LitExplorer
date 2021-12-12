@@ -21,8 +21,8 @@
     [Parameter] public ConnectionDTO? connection { get; set; }
     public PaperDTO? connpaper1 { get; set; }
     public PaperDTO? connpaper2 { get; set; }
-    [Parameter] public string? left { get; set; }
-    [Parameter] public string? top { get; set; }
+    [Parameter] public double left { get; set; } = 0;
+    [Parameter] public double top { get; set; } = 0;
     
     [Parameter] public bool hidden { get;set; }
 
@@ -36,10 +36,13 @@
         await base.OnParametersSetAsync();
     }
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
-    private string style { get => left == null? topPaper : $"left:{left}; top:{top};"; }
+    private string style 
+    { 
+        get => connection == null? topPaper : $"left:{left}px;"+topConnection; 
+    }
     private string? conndescription
     {
-        get => (connection != null && connection.Description != null)? connection.Description : null;
+        get => connection != null && connection.Description != null? connection.Description : null;
     }
 
     private string topPaper 
@@ -48,10 +51,15 @@
         {
             if (paper != null) 
             {
-                var (l, t) = Model.Graph.paperToPositions[paper.Id];
+                var t = Model.Graph.paperToPositions[paper.Id].Item2;
                 if (t > 50) return "transform: translateY(-100%); top: -60px;";
             }
             return "top: 45px;";
         }
+    }
+
+    private string topConnection 
+    {
+        get => (top > 600)? $"transform: translateY(-100%); top: {top-35}px;" : $"top: {top}px";
     }
 }
