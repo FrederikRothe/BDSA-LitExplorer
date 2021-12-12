@@ -10,7 +10,7 @@
       {
         <div class="modal-header">
           <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-          <button @onclick="OnCloseClicked" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
@@ -116,11 +116,6 @@
     private void OnChange(ChangeEventArgs args)
     {
         colour = int.Parse(args.Value.ToString());
-    }
-
-    protected async Task OnCloseClicked() 
-    {
-        await OnClose.InvokeAsync();
     }
 
     protected override async Task OnParametersSetAsync()
