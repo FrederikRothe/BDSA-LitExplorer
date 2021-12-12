@@ -96,6 +96,7 @@
     {
       if(team != null)
       {
+        colour = team.Colour;
         isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
         if(team.UserIDs != null)
         {
