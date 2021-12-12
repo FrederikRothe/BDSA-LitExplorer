@@ -131,8 +131,6 @@ public class TeamRepositoryTests : IDisposable
             TeamLeaderId = "1",
             TeamName = "Coca-Cola",
             Colour = 4,
-            UserIDs = new List<string>{"1", "2"},
-            ConnectionIDs = new List<int>{1,2},
         };
 
         var response = await _repository.UpdateAsync(1, update);
@@ -149,8 +147,6 @@ public class TeamRepositoryTests : IDisposable
             TeamLeaderId = "1",
             TeamName = "Coca-Cola",
             Colour = 4,
-            UserIDs = new List<string>{"1", "2"},
-            ConnectionIDs = new List<int>{1,2},
         };
 
         var response = await _repository.UpdateAsync(5, update);
