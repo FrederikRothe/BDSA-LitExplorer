@@ -36,9 +36,22 @@
         await base.OnParametersSetAsync();
     }
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
-    private string style { get => left == null? "" : $"left:{left}; top:{top};"; }
+    private string style { get => left == null? topPaper : $"left:{left}; top:{top};"; }
     private string? conndescription
     {
         get => (connection != null && connection.Description != null)? connection.Description : null;
+    }
+
+    private string topPaper 
+    {
+        get 
+        {
+            if (paper != null) 
+            {
+                var (l, t) = Model.Graph.paperToPositions[paper.Id];
+                if (t > 50) return "transform: translateY(-100%); top: -60px;";
+            }
+            return "top: 45px;";
+        }
     }
 }
