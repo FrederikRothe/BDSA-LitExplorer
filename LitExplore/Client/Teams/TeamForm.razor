@@ -28,19 +28,26 @@
 </div>
 
 @code {
-    [Parameter] public string adminId {get;set;} = null!;
+    [Parameter] public string adminId { get; set; } = null!;
     private TeamCreateDTO team = new();
     private string _errorMessage = string.Empty;
     private string _successMessage = string.Empty;
+    [Parameter] public EventCallback refreshGraph { get; set; }
     private async Task HandleValidSubmit()
     {
         if (team.TeamName == null || team.TeamName == "")
         {
-            _errorMessage = "Please enter a team name";
+            _errorMessage = "Please enter a team name.";
+            return;   
+        }
+        if (Model.CurrentUser.teams.Count() >= 7) 
+        {
+            _errorMessage = "Too many teams.";
             return;   
         }
         team.TeamLeaderId = adminId;
-        team.Colour = 1;
+        var rand = new Random();
+        team.Colour = rand.Next(1, 5);
 
         var response = await Http.PostAsJsonAsync("api/Team", team);
 
@@ -49,11 +56,12 @@
             _errorMessage = "";
             _successMessage = "Created!";
             var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
-            if (Model.CurrentUser.teams != null) 
+            if (Model.CurrentUser.teams != null && created != null) 
             {
-                Model.CurrentUser.teams.Append(created);
+                Model.CurrentUser.teams.Add(created);
             }
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            await refreshGraph.InvokeAsync();
+            clear();
         } 
         else 
         {
@@ -61,5 +69,10 @@
         }
     }
     
+    private void clear() {
+        _errorMessage = "";
+        _successMessage = "";
+        team = new();
+    }
 
 }

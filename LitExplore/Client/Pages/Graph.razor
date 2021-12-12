@@ -21,8 +21,8 @@
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
-        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections />
-        <AddConnectionWindow />
+        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections refreshGraph=@Refresh/>
+        <AddConnectionWindow refreshGraph=@Refresh/>
     } 
     else 
     {
@@ -32,18 +32,35 @@
     }
 
     <div class="teams">
+        <span class="teamHeader">Teams</span>
         @if (Model.CurrentUser.teams != null)
         {
             foreach (var team in Model.CurrentUser.teams)
             {
-                <button type="button" class="c-@colour(team) teambutton" data-bs-toggle="modal" data-bs-target="#teamModal" @onclick="() => setSelectedTeam(team)"/>
-            }
-            <button class="addteambutton" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
+                <div class="teamSection">
+                    @if(_selectedTeam != null && _selectedTeam.Id == team.Id)
+                    {
+                        <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal">
+                            <span class="oi oi-pencil"></span>
+                        </button>
+                        <button type="button" class="c-@colour(team) teamButton selected" @onclick="() => setSelectedTeam(team)">
+                            <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                        </button>
+                    }
+                    else 
+                    {
+                        <button type="button" class="c-@colour(team) teamButton" @onclick="() => setSelectedTeam(team)">
+                            <span>@team.TeamName.Substring(0,1).ToUpper()</span>
+                        </button>
+                    }
+                </div>
+                }
+            <button class="c-0" data-bs-toggle="modal" data-bs-target="#addTeamModal"><div class="addTeamButtonText"><span class="oi oi-plus"></span></div></button>
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation OnClose="() => _selectedTeam = null" team=@_selectedTeam/>
-    <TeamForm adminId=@_currentUserId/>
+    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh />
+    <TeamForm adminId=@Model.CurrentUser.userOid refreshGraph=@Refresh />
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>
   </Authorized>
@@ -73,7 +90,6 @@
                         userId = claim.Value;
                     }
                 }
-
                 var userDTO = new UserCreateDTO
                 {
                     oid = userId,
@@ -82,38 +98,55 @@
                 
                 var response = await Http.PostAsJsonAsync("api/User", userDTO);
                 Model.CurrentUser.userOid = userId;
-                Model.CurrentUser.teams = await Http.GetFromJsonAsync<TeamDTO[]>($"api/User/teams/{userId}");
-                Model.CurrentUser.connections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{userId}");
+
+                var teams = await Http.GetFromJsonAsync<List<TeamDTO>>($"api/User/teams/{userId}");
+                if (teams != null) Model.CurrentUser.teams = teams;
+
+                var userConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{userId}");
+                if (userConnections != null) Model.CurrentUser.connections = userConnections;
             }
 
             _userOrTeamConnections = Model.CurrentUser.connections;
 
             if (!Model.Graph.initialised()) 
             {
-                Model.Graph.allPapers = await Http.GetFromJsonAsync<PaperDTO[]>("api/Paper");
-                Model.Graph.publicConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>("api/Connection");
+                var papers = await Http.GetFromJsonAsync<List<PaperDTO>>("api/Paper");
+                if (papers != null) Model.Graph.allPapers = papers;
+
+                var connections = await Http.GetFromJsonAsync<List<ConnectionDTO>>("api/Connection");
+                if (connections != null) Model.Graph.publicConnections = connections;
                 Model.Graph.initialise();
             }
-            _selectedPaper = Model.Graph.allPapers.ElementAt(0);
-            _currentUserId = Model.CurrentUser.userOid;
             _dataIsLoaded = true;
         }
     }
 
     private bool _dataIsLoaded = false;
-
-    private string _currentUserId;
-    private ConnectionLines? _connectionLines;
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
-    private ConnectionDTO[]? _userOrTeamConnections;
+    private List<ConnectionDTO>? _userOrTeamConnections;
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
     private TeamDTO? _selectedTeam = null;
 
     private async void setSelectedTeam(TeamDTO team) 
     {
-        _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+        if(_selectedTeam != null && _selectedTeam.Id == team.Id)
+        {
+            _selectedTeam = null;
+            Model.CurrentUser.selectedTeam = null;
+            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{Model.CurrentUser.userOid}");
+        }
+        else
+        {
+            _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+            Model.CurrentUser.selectedTeam = _selectedTeam;
+            if (_selectedTeam != null) _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
+        }
+        Refresh();
+    }
+
+    private void Refresh() {
         StateHasChanged();
     }
     private int colour(TeamDTO team) => team.Colour;

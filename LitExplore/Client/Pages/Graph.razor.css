@@ -85,20 +85,56 @@
   gap: 10px;
 }
 
+.teamSection {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.teamHeader {
+  color: var(--white);
+  align-self: flex-end;
+  margin-right: 3px;
+  letter-spacing: 2px;
+  opacity: 0.75;
+  text-transform: uppercase;
+}
+
+.edit {
+  height: 35px !important;
+  width: 35px !important;
+  background-color: var(--grey);
+  color: var(--white);
+  align-self: center !important;
+  border: none;
+}
+
+.teamButton span {
+  color: var(--white);
+  font-size: 30px;
+}
+
 .teams button {
   border-radius: 50%;
   width: 70px;
   height: 70px;
+  align-self: flex-end;
+}
+
+.teamButton {
   border: none;
 }
-.addteambutton {
-  background-color: var(--blue);
+
+.selected {
+  border: 5px solid var(--cyan);
 }
+
 .addTeamButtonText {
   font-size: 18pt;
   color: white;
   padding-top: 6px;
 }
+
 .addconnbutton {
   position: fixed;
   right: 1rem;
@@ -116,25 +152,5 @@
 }
 
 .c-0 {
-  background-color: var(--blue);
-}
-
-.c-1 {
-  background-color: var(--red);
-}
-
-.c-2 {
-  background-color: var(--yellow);
-}
-
-.c-3 {
-  background-color: var(--orange);
-}
-
-.c-4 {
-  background-color: var(--green);
-}
-
-.c-5 {
-  background-color: var(--purple);
+  border: none;
 }

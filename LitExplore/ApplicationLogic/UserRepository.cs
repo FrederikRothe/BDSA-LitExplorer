@@ -12,8 +12,8 @@ public class UserRepository : IUserRepository
     
     public async Task<UserDTO> CreateAsync(UserCreateDTO user)
     {
-        if (user == null) return null;
-        
+        if (user == null) throw new Exception("Bad Request");
+
         var entity = FindUserOid(user.oid);
 
         if (entity == null) 
@@ -21,7 +21,7 @@ public class UserRepository : IUserRepository
             entity = new User
             {
                 oid = user.oid,
-                Name = user.Name,
+                Name = user.Name == null? "Unknown User" : user.Name,
                 Connections = new List<Connection>(),
                 Teams = new List<Team>()
             };
@@ -57,7 +57,7 @@ public class UserRepository : IUserRepository
 
     public async Task<IReadOnlyCollection<ConnectionDTO>> ReadConnectionsAsync(string userId)
         => (await _context.Connections
-                          .Where(c => c.Creator.Equals(FindUserOid(userId)))
+                          .Where(c => c.Creator != null && c.Creator.Equals(FindUserOid(userId)))
                           .Select(c => new ConnectionDTO(
                                 c.Id,
                                 (c.Creator == null? null : c.Creator.oid),
@@ -70,7 +70,15 @@ public class UserRepository : IUserRepository
                           .AsReadOnly();
 
     public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(string userId)
-        => (await _context.Teams.Where(t => t.Users.Contains(FindUserOid(userId)))
+    {
+        var user = FindUserOid(userId);
+
+        if (user == null)
+        {
+            return new List<TeamDTO>();
+        }
+
+        var teams = (await _context.Teams.Where(t => t.Users.Contains(user))
                                 .Select(t => new TeamDTO(
                                         t.Id,
                                         t.TeamName,
@@ -80,7 +88,7 @@ public class UserRepository : IUserRepository
                                         t.Connections.Select(c => c.Id)))
                                 .ToListAsync())
                                 .AsReadOnly();
-    
-    private User FindUser(int userId) => _context.Users.Where(u => u.Id.Equals(userId)).First();
+        return teams;
+    }
     private User? FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
 }

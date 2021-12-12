@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens;
 namespace LitExplore.ApplicationLogic;
 public class ConnectionRepository : IConnectionRepository
 {
@@ -11,12 +12,17 @@ public class ConnectionRepository : IConnectionRepository
 
     public async Task<ConnectionDTO> CreateAsync(ConnectionCreateDTO connection)
     {
+        var paper1 = FindPaper(connection.PaperOneId);
+        var paper2 = FindPaper(connection.PaperTwoId);
+
+        if (paper1 == null || paper2 == null) throw new Exception("Bad Request");
+
         var entity = new Connection
         {
             Creator = connection.CreatorId == null? null : FindUser(connection.CreatorId),
-            Paper1 = FindPaper(connection.PaperOneId),
+            Paper1 = paper1,
             Paper1Id = connection.PaperOneId,
-            Paper2 = FindPaper(connection.PaperTwoId),
+            Paper2 = paper2,
             Paper2Id = connection.PaperTwoId,
             ConnectionType = connection.ConnectionType,
             Description = connection.Description == null? "" : connection.Description,
@@ -70,8 +76,16 @@ public class ConnectionRepository : IConnectionRepository
                           .AsReadOnly();
 
     public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(int connectionId) 
-        => (await _context.Teams
-                          .Where(t => t.Connections.Contains(FindConnection(connectionId)))
+    {
+        var connection = FindConnection(connectionId);
+
+        if (connection == null)
+        {
+            return new List<TeamDTO>();
+        }
+
+        var team = await _context.Teams
+                          .Where(t => t.Connections.Contains(connection))
                           .Select(t => new TeamDTO(
                                 t.Id,
                                 t.TeamName,
@@ -79,10 +93,9 @@ public class ConnectionRepository : IConnectionRepository
                                 t.TeamLeader.oid, 
                                 t.Users.Select(u => u.oid), 
                                 t.Connections.Select(t => t.Id)))
-                          .ToListAsync())
-                          .AsReadOnly();
-        
-
+                          .ToListAsync();
+        return team.AsReadOnly();
+    }
 
     public async Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection)
     {
@@ -93,9 +106,17 @@ public class ConnectionRepository : IConnectionRepository
             return NotFound;
         }
 
+        var paper1 = FindPaper(connection.PaperOneId);
+        var paper2 = FindPaper(connection.PaperTwoId);
+
+        if (paper1 == null || paper2 == null)
+        {
+            return BadRequest;
+        }
+
         entity.Id = connection.Id;
-        entity.Paper1 = FindPaper(connection.PaperOneId);
-        entity.Paper2 = FindPaper(connection.PaperTwoId);
+        entity.Paper1 = paper1;
+        entity.Paper2 = paper2;
         entity.ConnectionType = connection.ConnectionType;
         entity.Description = connection.Description == null? "" : connection.Description;
 
@@ -119,8 +140,8 @@ public class ConnectionRepository : IConnectionRepository
         return Deleted;
     }
 
-    private Paper FindPaper(int id) => _context.Papers.Where(p => p.Id == id).First();
-    private Connection FindConnection(int id) => _context.Connections.Where(c => c.Id == id).FirstOrDefault();
-    private User FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).First();
+    private Paper? FindPaper(int id) => _context.Papers.Where(p => p.Id == id).FirstOrDefault();
+    private Connection? FindConnection(int id) => _context.Connections.Where(c => c.Id == id).FirstOrDefault();
+    private User? FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).FirstOrDefault();
 
 }

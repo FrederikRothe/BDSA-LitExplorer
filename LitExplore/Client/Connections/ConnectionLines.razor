@@ -16,19 +16,19 @@
 @if (_showHoverWindow) {
     <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeftS top=@_hoverWindowTopS/>
 } 
-<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2/>
+<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh/>
 
 
 @code {
-    [Parameter] public ConnectionDTO[] connections { get; set; } = null!;
-    [Parameter] public ConnectionDTO[] extraConnections { get; set; } = new ConnectionDTO[0];
+    [Parameter] public List<ConnectionDTO> connections { get; set; } = null!;
+    [Parameter] public List<ConnectionDTO> extraConnections { get; set; } = new List<ConnectionDTO>();
 
     private PaperDTO getPaper(int id) => Model.Graph.allPapers.Where(p => p.Id == id).Single();
     
     private bool _showHoverWindow = false;
 
-    private string _hoverWindowLeftS { get; set; }
-    private string _hoverWindowTopS { get; set; }
+    private string? _hoverWindowLeftS { get; set; }
+    private string? _hoverWindowTopS { get; set; }
 
     protected void Mouse_Move(MouseEventArgs e)
     {
@@ -61,4 +61,10 @@
     private PaperDTO _paper1 = TestEntities.paperDTO;
     private PaperDTO _paper2 = TestEntities.paperDTO;
     private ConnectionDTO _hoverconnection = TestEntities.connectionDTO;
+    [Parameter] public EventCallback refreshGraph { get; set; }
+
+    public void Refresh() 
+    {
+        refreshGraph.InvokeAsync();
+    }
 }

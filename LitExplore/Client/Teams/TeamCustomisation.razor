@@ -10,7 +10,7 @@
       {
         <div class="modal-header">
           <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-          <button @onclick="OnCloseClicked" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
@@ -24,16 +24,16 @@
                 <p>team colour</p>
                   <div class="colourChoices btn-group-toggle" data-toggle="buttons" id="options">
                     <label>
-                      <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" value=1 checked=@(@team.Colour==1)>
+                      <input disabled=@isNotTeamOwner class="redbutton" type="radio" name="options" id="red" autocomplete="off" Value=1 checked=@(@team.Colour==1) @onchange="OnChange">
                     </label>
                     <label>
-                      <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" value=2 checked=@(@team.Colour==2)>
+                      <input disabled=@isNotTeamOwner class="yellowbutton" type="radio" name="options" id="yellow" autocomplete="off" Value=2 checked=@(@team.Colour==2) @onchange="OnChange">
                     </label>
                     <label>
-                      <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" value=3 checked=@(@team.Colour==3)>
+                      <input disabled=@isNotTeamOwner class="greenbutton" type="radio" name="options" id="green" autocomplete="off" Value=4 checked=@(@team.Colour==4) @onchange="OnChange">
                     </label>
                     <label>
-                      <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" value=4 checked=@(@team.Colour==4)>
+                      <input disabled=@isNotTeamOwner class="orangebutton" type="radio" name="options" id="orange" autocomplete="off" Value=3 checked=@(@team.Colour==3) @onchange="OnChange">
                     </label>
                   </div>
               </div>
@@ -74,37 +74,42 @@
 
     private TeamUpdateDTO teamUpdated = new();
 
-    [Parameter]
-    public TeamDTO team { get; set; } = null!;
+    [Parameter] public TeamDTO team { get; set; } = null!;
 
     public bool isNotTeamOwner { get; set; } = false;
 
     public int colour { get; set; }
 
-    public string teamName {get; set;}
+    public string teamName { get; set; } = "";
     
     private bool _loaded { get; set; } = false;
 
     public List<UserDTO> members = new List<UserDTO>();
 
-    [Parameter] public EventCallback OnClose { get; set; }
-
-    protected async Task OnCloseClicked() 
+    private void OnChange(ChangeEventArgs args)
     {
-        await OnClose.InvokeAsync();
+      if (args.Value != null)
+      {
+        var arg = args.Value.ToString();
+        if (arg != null) colour = int.Parse(arg);
+      }
     }
+
+    [Parameter] public EventCallback refreshGraph { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-      if(team != null)
+      if (team != null)
       {
+        colour = team.Colour;
         isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
-        if(team.UserIDs != null)
+        if (team.UserIDs != null)
         {
           var users = await Http.GetFromJsonAsync<UserDTO[]>($"api/Team/users/{team.Id}");
-          members = users.ToList();
+          if (users != null) members = users.ToList();
           teamName = team.TeamName; 
-        } else 
+        } 
+        else 
         {
           teamName = "Unknown Team";
         }
@@ -124,6 +129,7 @@
 
       teamUpdated.Colour = colour;
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      await refreshGraph.InvokeAsync();
       NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
 
     }
@@ -142,7 +148,8 @@
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this team?"))
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            Model.CurrentUser.teams.Remove(team);
+            await refreshGraph.InvokeAsync();
         }
     }
 }

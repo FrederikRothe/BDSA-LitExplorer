@@ -3,6 +3,10 @@ body {
   padding: 0;
 }
 
+nav {
+  align-self: center;
+}
+
 .menuToggle {
   display: block;
   position: relative;
