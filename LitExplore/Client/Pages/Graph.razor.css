@@ -106,6 +106,7 @@
   background-color: var(--grey);
   color: var(--white);
   align-self: center !important;
+  border: none;
 }
 
 .teamButton span {
@@ -117,12 +118,15 @@
   border-radius: 50%;
   width: 70px;
   height: 70px;
-  border: none;
   align-self: flex-end;
 }
 
-.addteambutton {
-  background-color: var(--blue);
+.teamButton {
+  border: none;
+}
+
+.selected {
+  border: 5px solid var(--cyan);
 }
 
 .addTeamButtonText {
@@ -148,25 +152,5 @@
 }
 
 .c-0 {
-  background-color: var(--blue);
-}
-
-.c-1 {
-  background-color: var(--red);
-}
-
-.c-2 {
-  background-color: var(--yellow);
-}
-
-.c-3 {
-  background-color: var(--orange);
-}
-
-.c-4 {
-  background-color: var(--green);
-}
-
-.c-5 {
-  background-color: var(--purple);
+  border: none;
 }
