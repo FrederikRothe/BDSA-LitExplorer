@@ -18,6 +18,4 @@ public record TeamDTO(int Id, string TeamName, int Colour, string? TeamLeaderId,
 public record TeamUpdateDTO : TeamCreateDTO
 {
     public int Id { get; set; }
-    public IEnumerable<string> UserIDs { get; init; } = new List<string>();
-    public IEnumerable<int> ConnectionIDs { get; init; } = new List<int>();
 };

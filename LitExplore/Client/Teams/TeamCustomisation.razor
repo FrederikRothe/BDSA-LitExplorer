@@ -10,7 +10,7 @@
       {
         <div class="modal-header">
           <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-          <button @onclick="OnCloseClicked" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
@@ -86,8 +86,6 @@
 
     public List<UserDTO> members = new List<UserDTO>();
 
-    [Parameter] public EventCallback OnClose { get; set; }
-
     private void OnChange(ChangeEventArgs args)
     {
       if (args.Value != null)
@@ -97,17 +95,13 @@
       }
     }
 
-    protected async Task OnCloseClicked() 
-    {
-        await OnClose.InvokeAsync();
-    }
-
     [Parameter] public EventCallback refreshGraph { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
       if (team != null)
       {
+        colour = team.Colour;
         isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
         if (team.UserIDs != null)
         {
@@ -123,6 +117,8 @@
         await base.OnParametersSetAsync();
       }
     }
+
+    [Parameter] public EventCallback refreshGraph { get; set; }
     
     private async Task Update()
     {
@@ -136,7 +132,7 @@
       teamUpdated.Colour = colour;
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
       await refreshGraph.InvokeAsync();
-      //NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
 
     }
 
