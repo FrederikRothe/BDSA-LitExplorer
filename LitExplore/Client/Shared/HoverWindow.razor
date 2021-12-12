@@ -37,21 +37,8 @@
     }
     private string styleclass { get => paper==null? "window connwindow" : "window paperwindow"; }
     private string style { get => left == null? "" : $"left:{left}; top:{top};"; }
-    private string conndescription
+    private string? conndescription
     {
-        get
-        {
-            if (connection != null && connection.Description != null)
-            {
-                if (connection.Description.Length > 20) {
-                    return connection.Description.Substring(0,20)+"...";
-                } 
-                return connection.Description;  
-            }
-            else 
-            {
-                return "";
-            }
-        }
+        get => (connection != null && connection.Description != null)? connection.Description : null;
     }
 }
