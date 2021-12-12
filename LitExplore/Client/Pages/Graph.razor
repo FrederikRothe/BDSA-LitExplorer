@@ -123,9 +123,18 @@
 
     private async void setSelectedTeam(TeamDTO team) 
     {
-        _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
-        Model.CurrentUser.selectedTeam = _selectedTeam;
-        _userOrTeamConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/Team/connections/{_selectedTeam.Id}");
+        if(_selectedTeam != null && _selectedTeam.Id == team.Id)
+        {
+            _selectedTeam = null;
+            Model.CurrentUser.selectedTeam = null;
+            _userOrTeamConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/User/connections/{_currentUserId}");
+        }
+        else
+        {
+            _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+            Model.CurrentUser.selectedTeam = _selectedTeam;
+            _userOrTeamConnections = await Http.GetFromJsonAsync<ConnectionDTO[]>($"api/Team/connections/{_selectedTeam.Id}");
+        }
 
         _connectionLines.Refresh();
         StateHasChanged();
