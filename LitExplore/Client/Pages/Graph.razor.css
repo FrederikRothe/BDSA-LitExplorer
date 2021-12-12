@@ -91,6 +91,14 @@
   justify-content: flex-end;
 }
 
+.teamHeader {
+  color: var(--white);
+  align-self: flex-end;
+  margin-right: 3px;
+  letter-spacing: 2px;
+  opacity: 0.75;
+}
+
 .edit {
   height: 35px !important;
   width: 35px !important;
