@@ -44,10 +44,10 @@
     private int y1(ConnectionDTO c) => (position1(c).Item2); 
     private int x2(ConnectionDTO c) => (position2(c).Item1); 
     private int y2(ConnectionDTO c) => (position2(c).Item2); 
-    private string x1s(ConnectionDTO c) => x1(c)+"vw"; 
-    private string y1s(ConnectionDTO c) => y1(c)+"vh"; 
-    private string x2s(ConnectionDTO c) => x2(c)+"vw"; 
-    private string y2s(ConnectionDTO c) => y2(c)+"vh"; 
+    private string x1s(ConnectionDTO c) => $"{x1(c)}vw"; 
+    private string y1s(ConnectionDTO c) => $"{y1(c)}vh";
+    private string x2s(ConnectionDTO c) => $"{x2(c)}vw"; 
+    private string y2s(ConnectionDTO c) => $"{y2(c)}vh"; 
     private void hoversOn(ConnectionDTO c) {
         _showHoverWindow = !_showHoverWindow;
         _hoverconnection = c;
