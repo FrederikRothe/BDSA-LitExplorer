@@ -32,6 +32,39 @@
   padding-left: 5px;
 }
 
+.bordered {
+  border: 1px solid var(--grey);
+  width: 90%;
+}
+
+.addHeader {
+  margin: 0px;
+  font-size: 14px;
+}
+
+.uglyfix {
+  right: 8px;
+  top: 7px;
+}
+
+.inputUser {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.addUserButton {
+  height: 30px !important;
+  width: 30px !important;
+  background-color: var(--cta);
+  color: var(--white);
+  align-self: center !important;
+  border: none;
+  border-radius: 50%;
+  font-size: 13px;
+}
+
 .colours {
   display: flex;
   flex-direction: row;
