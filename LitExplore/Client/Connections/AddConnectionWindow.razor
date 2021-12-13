@@ -11,7 +11,7 @@
       <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
         <div class="modal-body">
 
-          <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
+          <span style="color: var(--red);">@_errorMessage</span>
           
           <div class="dropdowns">
 
@@ -47,7 +47,7 @@
             </select>
         </div>
         <div class="modal-footer">
-          <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create" />
+          <ButtonIcon  type="submit" icon="oi oi-check" tooltip="Create" data_bs_target="#AddConnectionModal" data_bs_dismiss="modal" />
         </div>
         </EditForm>
       </div>
@@ -57,7 +57,6 @@
 @code {
   private ConnectionCreateDTO connection = new();
   private string _errorMessage = string.Empty;
-  private string _successMessage = string.Empty;
   private int? _selectedTeamId;
   
   [Parameter] public EventCallback refreshGraph { get; set; }
@@ -84,7 +83,6 @@
     if (response.IsSuccessStatusCode)
     {
         _errorMessage = "";
-        _successMessage = "Created!";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
         if (created != null) Model.CurrentUser.connections.Add(created);
         await refreshGraph.InvokeAsync();
@@ -93,12 +91,12 @@
     {
         _errorMessage = $"An error occured.";
     }
+    clear();
   }
 
   public void clear() 
   {
     _errorMessage = string.Empty;
-    _successMessage = string.Empty;
     connection = new();
   }
 }

@@ -24,7 +24,7 @@
             <ButtonIcon onButtonClick="startShare" icon="oi oi-people" data_bs_target="#ShareConnectionWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share with team" />
           </div>
           <div>
-            <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" tooltip="Delete" />
+            <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" data_bs_dismiss="modal" tooltip="Delete" />
             <ButtonIcon onButtonClick="startUpdate" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
           </div>
         }
@@ -113,8 +113,8 @@
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete the connection?"))
         {
             await Http.DeleteAsync($"api/Connection/{connection.Id}");
-            Model.CurrentUser.connections.Remove(connection);
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            Model.CurrentUser.connections.RemoveAll(c => c.Id == connection.Id);
+            StateHasChanged();
         }
     }
 
@@ -136,7 +136,7 @@
             }
             else
             {
-              await Http.PutAsJsonAsync($"api/Team/{change.Key}/connection", connection.Id);
+              await Http.PutAsJsonAsync($"api/Team/{change.Key}/connection/{connection.Id}", connection.Id);
             }
           }
         }

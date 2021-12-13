@@ -13,14 +13,14 @@
             <EditForm Model="@team" OnValidSubmit="@HandleValidSubmit">
                 <div class="modal-body">
 
-                    <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
+                    <span style="color: var(--red);">@_errorMessage</span>
                     <div>
                         <h2>Team Name</h2>
                         <input class="form-control" type="text" id="teamname" @bind=team.TeamName/>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create"/>
+                    <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create" data_bs_dismiss="modal"/>
                 </div>
             </EditForm>
         </div>
@@ -31,7 +31,6 @@
     [Parameter] public string adminId { get; set; } = null!;
     private TeamCreateDTO team = new();
     private string _errorMessage = string.Empty;
-    private string _successMessage = string.Empty;
     [Parameter] public EventCallback refreshGraph { get; set; }
     private async Task HandleValidSubmit()
     {
@@ -54,7 +53,6 @@
         if (response.IsSuccessStatusCode)
         {
             _errorMessage = "";
-            _successMessage = "Created!";
             var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
             if (Model.CurrentUser.teams != null && created != null) 
             {
@@ -70,7 +68,6 @@
     
     private void Clear() {
         _errorMessage = "";
-        _successMessage = "";
         team = new();
     }
 
