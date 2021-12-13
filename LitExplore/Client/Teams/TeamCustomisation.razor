@@ -113,7 +113,7 @@
         _col = "red";
         return;
       }
-      
+
       var response = await Http.PutAsJsonAsync($"api/Team/{team.Id}/user/{userOid}", userOid);
       if(response.IsSuccessStatusCode)
       {

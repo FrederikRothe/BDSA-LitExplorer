@@ -64,6 +64,9 @@
   border-radius: 50%;
   font-size: 13px;
 }
+.addUserButton:hover {
+  background-color: var(--blue);
+}
 
 .colours {
   display: flex;
@@ -85,7 +88,7 @@
 .memberList {
   display: flex;
   flex-direction: column;
-  border: 1px solid #43495a;
+  border: 1px solid var(--grey);
   list-style-type: none;
   padding: 20px;
   gap: 25px;
