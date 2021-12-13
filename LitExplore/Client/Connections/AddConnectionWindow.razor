@@ -47,7 +47,7 @@
             </select>
         </div>
         <div class="modal-footer">
-          <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create" />
+          <ButtonIcon  type="submit" icon="oi oi-check" tooltip="Create" data_bs_target="#AddConnectionModal" data_bs_dismiss="modal" />
         </div>
         </EditForm>
       </div>
@@ -84,7 +84,6 @@
     if (response.IsSuccessStatusCode)
     {
         _errorMessage = "";
-        _successMessage = "Created!";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
         if (created != null) Model.CurrentUser.connections.Add(created);
         await refreshGraph.InvokeAsync();
@@ -93,6 +92,7 @@
     {
         _errorMessage = $"An error occured.";
     }
+    clear();
   }
 
   public void clear() 
