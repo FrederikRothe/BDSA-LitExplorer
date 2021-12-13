@@ -153,7 +153,7 @@
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
             Model.CurrentUser.teams.Remove(team);
-            await refreshGraph.InvokeAsync();
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
         }
     }
 }
