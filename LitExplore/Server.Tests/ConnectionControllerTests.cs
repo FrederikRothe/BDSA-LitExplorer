@@ -8,7 +8,7 @@ public class ConnectionControllerTests
         // Arrange
         var logger = new Mock<ILogger<ConnectionController>>();
         var toCreate = new ConnectionCreateDTO();
-        var created = new ConnectionDTO(1, "langt-oid", 1, 2, "other", "God connection", new List<int>());
+        var created = new ConnectionDTO(1, "userOid", 1, 2, "other", "God connection", new List<int>());
         var repository = new Mock<IConnectionRepository>();
         repository.Setup(m => m.CreateAsync(toCreate)).ReturnsAsync(created);
         var controller = new ConnectionController(logger.Object, repository.Object);
