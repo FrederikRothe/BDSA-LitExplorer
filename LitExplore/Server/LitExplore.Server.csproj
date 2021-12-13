@@ -23,7 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Client\LitExplore.Client.csproj" />
     <ProjectReference Include="..\Storage\LitExplore.Storage.csproj" />
-    <ProjectReference Include="..\ApplicationLogic\LitExplore.ApplicationLogic.csproj" />
+    <ProjectReference Include="..\DomainModel\LitExplore.DomainModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
