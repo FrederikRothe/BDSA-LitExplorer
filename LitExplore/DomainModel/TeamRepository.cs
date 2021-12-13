@@ -10,9 +10,9 @@ public class TeamRepository : ITeamRepository
         _context = context;
     }
 
-    public async Task<TeamDTO> CreateAsync(TeamCreateDTO team, string creatorId)
+    public async Task<TeamDTO> CreateAsync(TeamCreateDTO team)
     {
-        var teamLeader = _context.Users.Where(u => u.oid == creatorId).Single();
+        var teamLeader = _context.Users.Where(u => u.oid == team.TeamLeaderId).Single();
         var entity = new Team
         {
             TeamLeader = teamLeader,

@@ -33,7 +33,7 @@ public class UserRepositoryTests : IDisposable
 
         var created = await _repository.CreateAsync(user);
 
-        Assert.Equal(4, created.id);
+        Assert.Equal(4, created.Id);
         Assert.Equal(user.oid, created.oid);
         Assert.Equal(user.Name, created.Name);
         Assert.Equal(new List<int>(), created.ConnectionIDs);
@@ -43,16 +43,7 @@ public class UserRepositoryTests : IDisposable
     [Fact]
     public async Task CreateAsync_throws_exception_if_trying_to_create_user_with_no_object()
     {
-        try
-        {
-            var created = await _repository.CreateAsync(null);
-        }
-        catch (Exception e)
-        {
-            Assert.True(true);
-            return;
-        }
-        Assert.True(false);
+        await Assert.ThrowsAsync<Exception>(async () => await _repository.CreateAsync(null));
     }
 
     [Fact]
@@ -62,7 +53,7 @@ public class UserRepositoryTests : IDisposable
         
         var found = await _repository.ReadAsync("2");
     
-        Assert.Equal(user.id, found.Value.id);
+        Assert.Equal(user.Id, found.Value.Id);
         Assert.Equal(user.oid, found.Value.oid);
         Assert.Equal(user.Name, found.Value.Name);
         Assert.Equal(user.ConnectionIDs, found.Value.ConnectionIDs);

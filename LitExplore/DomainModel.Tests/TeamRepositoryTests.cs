@@ -33,7 +33,7 @@ public class TeamRepositoryTests : IDisposable
             Colour = 1
         };
 
-        var created = await _repository.CreateAsync(team, "1");
+        var created = await _repository.CreateAsync(team);
 
         Assert.Equal(4, created.Id);
         Assert.Equal(team.TeamName, created.TeamName);
