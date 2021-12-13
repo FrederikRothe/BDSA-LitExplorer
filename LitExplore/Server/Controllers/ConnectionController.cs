@@ -36,12 +36,6 @@ public class ConnectionController : ControllerBase
     [HttpGet]
     public async Task<IReadOnlyCollection<ConnectionDTO>> GetAllConnections() => await _repository.ReadPredefinedAsync();
 
-    [ProducesResponseType(404)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(typeof(IReadOnlyCollection<TeamDTO>), 200)]
-    [HttpGet("teams/{id}")]
-    public async Task<IReadOnlyCollection<TeamDTO>> GetTeams(int id) => await _repository.ReadTeamsAsync(id);
-
     // Update
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
