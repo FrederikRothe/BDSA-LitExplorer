@@ -1,4 +1,4 @@
-# BDSA-LitExplorer
+# BDSA-LitExplore
 
 ## Welcome!
 We're group hård scneft and we've been working on the Literature Explore project. In short, a data base that stores academic papers and their relations with other papers based on certain criteria. Our primary focus has been on allowing users to create said connections and also share them with others. 
