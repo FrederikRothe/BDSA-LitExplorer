@@ -74,7 +74,7 @@
         <div class="modal-footer">
           @if(!isNotTeamOwner)
           {
-            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" />
+            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" data_bs_dismiss="modal"/>
             <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" />
           } 
         </div>
@@ -102,6 +102,8 @@
     private bool _loaded { get; set; } = false;
 
     private string _userAdd { get; set; } = "";
+
+    [Parameter] public EventCallback refreshTeam { get; set; }
 
     public List<UserDTO> members = new List<UserDTO>();
 
@@ -214,8 +216,9 @@
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this team?"))
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
-            Model.CurrentUser.teams.Remove(team);
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+            Model.CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
+            await refreshTeam.InvokeAsync();
+            StateHasChanged();
         }
     }
 }
