@@ -161,8 +161,8 @@ public static class Seeder
                 TeamLeader = Nadja, 
                 Colour = 1, 
                 Users = new List<User>{Nadja, Theis, Sebastian, Frederik, Caspar, Emil}, 
-                Connections = await context.Connections.Where(c => c.Id == 15 || c.Id == 12).ToListAsync(),
-                TeamName = "Hård Schneft"
+                Connections = new List<Connection>(),
+                TeamName = "Hård Scneft"
             };
 
             Nadja.IsLeaderOf = new List<Team>{haardSchneft};
