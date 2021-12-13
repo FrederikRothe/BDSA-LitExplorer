@@ -20,7 +20,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     .RequireAuthenticatedUser()
                     .AddAuthenticationSchemes("Test")
                     .Build();
-
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
 

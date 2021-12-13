@@ -16,7 +16,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task get_returns_papers()
     {
-        var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/papers");
+        var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 
 
         Assert.NotNull(papers);
