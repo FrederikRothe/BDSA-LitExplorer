@@ -4,15 +4,13 @@ VisualStudioVersion = 16.0.0.0
 MinimumVisualStudioVersion = 16.0.0.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Server", "Server\LitExplore.Server.csproj", "{10C2CB19-8CD2-4018-BC51-70254601975F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Tests", "Server.Tests\Server.Tests.csproj", "{9488FC4D-B8E0-4725-91AF-2F7709913A5B}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Client", "Client\LitExplore.Client.csproj", "{28CC7AD8-6819-495E-A9A8-89B3B80B8E4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\LitExplore.Storage.csproj", "{48C012BA-1881-416C-8FDE-C3377DE6D0B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LitExplore.ApplicationLogic", "ApplicationLogic\LitExplore.ApplicationLogic.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0840D466-309E-4947-82C4-B49386032C0F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Tests", "Server.Tests\Server.Tests.csproj", "{9488FC4D-B8E0-4725-91AF-2F7709913A5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogic", "ApplicationLogic\LitExplore.ApplicationLogic.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogic.Tests", "ApplicationLogic.Tests\ApplicationLogic.Tests.csproj", "{2131DF5B-37A6-4D1A-A4E2-EECCE01883C3}"
 EndProject
