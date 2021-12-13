@@ -7,7 +7,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Create new team</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <EditForm Model="@team" OnValidSubmit="@HandleValidSubmit">
@@ -61,7 +61,6 @@
                 Model.CurrentUser.teams.Add(created);
             }
             await refreshGraph.InvokeAsync();
-            clear();
         } 
         else 
         {
@@ -69,7 +68,7 @@
         }
     }
     
-    private void clear() {
+    private void Clear() {
         _errorMessage = "";
         _successMessage = "";
         team = new();
