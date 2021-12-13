@@ -61,14 +61,14 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        repository.Setup(m => m.ReadConnectionsAsync("NonExistingUserOid")).ReturnsAsync(default(List<ConnectionDTO>));
+        repository.Setup(m => m.ReadConnectionsAsync("NonExistingUserOid")).ReturnsAsync(new List<ConnectionDTO>());
         var controller = new UserController(logger.Object, repository.Object);
 
         // Act
         var response = await controller.GetConnections("NonExistingUserOid");
 
         // Assert
-        Assert.Null(response);
+        Assert.Equal(new List<ConnectionDTO>(), response);
     }
 
     [Fact]
@@ -94,14 +94,14 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        repository.Setup(m => m.ReadTeamsAsync("NonExistingUserOid")).ReturnsAsync(default(List<TeamDTO>));
+        repository.Setup(m => m.ReadTeamsAsync("NonExistingUserOid")).ReturnsAsync(new List<TeamDTO>());
         var controller = new UserController(logger.Object, repository.Object);
 
         // Act
         var response = await controller.GetTeams("NonExistingUserOid");
 
         // Assert
-        Assert.Null(response);
+        Assert.Equal(new List<TeamDTO>(), response);
     }
 
     [Fact]

@@ -61,14 +61,14 @@ public class TeamControllerTests
         // Arrange
         var logger = new Mock<ILogger<TeamController>>();
         var repository = new Mock<ITeamRepository>();
-        repository.Setup(m => m.ReadConnectionsAsync(69)).ReturnsAsync(default(List<ConnectionDTO>));
+        repository.Setup(m => m.ReadConnectionsAsync(69)).ReturnsAsync(new List<ConnectionDTO>());
         var controller = new TeamController(logger.Object, repository.Object);
 
         // Act
         var response = await controller.GetTeamConnections(69);
 
         // Assert
-        Assert.Null(response);
+        Assert.Equal(new List<ConnectionDTO>(), response);
     }
 
     [Fact]
@@ -94,14 +94,14 @@ public class TeamControllerTests
         // Arrange
         var logger = new Mock<ILogger<TeamController>>();
         var repository = new Mock<ITeamRepository>();
-        repository.Setup(m => m.ReadUsersAsync(69)).ReturnsAsync(default(List<UserDTO>));
+        repository.Setup(m => m.ReadUsersAsync(69)).ReturnsAsync(new List<UserDTO>());
         var controller = new TeamController(logger.Object, repository.Object);
 
         // Act
         var response = await controller.GetTeamUsers(69);
 
         // Assert
-        Assert.Null(response);
+        Assert.Equal(new List<UserDTO>(), response);
     }
 
     [Fact]
