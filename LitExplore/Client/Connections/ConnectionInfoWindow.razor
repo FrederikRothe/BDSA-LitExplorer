@@ -136,7 +136,7 @@
             }
             else
             {
-              await Http.PutAsJsonAsync($"api/Team/{change.Key}/connection/{connection.Id}", connection.Id);
+              await Http.PutAsJsonAsync($"api/Team/{change.Key}/connection", connection.Id);
             }
           }
         }
