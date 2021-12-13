@@ -69,6 +69,12 @@
       return;
     }
 
+    if (Model.CurrentUser.connectionExists(connection))
+    {
+      _errorMessage = "You have already created a connection between these papers.";
+      return;
+    }
+
     connection.CreatorId = Model.CurrentUser.userOid;
     connection.ConnectionType = "other";
     connection.TeamId = _selectedTeamId;
