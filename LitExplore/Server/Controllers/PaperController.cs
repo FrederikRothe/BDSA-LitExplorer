@@ -4,7 +4,6 @@ using Microsoft.Identity.Web.Resource;
 
 namespace LitExplore.Server.Controllers;
 
-
 [ApiController]
 [Route("api/[controller]")]
 [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]

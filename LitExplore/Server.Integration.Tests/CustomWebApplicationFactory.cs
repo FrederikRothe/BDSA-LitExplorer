@@ -30,7 +30,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 options.DefaultScheme = "Test";
             })
             .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
-
             var connection = new SqliteConnection("Filename=:memory:");
 
             services.AddDbContext<LitExploreContext>(options =>

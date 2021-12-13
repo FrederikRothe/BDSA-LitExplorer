@@ -2,21 +2,18 @@ namespace Server.Integration.Tests;
 
 public class PaperTests : IClassFixture<CustomWebApplicationFactory>
 {
-    private readonly HttpClient _client;
     private readonly CustomWebApplicationFactory _factory;
-     public PaperTests(CustomWebApplicationFactory factory)
+    public PaperTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false
-        });
     }
 
     [Fact]
     public async Task get_returns_papers()
     {
-        var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
+        var provider = TestClaimsProvider.WithUserClaims();
+        var client = _factory.CreateClientWithTestAuth(provider);
+        var papers = await client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 
 
         Assert.NotNull(papers);
