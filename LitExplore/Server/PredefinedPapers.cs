@@ -131,7 +131,9 @@ public static class SeedExtensions
                     }
                     if(connType.Count() > 0)
                     {
-                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = String.Join(":", connType.ToArray()), Description = ""});
+                        string type = String.Join(":", connType.ToArray());
+                        if (p1 == Paper1 && p2 == Paper2 || p1 == Paper9 && p2 == Paper11) type = type + ":reference"; 
+                        conns.Add(new Connection{Paper1 = p1, Paper1Id = p1.Id, Paper2 = p2, Paper2Id = p2.Id, ConnectionType = type, Description = ""});
                     }
                 }
             }

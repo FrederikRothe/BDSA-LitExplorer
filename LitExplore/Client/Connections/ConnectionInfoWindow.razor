@@ -3,67 +3,110 @@
 @inject NavigationManager NavigationManager
 
 <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="connectionInfoWindow" style="display: none;" tabindex="-1" aria-labelledby="connectionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title" id="connectionModalLabel">"@paper1.Title" and "@paper2.Title"</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
-                @if (connection.Description != null && connection.Description.Length != 0) 
-                {
-                    <h2>Description</h2>
-                    <p>@connection.Description</p>
-                }
-            </div>
-            <div class="modal-footer info">
-                @if (connection.CreatorId == Model.CurrentUser.userOid)
-                {
-                    <div>
-                        <ButtonIcon icon="oi oi-people" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share with team" />
-                    </div>
-                    <div>
-                        <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" tooltip="Delete" />
-                        <ButtonIcon onButtonClick="() => _description = connection.Description" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
-                    </div>
-                }
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="connectionModalLabel">"@paper1.Title" and "@paper2.Title"</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
+        @if (connection.Description != null && connection.Description.Length != 0) 
+          {
+            <h2>Description</h2>
+            <p>@connection.Description</p>
+          }
+      </div>
+      <div class="modal-footer info">
+        @if (connection.CreatorId == Model.CurrentUser.userOid)
+        {
+          <div>
+            <ButtonIcon onButtonClick="startShare" icon="oi oi-people" data_bs_target="#ShareConnectionWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share with team" />
+          </div>
+          <div>
+            <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" tooltip="Delete" />
+            <ButtonIcon onButtonClick="startUpdate" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
+          </div>
+        }
+      </div>
     </div>
+  </div>
 </div>
 <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="connectionUpdateWindow" style="display: none;" tabindex="-1" aria-labelledby="connectionUpdateWindowLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title" id="connectionUpdateWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <EditForm Model="@connection" OnValidSubmit="@update">
-                <div class="modal-body">
-                    <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
-                    <h2>Description</h2>
-                    <textarea class="form-control" @bind="_description" aria-label="With textarea" placeholder="write here ..."></textarea>
-                </div>
-                <div class="modal-footer">
-                    @if (connection.CreatorId == Model.CurrentUser.userOid)
-                    {
-                        <ButtonIcon icon="oi oi-check" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Save" />
-                    }
-                </div>
-            </EditForm>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="connectionUpdateWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <EditForm Model="@_updateDTO" OnValidSubmit="@update">
+        <div class="modal-body">
+          <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
+          <h2>Description</h2>
+          <textarea class="form-control" @bind="_updateDTO.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
         </div>
+        <div class="modal-footer">
+            <ButtonIcon icon="oi oi-check" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Save" />
+        </div>
+      </EditForm>
     </div>
+  </div>
+</div>
+<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="ShareConnectionWindow" style="display: none;" tabindex="-1" aria-labelledby="ShareConnectionWindowLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="ShareConnectionWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <EditForm Model="@connection" OnValidSubmit="@share">
+        <div class="modal-body">
+          <h2>Select teams to share the connection</h2>
+          @if (connection.TeamIDs != null)
+          {
+            <div class="shareCheckboxes">
+            @foreach(var team in Model.CurrentUser.teams)
+            { 
+              <div class="form-check">
+                <input class="form-check-input" @onchange="() => _shareChanges[team.Id] = !_shareChanges[team.Id]" type="checkbox" value=@team.Id id=@team.Id checked=@connection.TeamIDs.Contains(team.Id)>
+                <label class="form-check-label" for=@team.Id>@team.TeamName</label>
+              </div>
+            }
+            </div>
+          }
+          
+        </div>
+        <div class="modal-footer">
+          @if (connection.CreatorId == Model.CurrentUser.userOid)
+          {
+            <ButtonIcon icon="oi oi-check" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share" />
+          }
+        </div>
+      </EditForm>
+    </div>
+  </div>
 </div>
 
 @code {
     [Parameter] public ConnectionDTO connection { get; set; } = null!;
     [Parameter] public PaperDTO paper1 { get; set; } = null!;
     [Parameter] public PaperDTO paper2 { get; set; } = null!;
-    [Parameter] public EventCallback refreshGraph { get; set; }
-    private string? _description; 
+    [Parameter] public EventCallback refreshGraph { get; set; } 
+
+    private Dictionary<int, bool> _shareChanges = new Dictionary<int, bool>();
+    private void startShare() 
+    {
+      foreach (var team in Model.CurrentUser.teams) 
+      {
+        _shareChanges[team.Id] = false;
+      }
+    }
 
     private ConnectionUpdateDTO _updateDTO = new();
+    private async Task startUpdate()
+    {
+        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
+    }
 
     private async Task delete()
     {
@@ -77,10 +120,25 @@
 
     private async Task update()
     {
-        _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
-        _updateDTO.Description = _description;
         var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
         await refreshGraph.InvokeAsync();
 
+    }
+    private async Task share()
+    {
+        foreach (var change in _shareChanges)
+        {
+          if (change.Value && connection.TeamIDs != null) 
+          {
+            if (connection.TeamIDs.Contains(change.Key))
+            {
+              await Http.DeleteAsync($"api/Team/{change.Key}/connection/{connection.Id}");
+            }
+            else
+            {
+              await Http.PutAsJsonAsync($"api/Team/{change.Key}/connection/{connection.Id}", connection.Id);
+            }
+          }
+        }
     }
 }

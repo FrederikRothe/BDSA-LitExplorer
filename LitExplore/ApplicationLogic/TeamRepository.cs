@@ -77,7 +77,7 @@ public class TeamRepository : ITeamRepository
                                 c.Teams.Select(t => t.Id)))
                           .ToListAsync())
                           .AsReadOnly();
-        
+
         return connections;
     }
     public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId)
@@ -122,15 +122,15 @@ public class TeamRepository : ITeamRepository
 
     public async Task<Status> AddUserToTeamAsync(int teamId, string userOid)
     {
-        var entity = FindTeam(teamId);
+        var team = FindTeam(teamId);
         var user = FindUser(userOid);
 
-        if (entity == null || user == null)
+        if (team == null || user == null)
         {
             return NotFound;
         }
 
-        entity.Users.Add(user);
+        if (!team.Users.Contains(user)) team.Users.Add(user);
         await _context.SaveChangesAsync();
 
         return Updated;
@@ -146,7 +146,7 @@ public class TeamRepository : ITeamRepository
             return NotFound;
         }
 
-        team.Connections.Add(connection);
+        if (!team.Connections.Contains(connection)) team.Connections.Add(connection);
         await _context.SaveChangesAsync();
 
         return Updated;
@@ -170,9 +170,9 @@ public class TeamRepository : ITeamRepository
     public async Task<Status> RemoveConnectionAsync(int teamId, int connectionId)
     {
         var team = FindTeam(teamId);
-        var connection = FindConnection(connectionId);
+        var connection = FindConnection(connectionId); 
 
-        if (team == null || connection == null)
+        if (team == null || connection == null) 
         {
             return NotFound;
         }
@@ -199,7 +199,7 @@ public class TeamRepository : ITeamRepository
         return Deleted;
     }
 
-    private Team? FindTeam(int teamId) => _context.Teams.Where(t => t.Id == teamId).FirstOrDefault();
+    private Team? FindTeam(int teamId) => _context.Teams.Include(t => t.Connections).Include(t => t.Users).Where(t => t.Id == teamId).FirstOrDefault();
     private User? FindUser(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
     private Connection? FindConnection(int connectionId) => _context.Connections.Where(c => c.Id == connectionId).FirstOrDefault();
 }
