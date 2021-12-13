@@ -90,7 +90,7 @@ public class ConnectionControllerTests
     }
 
     [Fact]
-    public async Task Put_given_unknown_connectionId_returns_NotFound()
+    public async Task Put_given_nonexisting_connectionId_returns_NotFound()
     {
         // Arrange
         var logger = new Mock<ILogger<ConnectionController>>();
