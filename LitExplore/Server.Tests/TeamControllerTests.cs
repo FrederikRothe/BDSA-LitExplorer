@@ -72,7 +72,7 @@ public class TeamControllerTests
     }
 
     [Fact]
-    public async Task Get_connections_given_existing_team_returns_team()
+    public async Task Get_connections_given_existing_team_returns_connections()
     {
         // Arrange
         var logger = new Mock<ILogger<TeamController>>();
@@ -105,7 +105,7 @@ public class TeamControllerTests
     }
 
     [Fact]
-    public async Task Get_users_given_existing_team_returns_team()
+    public async Task Get_users_given_existing_team_returns_users()
     {
         // Arrange
         var logger = new Mock<ILogger<TeamController>>();
