@@ -35,7 +35,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
 
     //Testing that it is in fact not possible to create papers via. the API as of yet. :-)
     [Fact]
-    public async Task Paper_returns_Created_with_location()
+    public async Task Paper__post_returns_Created_with_location()
     {
         var provider = TestClaimsProvider.WithUserClaims();
         var client = _factory.CreateClientWithTestAuth(provider);

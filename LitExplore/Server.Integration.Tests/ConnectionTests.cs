@@ -30,6 +30,49 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
+    [Fact]
+    public async Task post_returns_sucess()
+    {   
+        var connection = new ConnectionCreateDTO
+        {
+            CreatorId = "25",
+            PaperOneId = 22,
+            PaperTwoId = 50,
+            ConnectionType = "Rock n' Roll",
+            Description = "Not much to say",
+            TeamId = 145
+        };
+        
+        var provider = TestClaimsProvider.WithUserClaims();
+        var client = _factory.CreateClientWithTestAuth(provider);
+        var response = await client.PostAsync("/api/Connection",connection);
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task post_returns_newly_created_connection()
+    {
+        var newConnection = new ConnectionCreateDTO
+        {
+            CreatorId = "25",
+            PaperOneId = 22,
+            PaperTwoId = 50,
+            ConnectionType = "Rock n' Roll",
+            Description = "Not much to say",
+            TeamId = 145
+        };
+
+        var provider = TestClaimsProvider.WithUserClaims();
+        var client = _factory.CreateClientWithTestAuth(provider);
+        var response = await client.PostAsJsonAsync("/api/Connection", newConnection);
+
+        var connection = await client.GetFromJsonAsync<ConnectionDTO>("/api/Connection/4");
+
+        Assert.Equal("25", connection.CreatorId);
+        Assert.Equal("Rock n' Roll", connection.ConnectionType);
+
+    }
  
 
 }
