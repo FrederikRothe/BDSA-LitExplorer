@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationLogic\LitExplore.ApplicationLogic.csproj" />
+    <ProjectReference Include="..\DomainModel\LitExplore.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>
