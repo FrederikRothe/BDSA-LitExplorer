@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-
 namespace LitExplore.Server.Controllers;
 
 [Authorize]
@@ -24,8 +20,13 @@ public class UserController : ControllerBase
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(UserDTO), 201)]
     [HttpPost]
-    public async Task<Option<UserDTO>> Post(UserCreateDTO ucdto) => await _repository.CreateAsync(ucdto);
-    
+    public async Task<IActionResult> Post(UserCreateDTO ucdto)
+    {
+        var created = await _repository.CreateAsync(ucdto);
+        return CreatedAtAction(nameof(Get), new { created.Id }, created);
+    }
+
+
     // Read
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
@@ -33,7 +34,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDTO>> Get(string id) => (await _repository.ReadAsync(id)).ToActionResult();
 
-        [ProducesResponseType(404)]
+    [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(IReadOnlyCollection<ConnectionDTO>), 200)]
     [HttpGet("connections/{id}")]

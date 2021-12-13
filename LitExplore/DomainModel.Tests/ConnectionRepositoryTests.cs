@@ -83,33 +83,6 @@ public class ConnectionRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task ReadTeamsAsync_given_valid_connection_id_returns_all_teams_that_the_connection_is_part_of()
-    {
-        var teams = new List<TeamDTO>
-        {
-            new TeamDTO(2, "Orange", 2, "2", new List<string>{"2", "3"}, new List<int>{2,3}),
-            new TeamDTO(3, "Candy", 3, "3", new List<string>{"3"}, new List<int>{3})
-        }.AsReadOnly();
-
-        var found = await _repository.ReadTeamsAsync(3);
-
-        Assert.Collection(found,
-            team => Assert.Equal(JsonConvert.SerializeObject(teams[0]), JsonConvert.SerializeObject(team)),
-            team => Assert.Equal(JsonConvert.SerializeObject(teams[1]), JsonConvert.SerializeObject(team))
-        );
-    }
-
-    [Fact]
-    public async Task ReadAsyncTeams_give_invalid_connection_id_returns_empty_list()
-    {
-        var empty = new List<TeamDTO>().AsReadOnly();
-
-        var found = await _repository.ReadTeamsAsync(7);
-
-        Assert.Equal(empty, found);
-    }
-
-    [Fact]
     public async Task UpdateAsync_given_valid_connection_id_returns_updated_status()
     {
         var update = new ConnectionUpdateDTO

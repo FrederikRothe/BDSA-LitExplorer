@@ -1,9 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-
 namespace LitExplore.Server.Controllers;
-
 
 [ApiController]
 [Route("api/[controller]")]
@@ -24,7 +19,7 @@ public class PaperController : ControllerBase
     [ProducesResponseType(typeof(PaperDTO), 200)]
     [ProducesResponseType(401)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Option<PaperDTO>>> Get(int id) => await _repository.ReadAsync(id);
+    public async Task<ActionResult<PaperDTO>> Get(int id) => (await _repository.ReadAsync(id)).ToActionResult();
 
     [AllowAnonymous]
     [HttpGet]

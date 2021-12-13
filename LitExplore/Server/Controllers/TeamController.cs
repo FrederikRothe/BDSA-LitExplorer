@@ -20,11 +20,14 @@ public class TeamController : ControllerBase
     }
 
     // Create
-    [ProducesResponseType(404)]
-    [ProducesResponseType(typeof(TeamDTO), 201)]
-    [ProducesResponseType(401)]
+    [Authorize]
     [HttpPost]
-    public async Task<ActionResult<TeamDTO>> Post(TeamCreateDTO tdto) => await _repository.CreateAsync(tdto, tdto.TeamLeaderId);
+    [ProducesResponseType(typeof(TeamDTO), 201)]
+    public async Task<IActionResult> Post(TeamCreateDTO tdto) 
+    {
+        var created = await _repository.CreateAsync(tdto);
+        return CreatedAtAction(nameof(Get), new { created.Id }, created);
+    }
 
     // Read
     [ProducesResponseType(404)]
@@ -55,13 +58,13 @@ public class TeamController : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
-    [HttpPut("{id}/user/{userOid}")]
+    [HttpPut("{id}/user")]
     public async Task<IActionResult> AddUser(int id, string userOid) => (await _repository.AddUserToTeamAsync(id, userOid)).ToActionResult();
 
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
-    [HttpPut("{id}/connection/{connectionId}")]
+    [HttpPut("{id}/connection")]
     public async Task<IActionResult> ShareConnection(int id, int connectionId) => (await _repository.ShareConnectionAsync(id, connectionId)).ToActionResult();
 
     // Delete
