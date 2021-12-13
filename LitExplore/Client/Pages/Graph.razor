@@ -22,7 +22,7 @@
             </div>
         }
         <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections refreshGraph=@Refresh/>
-        <AddConnectionWindow refreshGraph=@Refresh/>
+        <AddConnectionWindow refreshGraph=@Refresh />
     } 
     else 
     {
@@ -59,7 +59,7 @@
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh />
+    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh refreshTeam=@RefreshTeam/>
     <TeamForm adminId=@Model.CurrentUser.userOid refreshGraph=@Refresh />
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>
@@ -149,5 +149,12 @@
     private void Refresh() {
         StateHasChanged();
     }
+
+    private void RefreshTeam()
+    {
+        _selectedTeam = null;
+        Refresh();
+    }
+
     private int colour(TeamDTO team) => team.Colour;
 }
