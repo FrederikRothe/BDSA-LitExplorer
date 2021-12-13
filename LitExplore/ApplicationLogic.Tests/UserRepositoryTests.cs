@@ -43,16 +43,7 @@ public class UserRepositoryTests : IDisposable
     [Fact]
     public async Task CreateAsync_throws_exception_if_trying_to_create_user_with_no_object()
     {
-        try
-        {
-            var created = await _repository.CreateAsync(null);
-        }
-        catch (Exception e)
-        {
-            Assert.True(true);
-            return;
-        }
-        Assert.True(false);
+        Assert.ThrowsAsync<Exception>(async () => await _repository.CreateAsync(null));
     }
 
     [Fact]
