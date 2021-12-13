@@ -1,4 +1,4 @@
-namespace MyApp.Server.Integration.Tests;
+namespace Server.Integration.Tests;
 
 internal sealed class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {

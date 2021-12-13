@@ -9,7 +9,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
         _factory = factory;
         _client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
-            AllowAutiRedirect = false
+            AllowAutoRedirect = false
         });
     }
 
