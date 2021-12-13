@@ -187,7 +187,6 @@
     
     private async Task Update()
     {
-
       teamUpdated = await Http.GetFromJsonAsync<TeamUpdateDTO>($"api/Team/{team.Id}") ?? new();
       if(teamName != "")
       {
@@ -195,10 +194,10 @@
       }
 
       teamUpdated.Colour = colour;
-      var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
-      await refreshGraph.InvokeAsync();
-      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
 
+      var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      await refreshTeam.InvokeAsync();
+      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
     }
 
     private async Task RemoveFromTeam(string oId)
