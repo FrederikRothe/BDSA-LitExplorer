@@ -75,7 +75,7 @@
           @if(!isNotTeamOwner)
           {
             <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" data_bs_dismiss="modal"/>
-            <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" />
+            <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" data_bs_dismiss="modal" />
           } 
         </div>
       } 
@@ -194,10 +194,16 @@
       }
 
       teamUpdated.Colour = colour;
-
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      
+      //The purpose of the next three lines is simply to refresh our UI, we know that HTTP calls shouldn't be overused and this is an easy fix.
+      Model.CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
+      var value = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+      Model.CurrentUser.teams.Add(value);
+      
+
       await refreshTeam.InvokeAsync();
-      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+      StateHasChanged();
     }
 
     private async Task RemoveFromTeam(string oId)
