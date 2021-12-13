@@ -10,10 +10,10 @@
       {
         <div class="modal-header">
           <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button @onclick="Reset" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
+          <EditForm Model="@teamUpdated">
             <div class="content">
               <div class="teamName">
                 <p>team name</p>
@@ -53,6 +53,19 @@
                       </li>
                     }
                   </ul>
+                  @if(!isNotTeamOwner)
+                  {  
+                    <div>
+                      <span class="addHeader">add member to team</span>
+                      <div class="inputUser">
+                        <input @bind="_userAdd" class="nameInput bordered" type="text" placeholder="Enter oid...">
+                        <button class="addUserButton" @onclick="() => AddUser(_userAdd)">
+                          <span class="uglyfix oi oi-plus"></span>
+                        </button>
+                      </div>
+                      <span style="color: var(--@_col); font-size: 14px">@_msg</span>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -80,11 +93,40 @@
 
     public int colour { get; set; }
 
+    private string _msg { get; set; } = "";
+
+    private string _col { get; set;} = "";
+
     public string teamName { get; set; } = "";
     
     private bool _loaded { get; set; } = false;
 
+    private string _userAdd { get; set; } = "";
+
     public List<UserDTO> members = new List<UserDTO>();
+
+    private async Task AddUser(string userOid)
+    {
+      if(userOid == "")
+      {
+        _msg = "Empty search";
+        _col = "red";
+        return;
+      }
+
+      var response = await Http.PutAsJsonAsync($"api/Team/{team.Id}/user/{userOid}", userOid);
+      if(response.IsSuccessStatusCode)
+      {
+        _msg = "User added";
+        _col = "green";
+      }
+      else 
+      {
+        _msg = "User not found!";
+        _col = "red";
+        return;
+      }
+    }
 
     private void OnChange(ChangeEventArgs args)
     {
@@ -95,10 +137,20 @@
       }
     }
 
+    private void Reset()
+    {
+      _msg = "";
+      _col = "";
+      _userAdd = "";
+    }
+
     [Parameter] public EventCallback refreshGraph { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
+      _msg = "";
+      _col = "";
+
       if (team != null)
       {
         colour = team.Colour;
