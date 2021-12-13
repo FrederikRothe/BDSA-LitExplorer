@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LitExplore.Client", "Client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\LitExplore.Storage.csproj", "{48C012BA-1881-416C-8FDE-C3377DE6D0B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogic", "ApplicationLogic\LitExplore.ApplicationLogic.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "DomainModel\LitExplore.DomainModel.csproj", "{528D376A-6AE1-42CB-9869-1A32BA5F9ABA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLogic.Tests", "ApplicationLogic.Tests\ApplicationLogic.Tests.csproj", "{2131DF5B-37A6-4D1A-A4E2-EECCE01883C3}"
 EndProject
