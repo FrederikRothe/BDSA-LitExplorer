@@ -114,7 +114,6 @@
         {
             await Http.DeleteAsync($"api/Connection/{connection.Id}");
             Model.CurrentUser.connections.Remove(connection);
-            await refreshGraph.InvokeAsync();
             NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
         }
     }
@@ -122,7 +121,6 @@
     private async Task update()
     {
         var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
-        await refreshGraph.InvokeAsync();
         NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
     }
     
