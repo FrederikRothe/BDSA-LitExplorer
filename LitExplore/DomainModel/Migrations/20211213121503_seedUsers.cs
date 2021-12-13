@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LitExplore.DomainModel.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class seedUsers : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

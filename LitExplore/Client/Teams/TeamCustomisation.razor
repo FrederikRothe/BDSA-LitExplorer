@@ -114,11 +114,24 @@
         return;
       }
 
+      foreach(var member in members)
+      {
+        if(member.oid == userOid)
+        {
+          _msg = "User already in team";
+          _col = "red";
+          return;
+        }
+      }
+
       var response = await Http.PutAsJsonAsync($"api/Team/{team.Id}/user/{userOid}", userOid);
       if(response.IsSuccessStatusCode)
       {
+        var user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userOid}");
+        members.Add(user);
         _msg = "User added";
         _col = "green";
+        StateHasChanged();
       }
       else 
       {
@@ -190,8 +203,9 @@
     {
       if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this team member?"))
         {
-            await Http.DeleteAsync($"api/Team/{team.Id}/user/{oId}");
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+          await Http.DeleteAsync($"api/Team/{team.Id}/user/{oId}");
+          members.RemoveAll(u => u.oid == oId);
+          StateHasChanged();
         }
     }
 
