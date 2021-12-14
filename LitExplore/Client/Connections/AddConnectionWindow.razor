@@ -17,14 +17,14 @@
 
             <select class="form-select" @bind="connection.PaperOneId" aria-label="paper1select">
               <option disabled selected value> -- select a paper -- </option>
-              @foreach (var paper in Model.Graph.allPapers)
+              @foreach (var paper in Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
                 }
             </select>
             <select class="form-select" @bind="connection.PaperTwoId" aria-label="paper2select">
               <option disabled selected value> -- select a paper -- </option>
-              @foreach (var paper in Model.Graph.allPapers)
+              @foreach (var paper in Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
                 }
@@ -40,7 +40,7 @@
           <h2>Share with a team</h2>
           <select class="form-select" @bind="_selectedTeamId" aria-label="teamselect">
               <option disabled selected value> -- select a team -- </option>
-              @foreach (var team in Model.CurrentUser.teams)
+              @foreach (var team in CurrentUser.teams)
                 {
                   <option value=@team.Id>@team.TeamName</option>
                 }
@@ -68,13 +68,13 @@
       return;
     }
 
-    if (Model.CurrentUser.connectionExists(connection))
+    if (CurrentUser.connectionExists(connection))
     {
       _errorMessage = "You have already created a connection between these papers.";
       return;
     }
 
-    connection.CreatorId = Model.CurrentUser.userOid;
+    connection.CreatorId = CurrentUser.userOid;
     connection.ConnectionType = "other";
     connection.TeamId = _selectedTeamId;
 
@@ -84,7 +84,7 @@
     {
         _errorMessage = "";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
-        if (created != null) Model.CurrentUser.connections.Add(created);
+        if (created != null) CurrentUser.connections.Add(created);
         await refreshGraph.InvokeAsync();
     } 
     else 

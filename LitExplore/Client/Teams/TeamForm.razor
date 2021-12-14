@@ -39,7 +39,7 @@
             _errorMessage = "Please enter a team name.";
             return;   
         }
-        if (Model.CurrentUser.teams.Count() >= 7) 
+        if (CurrentUser.teams.Count() >= 7) 
         {
             _errorMessage = "Too many teams.";
             return;   
@@ -54,9 +54,9 @@
         {
             _errorMessage = "";
             var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
-            if (Model.CurrentUser.teams != null && created != null) 
+            if (CurrentUser.teams != null && created != null) 
             {
-                Model.CurrentUser.teams.Add(created);
+                CurrentUser.teams.Add(created);
             }
             await refreshGraph.InvokeAsync();
         } 
