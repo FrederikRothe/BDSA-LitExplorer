@@ -177,10 +177,17 @@ public class TeamRepository : ITeamRepository
             return NotFound;
         }
 
-        team.Connections.Remove(connection);
-        await _context.SaveChangesAsync();
+        if (team.Connections.Contains(connection))
+        {
+            team.Connections.Remove(connection);
+            await _context.SaveChangesAsync();
 
-        return Deleted;
+            return Deleted;
+        } else 
+        {
+            return BadRequest;
+        }
+        
     }
 
     public async Task<Status> RemoveUserAsync(int teamId, string userOid)
@@ -193,10 +200,16 @@ public class TeamRepository : ITeamRepository
             return NotFound;
         }
 
-        team.Users.Remove(user);
-        await _context.SaveChangesAsync();
+        if (team.Users.Contains(user))
+        {
+            team.Users.Remove(user);
+            await _context.SaveChangesAsync();
 
-        return Deleted;
+            return Deleted;
+        } else 
+        {
+            return BadRequest;
+        }
     }
 
     private Team? FindTeam(int teamId) => _context.Teams.Include(t => t.Connections).Include(t => t.Users).Where(t => t.Id == teamId).FirstOrDefault();
