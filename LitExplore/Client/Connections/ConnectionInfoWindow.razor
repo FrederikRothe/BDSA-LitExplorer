@@ -113,7 +113,7 @@
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete the connection?"))
         {
             await Http.DeleteAsync($"api/Connection/{connection.Id}");
-            CurrentUser.connections.RemoveAll(c => c.Id == connection.Id);
+            CurrentUser.shownConnections.RemoveAll(c => c.Id == connection.Id);
             StateHasChanged();
             await refreshGraph.InvokeAsync();
         }

@@ -21,7 +21,7 @@
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
-        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@_userOrTeamConnections refreshGraph=@Refresh/>
+        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@CurrentUser.shownConnections refreshGraph=@Refresh/>
         <AddConnectionWindow refreshGraph=@Refresh />
     } 
     else 
@@ -106,7 +106,7 @@
                 if (userConnections != null) CurrentUser.connections = userConnections;
             }
 
-            _userOrTeamConnections = CurrentUser.connections;
+            CurrentUser.shownConnections = CurrentUser.connections;
 
             if (!Model.Graph.initialised()) 
             {
@@ -125,7 +125,6 @@
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
-    private List<ConnectionDTO>? _userOrTeamConnections;
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
     private TeamDTO? _selectedTeam = null;
 
@@ -135,13 +134,13 @@
         {
             _selectedTeam = null;
             CurrentUser.selectedTeam = null;
-            _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
+            CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
         }
         else
         {
             _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
             CurrentUser.selectedTeam = _selectedTeam;
-            if (_selectedTeam != null) _userOrTeamConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
+            if (_selectedTeam != null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
         }
         Refresh();
     }

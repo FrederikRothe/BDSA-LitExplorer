@@ -84,7 +84,7 @@
     {
         _errorMessage = "";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
-        if (created != null) CurrentUser.connections.Add(created);
+        if (created != null && (CurrentUser.selectedTeam == null || CurrentUser.selectedTeam.Id == _selectedTeamId)) CurrentUser.shownConnections.Add(created);
         await refreshGraph.InvokeAsync();
     } 
     else 
