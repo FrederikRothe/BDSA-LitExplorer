@@ -130,7 +130,7 @@
       if(response.IsSuccessStatusCode)
       {
         var user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userOid}");
-        members.Add(user);
+        if (user != null) members.Add(user);
         _msg = "User added";
         _col = "green";
         StateHasChanged();
@@ -199,7 +199,7 @@
       //The purpose of the next three lines is simply to refresh our UI, we know that HTTP calls shouldn't be overused and this is an easy fix.
       CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
       var value = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
-      CurrentUser.teams.Add(value);
+      if (value != null) CurrentUser.teams.Add(value);
       
 
       await refreshTeam.InvokeAsync();
