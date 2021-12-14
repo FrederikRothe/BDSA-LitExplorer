@@ -39,10 +39,17 @@
 
           <h2>Share with a team</h2>
           <select class="form-select" @bind="_selectedTeamId" aria-label="teamselect">
-              <option disabled selected value> -- select a team -- </option>
+              <option value> -- select a team -- </option>              
               @foreach (var team in CurrentUser.teams)
                 {
-                  <option value=@team.Id>@team.TeamName</option>
+                  @if (CurrentUser.selectedTeam != null && CurrentUser.selectedTeam.Id == team.Id)
+                  {
+                    <option selected value=@team.Id>@team.TeamName</option>
+                  }
+                  else 
+                  {
+                    <option value=@team.Id>@team.TeamName</option>
+                  }
                 }
             </select>
         </div>
