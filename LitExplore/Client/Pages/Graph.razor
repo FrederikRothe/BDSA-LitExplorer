@@ -38,7 +38,7 @@
             foreach (var team in CurrentUser.teams)
             {
                 <div class="teamSection">
-                    @if(_selectedTeam != null && _selectedTeam.Id == team.Id)
+                    @if(CurrentUser.selectedTeam != null && CurrentUser.selectedTeam.Id == team.Id)
                     {
                         <button class="edit" data-bs-toggle="modal" data-bs-target="#teamModal">
                             <span class="oi oi-pencil"></span>
@@ -59,7 +59,7 @@
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation team=@_selectedTeam refreshGraph=@Refresh refreshTeam=@RefreshTeam/>
+    <TeamCustomisation team=@CurrentUser.selectedTeam refreshGraph=@Refresh refreshTeam=@RefreshTeam/>
     <TeamForm adminId=@CurrentUser.userOid refreshGraph=@Refresh />
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>
@@ -126,21 +126,18 @@
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
-    private TeamDTO? _selectedTeam = null;
 
     private async void setSelectedTeam(TeamDTO team) 
     {
-        if(_selectedTeam != null && _selectedTeam.Id == team.Id)
+        if(CurrentUser.selectedTeam != null && CurrentUser.selectedTeam.Id == team.Id)
         {
-            _selectedTeam = null;
             CurrentUser.selectedTeam = null;
             CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
         }
         else
         {
-            _selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
-            CurrentUser.selectedTeam = _selectedTeam;
-            if (_selectedTeam != null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{_selectedTeam.Id}");
+            CurrentUser.selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+            if (CurrentUser.selectedTeam != null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{CurrentUser.selectedTeam.Id}");
         }
         Refresh();
     }
@@ -151,7 +148,6 @@
 
     private void RefreshTeam()
     {
-        _selectedTeam = null;
         CurrentUser.selectedTeam = null;
         Refresh();
     }
