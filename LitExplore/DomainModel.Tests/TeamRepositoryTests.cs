@@ -113,7 +113,7 @@ public class TeamRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task ReadUserAsync_returns_given_valid_id_returns_empty_user_readonly_list()
+    public async Task ReadUserAsync_returns_given_invalid_id_returns_empty_user_readonly_list()
     {
         var empty = new List<UserDTO>().AsReadOnly();
 
@@ -155,6 +155,44 @@ public class TeamRepositoryTests : IDisposable
     }
 
     [Fact]
+    public async Task AddUserToTeamAsync_given_valid_input_returns_updated_status()
+    {
+        //Adding the existing user Robert to existing team Potato
+        var response = await _repository.AddUserToTeamAsync(1, "3");
+
+        Assert.Equal(Updated, response);
+    }
+
+    [Fact]
+    public async Task AddUserToTeamAsync_given_invalid_input_returns_notfound_status()
+    {
+        //Adding the existing user Robert to nonexisting team with id 4
+        var response = await _repository.AddUserToTeamAsync(4, "3");
+
+        Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
+    public async Task ShareConnectionAsync_given_valid_input_returns_updated_status()
+    {
+        var connection = new ConnectionDTO(2, "2", 2, 1, "Science", "2", new List<int>{1,2});
+        
+        //Adding the created connection to the team with id 1
+        var response = await _repository.ShareConnectionAsync(1, 2);
+
+        Assert.Equal(Updated, response);
+    }
+
+    [Fact]
+    public async Task ShareConnectionAsync_given_invalid_input_returns_notfound_status()
+    {
+        //Adding a non-existing connection to the team with id 1
+        var response = await _repository.ShareConnectionAsync(1, 4);
+
+        Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
     public async Task DeleteAsync_given_valid_team_id_returns_deleted_status()
     {
         var response = await _repository.DeleteAsync(1);
@@ -168,6 +206,64 @@ public class TeamRepositoryTests : IDisposable
         var response = await _repository.DeleteAsync(5);
 
         Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
+    public async Task RemoveConnectionAsync_given_valid_input_returns_deleted_status()
+    {
+        //Removing the existing connection with id 1 from the team with id 1
+        //This connection is already a part of the team
+        var response = await _repository.RemoveConnectionAsync(1, 1);
+
+        Assert.Equal(Deleted, response);
+    }
+
+    [Fact]
+    public async Task RemoveConnectionAsync_given_invalid_input_returns_notfound_status()
+    {
+        //Removing the nonexisting connection with id 5 from the team with id 1
+        var response = await _repository.RemoveConnectionAsync(1, 5);
+
+        Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
+    public async Task RemoveConnectionAsync_given_a_connection_that_is_not_part_of_the_team_returns_badrequest_status()
+    {
+        //Removing the existing connection with id 2 from the existing team with id 3
+        //The connection is however not part of the team
+        var response = await _repository.RemoveConnectionAsync(3, 2);
+
+        Assert.Equal(BadRequest, response);
+    }
+
+    [Fact]
+    public async Task RemoveUserAsync_given_valid_input_returns_deleted_status()
+    {
+        //Removing the existing user with oid 1 from the team with id 1
+        //This user is already a part of the team
+        var response = await _repository.RemoveUserAsync(1, "1");
+
+        Assert.Equal(Deleted, response);
+    }
+
+    [Fact]
+    public async Task RemoveUserAsync_given_invalid_input_returns_notfound_status()
+    {
+        //Removing the nonexisting user with oid 5 from the team with id 1
+        var response = await _repository.RemoveUserAsync(1, "5");
+
+        Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
+    public async Task RemoveUserAsync_given_a_user_that_is_not_part_of_the_team_returns_badrequest_status()
+    {
+        //Removing the existing user with id 2 from the existing team with id 3
+        //The user is however not part of the team
+        var response = await _repository.RemoveUserAsync(3, "2");
+
+        Assert.Equal(BadRequest, response);
     }
 
     protected virtual void Dispose(bool disposing)
