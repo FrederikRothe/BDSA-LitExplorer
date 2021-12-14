@@ -115,6 +115,7 @@
             await Http.DeleteAsync($"api/Connection/{connection.Id}");
             Model.CurrentUser.connections.RemoveAll(c => c.Id == connection.Id);
             StateHasChanged();
+            await refreshGraph.InvokeAsync();
         }
     }
 
