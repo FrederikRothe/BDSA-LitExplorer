@@ -10,8 +10,8 @@ Navigate to the ``./LitExplore/`` folder and run the ``.\Start-Application.ps1``
 Here are a some pointers to interesting aspects of our vertical slice.
 - View paper information.
 - View, Create, Update & Delete connections and their information.
-- Check out the predefined team or create your own to experience admin functionality.
-- Share your connections with different teams.
+- Check out the predefined team or create your own to experience leader functionality.
+- Share and view your connections with different teams.
 - The burger menu contains an *About* page with information about us and the project.
 - Have fun!
 
