@@ -103,8 +103,6 @@
 
     private string _userAdd { get; set; } = "";
 
-    [Parameter] public EventCallback refreshTeam { get; set; }
-
     public List<UserDTO> members = new List<UserDTO>();
 
     private async Task AddUser(string userOid)
@@ -160,6 +158,7 @@
     }
 
     [Parameter] public EventCallback refreshGraph { get; set; }
+    [Parameter] public EventCallback refreshTeam { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -201,8 +200,8 @@
       var value = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
       if (value != null) CurrentUser.teams.Add(value);
       
-
-      await refreshTeam.InvokeAsync();
+      CurrentUser.selectedTeam = null;
+      await refreshGraph.InvokeAsync();
       StateHasChanged();
     }
 
@@ -222,6 +221,7 @@
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
             CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
+            CurrentUser.selectedTeam = null;
             await refreshTeam.InvokeAsync();
             StateHasChanged();
         }

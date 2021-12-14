@@ -21,8 +21,8 @@
                 <PaperNode paper=@p left=@getLeftPosPaper(p) top=@getTopPosPaper(p) />
             </div>
         }
-        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@CurrentUser.shownConnections refreshGraph=@Refresh/>
-        <AddConnectionWindow refreshGraph=@Refresh />
+        <ConnectionLines connections=@Model.Graph.publicConnections extraConnections=@CurrentUser.shownConnections refreshGraph=@StateHasChanged/>
+        <AddConnectionWindow refreshGraph=@StateHasChanged />
     } 
     else 
     {
@@ -59,8 +59,8 @@
         }
     </div>
     <PaperInfoWindow paper=@_selectedPaper/>
-    <TeamCustomisation team=@CurrentUser.selectedTeam refreshGraph=@Refresh refreshTeam=@RefreshTeam/>
-    <TeamForm adminId=@CurrentUser.userOid refreshGraph=@Refresh />
+    <TeamCustomisation team=@CurrentUser.selectedTeam refreshGraph=@StateHasChanged refreshTeam=@RefreshAndSetUserConnections/>
+    <TeamForm adminId=@CurrentUser.userOid refreshGraph=@StateHasChanged />
     <div class="addconnbutton" type="button" data-bs-toggle="modal" data-bs-target="#AddConnectionModal">+ Add connection</div>
   </div>
   </Authorized>
@@ -139,17 +139,12 @@
             CurrentUser.selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
             if (CurrentUser.selectedTeam != null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{CurrentUser.selectedTeam.Id}");
         }
-        Refresh();
-    }
-
-    private void Refresh() {
         StateHasChanged();
     }
 
-    private void RefreshTeam()
-    {
-        CurrentUser.selectedTeam = null;
-        Refresh();
+    private async Task RefreshAndSetUserConnections() {
+        if (CurrentUser.selectedTeam == null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
+        StateHasChanged();
     }
 
     private int colour(TeamDTO team) => team.Colour;
