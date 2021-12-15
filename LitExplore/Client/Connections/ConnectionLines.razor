@@ -18,7 +18,7 @@
 @if (_showHoverWindow) {
     <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeft top=@_hoverWindowTop/>
 } 
-<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh/>
+<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh onClose=@closeConnectionInfo/>
 
 
 @code {
@@ -53,11 +53,17 @@
         _hoverconnection = c;
     }
 
-    private async Task setParameters(ConnectionDTO c) {
+    private async Task setParameters(ConnectionDTO c) 
+    {
         var fullDTO = await Http.GetFromJsonAsync<ConnectionDTO>($"api/Connection/{c.Id}");
         if (fullDTO != null) _connectionForConnectionWindow = fullDTO;
         _paper1 = getPaper(c.PaperOneId);
         _paper2 = getPaper(c.PaperTwoId);
+    }
+
+    private void closeConnectionInfo() 
+    {
+        _connectionForConnectionWindow = TestEntities.connectionDTO;
     }
 
     private ConnectionDTO _connectionForConnectionWindow = TestEntities.connectionDTO;

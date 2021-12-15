@@ -7,14 +7,19 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="connectionModalLabel">"@paper1.Title" and "@paper2.Title"</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
-        @if (connection.Description != null && connection.Description.Length != 0) 
+          @if (connection.Description != null && connection.Description.Length != 0) 
           {
             <h2>Description</h2>
             <p>@connection.Description</p>
+          }
+          @if (connection.CreatorId != CurrentUser.userOid && connection.CreatorId != null) 
+          {
+            <h2>Creator</h2>
+            <p>@_creatorName</p>
           }
       </div>
       <div class="modal-footer info">
@@ -37,7 +42,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="connectionUpdateWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <EditForm Model="@_updateDTO" OnValidSubmit="@update">
         <div class="modal-body">
@@ -57,7 +62,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="ShareConnectionWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <EditForm Model="@connection" OnValidSubmit="@share">
         <div class="modal-body">
@@ -92,7 +97,22 @@
     [Parameter] public PaperDTO paper1 { get; set; } = null!;
     [Parameter] public PaperDTO paper2 { get; set; } = null!;
     [Parameter] public EventCallback refreshGraph { get; set; } 
+    private string _creatorName = "";
 
+    protected override async Task OnParametersSetAsync()
+    {
+      if (connection != TestEntities.connectionDTO && connection.CreatorId != null) 
+      {
+        Console.WriteLine(connection);
+        var creator = await Http.GetFromJsonAsync<UserDTO>($"api/User/{connection.CreatorId}");
+        if (creator != null && creator.Name != null) _creatorName = creator.Name;
+      }
+    }
+    [Parameter] public EventCallback onClose { get; set; }
+    private async Task Clear()
+    {
+      await onClose.InvokeAsync();
+    }
     private Dictionary<int, bool> _shareChanges = new Dictionary<int, bool>();
     private void startShare() 
     {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LitExplore.DomainModel.Migrations
 {
     [DbContext(typeof(LitExploreContext))]
-    [Migration("20211213210545_InitialMigration")]
+    [Migration("20211215093330_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
