@@ -4,7 +4,8 @@
 We're group hård scneft and we've been working on the Literature Explore project. In short, a data base that stores academic papers and their relations with other papers based on certain criteria. Our primary focus has been on allowing users to create said connections and also share them with others. 
 
 ## Starting the program
-Navigate to the ``./LitExplore/`` folder and run the ``.\Start-Application.ps1`` PowerShell script. This will start and containerise the program using Docker.
+1. Navigate to the ``./LitExplore/`` folder and run the ``.\Start-Application.ps1`` PowerShell script. This will start and containerise the database using Docker.
+2. Run command ``dotnet run .\Server\`` to start the program.
 
 ## Things to do
 Here are a some pointers to interesting aspects of our vertical slice.
