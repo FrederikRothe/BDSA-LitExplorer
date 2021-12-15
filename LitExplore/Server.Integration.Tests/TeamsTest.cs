@@ -17,7 +17,10 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
 
 
         Assert.NotNull(team);
-        Assert.Equal("Potato", team.TeamName);
+        if (team != null) 
+        {
+            Assert.Equal("Potato", team.TeamName);
+        }
     }
 
     [Fact]
@@ -38,8 +41,12 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
         
         var team = await client.GetFromJsonAsync<TeamDTO>("api/Team/4");
 
-        Assert.Equal("2", team.TeamLeaderId);
-        Assert.Equal("Got any games on your phone?", team.TeamName);
+        Assert.NotNull(team);
+        if (team != null)
+        {
+            Assert.Equal("2", team.TeamLeaderId);
+            Assert.Equal("Got any games on your phone?", team.TeamName);
+        }
     }
 
     [Fact]
@@ -82,8 +89,12 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
 
         var updatedTeam = await client.GetFromJsonAsync<TeamDTO>("api/Team/3");
 
-        Assert.Equal("2", updatedTeam.TeamLeaderId);
-        Assert.Equal("Dovne Robert blev fyret", updatedTeam.TeamName);
-        Assert.Equal(1, updatedTeam.Colour);
+        Assert.NotNull(updatedTeam);
+        if (updatedTeam != null)
+        {
+            Assert.Equal("2", updatedTeam.TeamLeaderId);
+            Assert.Equal("Dovne Robert blev fyret", updatedTeam.TeamName);
+            Assert.Equal(1, updatedTeam.Colour);
+        } 
     }    
 }

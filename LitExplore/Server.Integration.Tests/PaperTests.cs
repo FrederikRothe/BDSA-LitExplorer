@@ -17,9 +17,12 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
 
 
         Assert.NotNull(papers);
-        Assert.True(papers.Length == 2);
-        Assert.Contains(papers, c => c.Title == "Obese");
-        Assert.Contains(papers, c => c.Title == "Fit");
+        if (papers != null)
+        {
+            Assert.True(papers.Length == 2);
+            Assert.Contains(papers, c => c.Title == "Obese");
+            Assert.Contains(papers, c => c.Title == "Fit");
+        }
     }
 
     [Fact]
