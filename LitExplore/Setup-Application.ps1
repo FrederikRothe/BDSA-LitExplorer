@@ -9,6 +9,3 @@ $connectionString = "Server=localhost;Database=$database;User Id=sa;Password=$pa
 Write-Host "Configuring Connection String"
 dotnet user-secrets init --project $project
 dotnet user-secrets set "ConnectionStrings:LitExploreDB" "$connectionString" --project $project
-
-Write-Host "Starting App"
-dotnet run --project $project
