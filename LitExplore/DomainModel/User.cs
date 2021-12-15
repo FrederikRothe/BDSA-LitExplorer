@@ -1,4 +1,4 @@
-namespace LitExplore.ApplicationLogic;
+namespace LitExplore.DomainModel;
 public class User
 {
     // This is just to keep oid's for the AAD shit

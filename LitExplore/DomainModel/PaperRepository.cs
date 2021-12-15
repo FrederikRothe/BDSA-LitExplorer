@@ -1,4 +1,4 @@
-namespace LitExplore.ApplicationLogic;
+namespace LitExplore.DomainModel;
 public class PaperRepository : IPaperRepository
 {
      private readonly ILitExploreContext _context;

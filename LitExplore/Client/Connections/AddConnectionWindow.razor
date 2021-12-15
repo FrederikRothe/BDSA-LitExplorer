@@ -11,20 +11,20 @@
       <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
         <div class="modal-body">
 
-          <div><span style="color: var(--red);">@_errorMessage</span><span style="color: var(--green)">@_successMessage</span></div>
+          <span style="color: var(--red);">@_errorMessage</span>
           
           <div class="dropdowns">
 
             <select class="form-select" @bind="connection.PaperOneId" aria-label="paper1select">
               <option disabled selected value> -- select a paper -- </option>
-              @foreach (var paper in Model.Graph.allPapers)
+              @foreach (var paper in Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
                 }
             </select>
             <select class="form-select" @bind="connection.PaperTwoId" aria-label="paper2select">
               <option disabled selected value> -- select a paper -- </option>
-              @foreach (var paper in Model.Graph.allPapers)
+              @foreach (var paper in Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
                 }
@@ -39,15 +39,22 @@
 
           <h2>Share with a team</h2>
           <select class="form-select" @bind="_selectedTeamId" aria-label="teamselect">
-              <option disabled selected value> -- select a team -- </option>
-              @foreach (var team in Model.CurrentUser.teams)
+              <option value> -- select a team -- </option>              
+              @foreach (var team in CurrentUser.teams)
                 {
-                  <option value=@team.Id>@team.TeamName</option>
+                  @if (CurrentUser.selectedTeam != null && CurrentUser.selectedTeam.Id == team.Id)
+                  {
+                    <option selected value=@team.Id>@team.TeamName</option>
+                  }
+                  else 
+                  {
+                    <option value=@team.Id>@team.TeamName</option>
+                  }
                 }
             </select>
         </div>
         <div class="modal-footer">
-          <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create" />
+          <ButtonIcon  type="submit" icon="oi oi-check" tooltip="Create" data_bs_target="#AddConnectionModal" data_bs_dismiss="modal" />
         </div>
         </EditForm>
       </div>
@@ -57,7 +64,6 @@
 @code {
   private ConnectionCreateDTO connection = new();
   private string _errorMessage = string.Empty;
-  private string _successMessage = string.Empty;
   private int? _selectedTeamId;
   
   [Parameter] public EventCallback refreshGraph { get; set; }
@@ -69,7 +75,13 @@
       return;
     }
 
-    connection.CreatorId = Model.CurrentUser.userOid;
+    if (CurrentUser.connectionExists(connection))
+    {
+      _errorMessage = "You have already created a connection between these papers.";
+      return;
+    }
+
+    connection.CreatorId = CurrentUser.userOid;
     connection.ConnectionType = "other";
     connection.TeamId = _selectedTeamId;
 
@@ -78,21 +90,21 @@
     if (response.IsSuccessStatusCode)
     {
         _errorMessage = "";
-        _successMessage = "Created!";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
-        if (created != null) Model.CurrentUser.connections.Add(created);
+        if (created != null && (CurrentUser.selectedTeam == null || CurrentUser.selectedTeam.Id == _selectedTeamId)) CurrentUser.shownConnections.Add(created);
         await refreshGraph.InvokeAsync();
     } 
     else 
     {
         _errorMessage = $"An error occured.";
     }
+    clear();
   }
 
   public void clear() 
   {
     _errorMessage = string.Empty;
-    _successMessage = string.Empty;
     connection = new();
+    _selectedTeamId = 0;
   }
 }

@@ -10,10 +10,10 @@
       {
         <div class="modal-header">
           <h1 class="modal-title" id="exampleModalLabel">@team.TeamName</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button @onclick="Reset" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <EditForm Model="@teamUpdated" OnValidSubmit="@Update">
+          <EditForm Model="@teamUpdated">
             <div class="content">
               <div class="teamName">
                 <p>team name</p>
@@ -53,6 +53,19 @@
                       </li>
                     }
                   </ul>
+                  @if(!isNotTeamOwner)
+                  {  
+                    <div>
+                      <span class="addHeader">add member to team</span>
+                      <div class="inputUser">
+                        <input @bind="_userAdd" class="nameInput bordered" type="text" placeholder="Enter oid...">
+                        <button class="addUserButton" @onclick="() => AddUser(_userAdd)">
+                          <span class="uglyfix oi oi-plus"></span>
+                        </button>
+                      </div>
+                      <span style="color: var(--@_col); font-size: 14px">@_msg</span>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -61,8 +74,8 @@
         <div class="modal-footer">
           @if(!isNotTeamOwner)
           {
-            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" />
-            <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" />
+            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" type="button" colour="red" tooltip="Delete" data_bs_dismiss="modal"/>
+            <ButtonIcon onButtonClick="Update" icon="oi oi-check" type="submit" tooltip="Save" data_bs_dismiss="modal" />
           } 
         </div>
       } 
@@ -80,11 +93,53 @@
 
     public int colour { get; set; }
 
+    private string _msg { get; set; } = "";
+
+    private string _col { get; set;} = "";
+
     public string teamName { get; set; } = "";
     
     private bool _loaded { get; set; } = false;
 
+    private string _userAdd { get; set; } = "";
+
     public List<UserDTO> members = new List<UserDTO>();
+
+    private async Task AddUser(string userOid)
+    {
+      if(userOid == "")
+      {
+        _msg = "Empty search";
+        _col = "red";
+        return;
+      }
+
+      foreach(var member in members)
+      {
+        if(member.oid == userOid)
+        {
+          _msg = "User already in team";
+          _col = "red";
+          return;
+        }
+      }
+
+      var response = await Http.PutAsJsonAsync($"api/Team/{team.Id}/user/{userOid}", userOid);
+      if(response.IsSuccessStatusCode)
+      {
+        var user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userOid}");
+        if (user != null) members.Add(user);
+        _msg = "User added";
+        _col = "green";
+        StateHasChanged();
+      }
+      else 
+      {
+        _msg = "User not found!";
+        _col = "red";
+        return;
+      }
+    }
 
     private void OnChange(ChangeEventArgs args)
     {
@@ -95,14 +150,25 @@
       }
     }
 
+    private void Reset()
+    {
+      _msg = "";
+      _col = "";
+      _userAdd = "";
+    }
+
     [Parameter] public EventCallback refreshGraph { get; set; }
+    [Parameter] public EventCallback refreshTeam { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
+      _msg = "";
+      _col = "";
+
       if (team != null)
       {
         colour = team.Colour;
-        isNotTeamOwner = team.TeamLeaderId != Model.CurrentUser.userOid;
+        isNotTeamOwner = team.TeamLeaderId != CurrentUser.userOid;
         if (team.UserIDs != null)
         {
           var users = await Http.GetFromJsonAsync<UserDTO[]>($"api/Team/users/{team.Id}");
@@ -120,7 +186,6 @@
     
     private async Task Update()
     {
-
       teamUpdated = await Http.GetFromJsonAsync<TeamUpdateDTO>($"api/Team/{team.Id}") ?? new();
       if(teamName != "")
       {
@@ -129,17 +194,24 @@
 
       teamUpdated.Colour = colour;
       var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      
+      //The purpose of the next three lines is simply to refresh our UI, we know that HTTP calls shouldn't be overused and this is an easy fix.
+      CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
+      var value = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
+      if (value != null) CurrentUser.teams.Add(value);
+      
+      CurrentUser.selectedTeam = null;
       await refreshGraph.InvokeAsync();
-      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
-
+      StateHasChanged();
     }
 
     private async Task RemoveFromTeam(string oId)
     {
       if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this team member?"))
         {
-            await Http.DeleteAsync($"api/Team/{team.Id}/user/{oId}");
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+          await Http.DeleteAsync($"api/Team/{team.Id}/user/{oId}");
+          members.RemoveAll(u => u.oid == oId);
+          StateHasChanged();
         }
     }
 
@@ -148,8 +220,10 @@
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this team?"))
         {
             await Http.DeleteAsync($"api/Team/{team.Id}");
-            Model.CurrentUser.teams.Remove(team);
-            await refreshGraph.InvokeAsync();
+            CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
+            CurrentUser.selectedTeam = null;
+            await refreshTeam.InvokeAsync();
+            StateHasChanged();
         }
     }
 }

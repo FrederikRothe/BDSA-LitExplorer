@@ -1,5 +1,5 @@
 using System.IdentityModel.Tokens;
-namespace LitExplore.ApplicationLogic;
+namespace LitExplore.DomainModel;
 public class ConnectionRepository : IConnectionRepository
 {
 
@@ -80,28 +80,6 @@ public class ConnectionRepository : IConnectionRepository
                                 c.Teams.Select(t => t.Id)))
                           .ToListAsync())
                           .AsReadOnly();
-
-    public async Task<IReadOnlyCollection<TeamDTO>> ReadTeamsAsync(int connectionId) 
-    {
-        var connection = FindConnection(connectionId);
-
-        if (connection == null)
-        {
-            return new List<TeamDTO>();
-        }
-
-        var team = await _context.Teams
-                          .Where(t => t.Connections.Contains(connection))
-                          .Select(t => new TeamDTO(
-                                t.Id,
-                                t.TeamName,
-                                t.Colour,
-                                t.TeamLeader.oid, 
-                                t.Users.Select(u => u.oid), 
-                                t.Connections.Select(t => t.Id)))
-                          .ToListAsync();
-        return team.AsReadOnly();
-    }
 
     public async Task<Status> UpdateAsync(int connectionId, ConnectionUpdateDTO connection)
     {

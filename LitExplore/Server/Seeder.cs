@@ -1,6 +1,6 @@
 namespace LitExplore.Server;
 
-public static class SeedExtensions
+public static class Seeder
 {
     public static async Task<IHost> SeedAsync(this IHost host)
     {
@@ -9,6 +9,7 @@ public static class SeedExtensions
             var context = scope.ServiceProvider.GetRequiredService<LitExploreContext>();
 
             await SeedPapersAsync(context);
+            await SeedTeamsAsync(context);
         }
         return host;
     }
@@ -139,6 +140,40 @@ public static class SeedExtensions
             }
 
             context.Connections.AddRange(conns);
+            await context.SaveChangesAsync();
+        }
+    }
+
+    private static async Task SeedTeamsAsync(LitExploreContext context)
+    {
+        context.Database.Migrate();
+        if(!context.Teams.Any())
+        {
+            User Nadja = new User{oid = "7ae4939f-b0be-42a1-a18e-c0dffd04f57d", Name = "Nadja Brix Koch", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            User Theis = new User{oid = "0bee8cf0-a1c6-4eb5-bd63-ef02e2431526", Name = "Theis Stensgaard", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            User Sebastian = new User{oid = "49e1ae65-96d3-4512-bb9f-9c9e9024e735", Name = "Sebastian Vestergaard Fugmann", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            User Frederik = new User{oid = "0561a5ed-2923-44fa-9ec6-d89ea6ff1b24", Name = "Frederik Rothe", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            User Caspar = new User{oid = "16442aef-a6d9-4c07-8b8f-6536a0af3a72", Name = "Caspar Marschall", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            User Emil = new User{oid = "caba8b01-f802-4a62-a4db-6b34992627b7", Name = "Emil Houlborg", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            
+            Team haardSchneft = new Team
+            {
+                TeamLeader = Nadja, 
+                Colour = 1, 
+                Users = new List<User>{Nadja, Theis, Sebastian, Frederik, Caspar, Emil}, 
+                Connections = new List<Connection>(),
+                TeamName = "Hård Scneft"
+            };
+
+            Nadja.IsLeaderOf = new List<Team>{haardSchneft};
+            Nadja.Teams = new List<Team>{haardSchneft};
+            Theis.Teams = new List<Team>{haardSchneft};
+            Sebastian.Teams = new List<Team>{haardSchneft};
+            Frederik.Teams = new List<Team>{haardSchneft};
+            Caspar.Teams = new List<Team>{haardSchneft};
+            Emil.Teams = new List<Team>{haardSchneft};
+
+            context.Teams.Add(haardSchneft);
             await context.SaveChangesAsync();
         }
     }
