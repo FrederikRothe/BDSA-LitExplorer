@@ -1,3 +1,4 @@
+//This class has been taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/
 namespace Server.Integration.Tests;
 
 public class TestClaimsProvider
@@ -12,16 +13,6 @@ public class TestClaimsProvider
     public TestClaimsProvider()
     {
         Claims = new List<Claim>();
-    }
- 
-    public static TestClaimsProvider WithAdminClaims()
-    {
-        var provider = new TestClaimsProvider();
-        provider.Claims.Add(new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()));
-        provider.Claims.Add(new Claim(ClaimTypes.Name, "Admin user"));
-        provider.Claims.Add(new Claim(ClaimTypes.Role, "Admin"));
- 
-        return provider;
     }
  
     public static TestClaimsProvider WithUserClaims()
