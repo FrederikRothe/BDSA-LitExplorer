@@ -31,7 +31,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
     [Fact]
-    public async Task post_returns_sucess()
+    public async Task post_returns_Created()
     {   
         var connection = new ConnectionCreateDTO
         {
@@ -104,7 +104,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
         var client = _factory.CreateClientWithTestAuth(provider);
         var connection = await client.DeleteAsync("api/Connection/3");
 
-        Assert.Equal("NoContent", connection.StatusCode.ToString());
+        Assert.Equal(HttpStatusCode.NoContent, connection.StatusCode);
     }
  
 
