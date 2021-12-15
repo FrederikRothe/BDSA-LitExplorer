@@ -198,9 +198,12 @@
       //The purpose of the next three lines is simply to refresh our UI, we know that HTTP calls shouldn't be overused and this is an easy fix.
       CurrentUser.teams.RemoveAll(t => t.Id == team.Id);
       var value = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
-      if (value != null) CurrentUser.teams.Add(value);
+      if (value != null) 
+      {
+        CurrentUser.teams.Add(value);
+        CurrentUser.selectedTeam = value;
+      }
       
-      CurrentUser.selectedTeam = null;
       await refreshGraph.InvokeAsync();
       StateHasChanged();
     }
