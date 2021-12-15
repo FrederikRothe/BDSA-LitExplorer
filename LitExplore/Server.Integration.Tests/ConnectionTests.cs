@@ -13,7 +13,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     {
         var provider = TestClaimsProvider.WithUserClaims();
         var client = _factory.CreateClientWithTestAuth(provider);
-        var connection = await client.GetFromJsonAsync<ConnectionDTO>("/api/Connection/1");
+        var connection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/1");
 
 
         Assert.NotNull(connection);
@@ -26,7 +26,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     {
         var provider = TestClaimsProvider.WithUserClaims();
         var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.DeleteAsync("/api/Connection/720");
+        var response = await client.DeleteAsync("api/Connection/720");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -35,17 +35,17 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     {   
         var connection = new ConnectionCreateDTO
         {
-            CreatorId = "25",
-            PaperOneId = 22,
-            PaperTwoId = 50,
+            CreatorId = "1",
+            PaperOneId = 1,
+            PaperTwoId = 2,
             ConnectionType = "Rock n' Roll",
             Description = "Not much to say",
-            TeamId = 145
+            TeamId = null
         };
         
         var provider = TestClaimsProvider.WithUserClaims();
         var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.PostAsync("/api/Connection",connection);
+        var response = await client.PostAsJsonAsync("api/Connection", connection);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
@@ -55,24 +55,57 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     {
         var newConnection = new ConnectionCreateDTO
         {
-            CreatorId = "25",
-            PaperOneId = 22,
-            PaperTwoId = 50,
-            ConnectionType = "Rock n' Roll",
-            Description = "Not much to say",
-            TeamId = 145
+            CreatorId = "1",
+            PaperOneId = 2,
+            PaperTwoId = 1,
+            ConnectionType = "Fish n' Chips",
+            Description = "Alot to say",
+            TeamId = null
         };
 
         var provider = TestClaimsProvider.WithUserClaims();
         var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.PostAsJsonAsync("/api/Connection", newConnection);
+        var response = await client.PostAsJsonAsync("api/Connection", newConnection);
 
-        var connection = await client.GetFromJsonAsync<ConnectionDTO>("/api/Connection/4");
+        var connection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/4");
 
-        Assert.Equal("25", connection.CreatorId);
-        Assert.Equal("Rock n' Roll", connection.ConnectionType);
+        Assert.Equal("1", connection.CreatorId);
+        Assert.Equal("Fish n' Chips", connection.ConnectionType);
+    }
 
+    [Fact]
+    public async Task Update_updates_connection_and_get_returns_correctly_updated_connection()
+    {
+        var update = new ConnectionUpdateDTO
+        {
+            Id = 3,
+            CreatorId = "3",
+            PaperOneId = 2,
+            PaperTwoId = 1,
+            ConnectionType = "Cooking",
+            Description = "Space Cooking in space",
+            TeamIDs = new List<int>()
+        };
+
+        var provider = TestClaimsProvider.WithUserClaims();
+        var client = _factory.CreateClientWithTestAuth(provider);
+        var connection = await client.PutAsJsonAsync("api/Connection/3", update);
+
+        var updatedConnection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/3");
+
+        Assert.Equal("3", updatedConnection.CreatorId);
+        Assert.Equal("Cooking", updatedConnection.ConnectionType);
+    }
+
+    [Fact]
+    public async Task Delete_returns_NoContent_when_successfull()
+    {
+        var provider = TestClaimsProvider.WithUserClaims();
+        var client = _factory.CreateClientWithTestAuth(provider);
+        var connection = await client.DeleteAsync("api/Connection/3");
+
+        Assert.Equal("NoContent", connection.StatusCode.ToString());
     }
  
 
-}
+}   

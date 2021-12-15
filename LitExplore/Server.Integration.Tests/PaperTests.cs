@@ -33,7 +33,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
         Assert.Contains(papers, c => c.Document == "2");
     }
 
-    //Testing that it is in fact not possible to create papers via. the API as of yet. :-)
+    //Testing that it is in fact not possible to create papers via. the API :-)
     [Fact]
     public async Task Paper__post_returns_Created_with_location()
     {
