@@ -18,7 +18,10 @@ public class UserTests : IClassFixture<CustomWebApplicationFactory>
 
 
         Assert.NotNull(user);
-        Assert.True(user.Name == "Bob");
+        if (user != null) 
+        {
+            Assert.True(user.Name == "Bob");
+        }
     }
 
     [Fact]

@@ -17,8 +17,11 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 
 
         Assert.NotNull(connection);
-        Assert.True(connection.ConnectionType == "Math");
-        Assert.True(connection.Description == "1");
+        if (connection != null)
+        {
+            Assert.True(connection.ConnectionType == "Math");
+            Assert.True(connection.Description == "1");
+        }
     }
 
     [Fact]
@@ -69,8 +72,12 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 
         var connection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/4");
 
-        Assert.Equal("1", connection.CreatorId);
-        Assert.Equal("Fish n' Chips", connection.ConnectionType);
+        Assert.NotNull(connection);
+        if (connection != null)
+        {
+            Assert.Equal("1", connection.CreatorId);
+            Assert.Equal("Fish n' Chips", connection.ConnectionType);
+        }
     }
 
     [Fact]
@@ -93,8 +100,12 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 
         var updatedConnection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/3");
 
-        Assert.Equal("3", updatedConnection.CreatorId);
-        Assert.Equal("Cooking", updatedConnection.ConnectionType);
+        Assert.NotNull(updatedConnection);
+        if (updatedConnection != null) 
+        {
+            Assert.Equal("3", updatedConnection.CreatorId);
+            Assert.Equal("Cooking", updatedConnection.ConnectionType);
+        }
     }
 
     [Fact]

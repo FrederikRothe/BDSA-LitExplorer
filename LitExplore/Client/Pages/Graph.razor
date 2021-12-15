@@ -132,18 +132,24 @@
         if(CurrentUser.selectedTeam != null && CurrentUser.selectedTeam.Id == team.Id)
         {
             CurrentUser.selectedTeam = null;
-            CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
+            var conns = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
+            if (conns != null) CurrentUser.shownConnections = conns;
         }
         else
         {
             CurrentUser.selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");
-            if (CurrentUser.selectedTeam != null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{CurrentUser.selectedTeam.Id}");
+            if (CurrentUser.selectedTeam != null) 
+            {
+                var conns = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/Team/connections/{CurrentUser.selectedTeam.Id}");
+                if (conns != null) CurrentUser.shownConnections = conns;
+            }
         }
         StateHasChanged();
     }
 
     private async Task RefreshAndSetUserConnections() {
-        if (CurrentUser.selectedTeam == null) CurrentUser.shownConnections = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
+        var conns = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
+        if (CurrentUser.selectedTeam == null && conns != null) CurrentUser.shownConnections = conns;
         StateHasChanged();
     }
 
