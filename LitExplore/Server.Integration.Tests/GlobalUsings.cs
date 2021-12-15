@@ -16,5 +16,6 @@ global using System.Security.Claims;
 global using System.Text.Encodings.Web;
 global using Xunit;
 
-global using LitExplore.Storage;
+global using LitExplore.DomainServices;
 global using LitExplore.DomainModel;
+global using LitExplore.Infrastructure;

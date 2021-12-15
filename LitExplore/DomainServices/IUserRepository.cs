@@ -1,4 +1,4 @@
-namespace LitExplore.Storage;
+namespace LitExplore.DomainServices;
 public interface IUserRepository {
     Task<UserDTO> CreateAsync(UserCreateDTO user);
     Task<Option<UserDTO>> ReadAsync(string userId);

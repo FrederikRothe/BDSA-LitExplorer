@@ -1,4 +1,4 @@
-namespace LitExplore.Storage;
+namespace LitExplore.DomainServices;
 public interface ITeamRepository {
     Task<TeamDTO> CreateAsync(TeamCreateDTO team);
     Task<Option<TeamDTO>> ReadAsync(int teamId);

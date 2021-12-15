@@ -1,4 +1,4 @@
-namespace LitExplore.DomainModel;
+namespace LitExplore.Infrastructure;
 
 public interface ILitExploreContext : IDisposable
 {

@@ -1,4 +1,4 @@
-namespace LitExplore.Storage;
+namespace LitExplore.DomainServices;
 public interface IConnectionRepository {
     Task<ConnectionDTO> CreateAsync(ConnectionCreateDTO connection);
     Task<Option<ConnectionDTO>> ReadAsync(int connectionId);

@@ -1,5 +1,4 @@
-using System.IdentityModel.Tokens;
-namespace LitExplore.DomainModel;
+namespace LitExplore.Infrastructure;
 public class ConnectionRepository : IConnectionRepository
 {
 

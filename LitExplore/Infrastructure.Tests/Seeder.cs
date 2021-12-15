@@ -1,4 +1,4 @@
-namespace LitExplore.DomainModel.Tests;
+namespace LitExplore.Infrastructure.Tests;
 
 public class Seeder {
     public static LitExploreContext SeedInMemoryDB(LitExploreContext context)

@@ -8,4 +8,5 @@ global using Microsoft.OpenApi.Models;
 
 global using LitExplore.Server;
 global using LitExplore.DomainModel;
-global using LitExplore.Storage;
+global using LitExplore.DomainServices;
+global using LitExplore.Infrastructure;

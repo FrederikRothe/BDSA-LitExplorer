@@ -1,4 +1,4 @@
-namespace LitExplore.Storage;
+namespace LitExplore.DomainServices;
 
 public struct Option<T> where T : class
 {

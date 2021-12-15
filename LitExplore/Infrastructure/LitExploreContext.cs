@@ -1,4 +1,4 @@
-namespace LitExplore.DomainModel;
+namespace LitExplore.Infrastructure;
 public class LitExploreContext : DbContext, ILitExploreContext
 {
     public DbSet<Paper> Papers => Set<Paper>();
