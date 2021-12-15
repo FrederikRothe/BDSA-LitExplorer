@@ -30,8 +30,8 @@
     {
         if (connection != null)
         {
-            connpaper1 = Model.Graph.allPapers.Where(p => p.Id == connection.PaperOneId).Single();
-            connpaper2 = Model.Graph.allPapers.Where(p => p.Id == connection.PaperTwoId).Single();
+            connpaper1 = Graph.allPapers.Where(p => p.Id == connection.PaperOneId).Single();
+            connpaper2 = Graph.allPapers.Where(p => p.Id == connection.PaperTwoId).Single();
         }
         await base.OnParametersSetAsync();
     }
@@ -51,7 +51,7 @@
         {
             if (paper != null) 
             {
-                var t = Model.Graph.paperToPositions[paper.Id].Item2;
+                var t = Graph.paperToPositions[paper.Id].Item2;
                 if (t > 50) return "transform: translateY(-100%); top: -60px;";
             }
             return "top: 45px;";

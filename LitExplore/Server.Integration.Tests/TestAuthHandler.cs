@@ -1,3 +1,5 @@
+//This class has been influenced https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/
+
 namespace Server.Integration.Tests;
 
 internal sealed class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>

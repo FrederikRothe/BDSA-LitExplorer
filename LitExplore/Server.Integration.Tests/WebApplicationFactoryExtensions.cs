@@ -1,4 +1,4 @@
-
+//This class has been taken from https://gunnarpeipman.com/aspnet-core-integration-tests-users-roles/
 
 namespace Server.Integration.Tests;
 public static class WebApplicationFactoryExtensions

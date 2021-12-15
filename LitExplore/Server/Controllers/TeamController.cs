@@ -20,11 +20,14 @@ public class TeamController : ControllerBase
     }
 
     // Create
-    [ProducesResponseType(404)]
-    [ProducesResponseType(typeof(TeamDTO), 201)]
-    [ProducesResponseType(401)]
+    [Authorize]
     [HttpPost]
-    public async Task<ActionResult<TeamDTO>> Post(TeamCreateDTO tdto) => await _repository.CreateAsync(tdto, tdto.TeamLeaderId);
+    [ProducesResponseType(typeof(TeamDTO), 201)]
+    public async Task<IActionResult> Post(TeamCreateDTO tdto) 
+    {
+        var created = await _repository.CreateAsync(tdto);
+        return CreatedAtAction(nameof(Get), new { created.Id }, created);
+    }
 
     // Read
     [ProducesResponseType(404)]

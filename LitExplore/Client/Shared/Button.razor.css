@@ -10,7 +10,7 @@ button {
 }
 
 .cta {
-    background-color: var(--cta);
+    background-color: var(--background);
 }
 
 .cta:hover {

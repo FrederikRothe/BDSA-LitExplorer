@@ -18,6 +18,6 @@ global using Xunit;
 
 
 global using LitExplore.Storage;
-global using LitExplore.ApplicationLogic;
 global using static LitExplore.Storage.Roles;
 global using static LitExplore.Storage.Status;
+global using LitExplore.DomainModel;
