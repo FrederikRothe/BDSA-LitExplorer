@@ -5,7 +5,7 @@ We're group hård scneft and we've been working on the Literature Explore projec
 
 ## Starting the program
 1. Navigate to the ``./LitExplore/`` folder and run the ``.\Setup-Application.ps1`` PowerShell script. This will start and containerise the database using Docker.
-2. Run command ``dotnet run .\Server\`` to start the program.
+2. Run command ``dotnet run --project .\Server\`` to start the program.
 
 ## Things to do
 Here are a some pointers to interesting aspects of our vertical slice.
