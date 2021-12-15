@@ -65,8 +65,12 @@
   private ConnectionCreateDTO connection = new();
   private string _errorMessage = string.Empty;
   private int? _selectedTeamId;
-  
   [Parameter] public EventCallback refreshGraph { get; set; }
+
+  protected override void OnParametersSet()
+  {
+    if (CurrentUser.selectedTeam != null) _selectedTeamId = CurrentUser.selectedTeam.Id;
+  }
   private async Task HandleValidSubmit()
   {
     if (connection.PaperOneId == connection.PaperTwoId)
