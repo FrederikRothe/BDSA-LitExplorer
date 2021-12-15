@@ -149,19 +149,18 @@ public static class Seeder
         context.Database.Migrate();
         if(!context.Teams.Any())
         {
-            User Nadja = new User{oid = "7ae4939f-b0be-42a1-a18e-c0dffd04f57d", Name = "Nadja Brix Koch", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
-            User Theis = new User{oid = "0bee8cf0-a1c6-4eb5-bd63-ef02e2431526", Name = "Theis Stensgaard", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
-            User Sebastian = new User{oid = "49e1ae65-96d3-4512-bb9f-9c9e9024e735", Name = "Sebastian Vestergaard Fugmann", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
-            User Frederik = new User{oid = "0561a5ed-2923-44fa-9ec6-d89ea6ff1b24", Name = "Frederik Rothe", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
-            User Caspar = new User{oid = "16442aef-a6d9-4c07-8b8f-6536a0af3a72", Name = "Caspar Marschall", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
-            User Emil = new User{oid = "caba8b01-f802-4a62-a4db-6b34992627b7", Name = "Emil Houlborg", IsLeaderOf = new List<Team>(), Connections = new List<Connection>(), Teams = new List<Team>()};
+            User Nadja = new User{oid = "7ae4939f-b0be-42a1-a18e-c0dffd04f57d", Name = "Nadja Brix Koch"};
+            User Theis = new User{oid = "0bee8cf0-a1c6-4eb5-bd63-ef02e2431526", Name = "Theis Stensgaard"};
+            User Sebastian = new User{oid = "49e1ae65-96d3-4512-bb9f-9c9e9024e735", Name = "Sebastian Vestergaard Fugmann"};
+            User Frederik = new User{oid = "0561a5ed-2923-44fa-9ec6-d89ea6ff1b24", Name = "Frederik Rothe"};
+            User Caspar = new User{oid = "16442aef-a6d9-4c07-8b8f-6536a0af3a72", Name = "Caspar Marschall"};
+            User Emil = new User{oid = "caba8b01-f802-4a62-a4db-6b34992627b7", Name = "Emil Houlborg"};
             
             Team haardSchneft = new Team
             {
                 TeamLeader = Nadja, 
                 Colour = 1, 
                 Users = new List<User>{Nadja, Theis, Sebastian, Frederik, Caspar, Emil}, 
-                Connections = new List<Connection>(),
                 TeamName = "Hård Scneft"
             };
 
@@ -172,6 +171,35 @@ public static class Seeder
             Frederik.Teams = new List<Team>{haardSchneft};
             Caspar.Teams = new List<Team>{haardSchneft};
             Emil.Teams = new List<Team>{haardSchneft};
+
+            var theGoat = context.Papers.Where(p => p.Title == "The goat").Single();
+            var downfall = context.Papers.Where(p => p.Title == "The downfall of Microsoft").Single();
+            var shitcoins = context.Papers.Where(p => p.Title == "Shitcoins are the new black").Single();
+            var objects = context.Papers.Where(p => p.Title == "Objects First with Java").Single();
+
+            Connection c1 = new Connection 
+            { 
+                Paper1 = downfall, 
+                Paper1Id = downfall.Id, 
+                Paper2 = theGoat, 
+                Paper2Id = theGoat.Id, 
+                ConnectionType = "other", 
+                Description = "I think these fit well together",
+                Creator = Theis
+            };
+            
+            Connection c2 = new Connection 
+            { 
+                Paper1 = objects, 
+                Paper1Id = objects.Id, 
+                Paper2 = shitcoins, 
+                Paper2Id = shitcoins.Id, 
+                ConnectionType = "other", 
+                Description = "Same writing style",
+                Creator = Nadja
+            };
+
+            haardSchneft.Connections = new List<Connection>() { c1, c2 };
 
             context.Teams.Add(haardSchneft);
             await context.SaveChangesAsync();
