@@ -8,5 +8,5 @@ global using System.Web;
 global using System.Linq;
 
 global using LitExplore.Server.Controllers;
-global using LitExplore.Storage;
-global using static LitExplore.Storage.Status;
+global using LitExplore.DomainServices;
+global using static LitExplore.DomainServices.Status;

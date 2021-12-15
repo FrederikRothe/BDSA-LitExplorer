@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace LitExplore.DomainModel.Migrations
+namespace LitExplore.Infrastructure.Migrations
 {
     public partial class InitialMigration : Migration
     {

@@ -1,6 +1,6 @@
 global using LitExplore.Client.Shared;
 global using LitExplore.Client.Model;
-global using LitExplore.Storage;
+global using LitExplore.DomainServices;
 
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Microsoft.AspNetCore.Components.WebAssembly.Authentication;

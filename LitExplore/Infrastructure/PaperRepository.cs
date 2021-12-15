@@ -1,4 +1,4 @@
-namespace LitExplore.DomainModel;
+namespace LitExplore.Infrastructure;
 public class PaperRepository : IPaperRepository
 {
      private readonly ILitExploreContext _context;
