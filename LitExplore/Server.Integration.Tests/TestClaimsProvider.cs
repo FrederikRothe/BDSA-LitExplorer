@@ -17,11 +17,11 @@ public class TestClaimsProvider
  
     public static TestClaimsProvider WithUserClaims()
     {
-        var provider = new TestClaimsProvider();
-        provider.Claims.Add(new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()));
-        provider.Claims.Add(new Claim(ClaimTypes.Name, "User"));
-        provider.Claims.Add(new Claim("http://schemas.microsoft.com/identity/claims/scope", "API.Access"));
+        var _provider = new TestClaimsProvider();
+        _provider.Claims.Add(new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()));
+        _provider.Claims.Add(new Claim(ClaimTypes.Name, "User"));
+        _provider.Claims.Add(new Claim("http://schemas.microsoft.com/identity/claims/scope", "API.Access"));
  
-        return provider;
+        return _provider;
     }
 }

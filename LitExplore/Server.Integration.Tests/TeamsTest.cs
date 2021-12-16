@@ -3,18 +3,19 @@ namespace Server.Integration.Tests;
 public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+    private TestClaimsProvider _provider;
+    private HttpClient _client;
     public TeamsTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
+        _provider = TestClaimsProvider.WithUserClaims();
+        _client = _factory.CreateClientWithTestAuth(_provider);
     }
 
     [Fact]
     public async Task get_by_id_1_returns_correct_team()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var team = await client.GetFromJsonAsync<TeamDTO>("/api/Team/1");
-
+        var team = await _client.GetFromJsonAsync<TeamDTO>("/api/Team/1");
 
         Assert.NotNull(team);
         if (team != null) 
@@ -32,14 +33,12 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
             TeamName = "Got any games on your phone?",
             Colour = 4
         };
-        
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.PostAsJsonAsync("api/Team", newTeam);
+    
+        var response = await _client.PostAsJsonAsync("api/Team", newTeam);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         
-        var team = await client.GetFromJsonAsync<TeamDTO>("api/Team/4");
+        var team = await _client.GetFromJsonAsync<TeamDTO>("api/Team/4");
 
         Assert.NotNull(team);
         if (team != null)
@@ -52,9 +51,7 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task delete_returns_notfound_with_non_excisting_id_720()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.DeleteAsync("api/Team/720");
+        var response = await _client.DeleteAsync("api/Team/720");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -62,13 +59,11 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Delete_returns_NoContent_when_successfull()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var team = await client.GetFromJsonAsync<TeamDTO>("/api/Team/1");
+        var team = await _client.GetFromJsonAsync<TeamDTO>("/api/Team/1");
         
         Assert.NotNull(team);
         
-        var deletedTeam = await client.DeleteAsync("api/team/1");
+        var deletedTeam = await _client.DeleteAsync("api/team/1");
         Assert.Equal(HttpStatusCode.NoContent.ToString(), deletedTeam.StatusCode.ToString());
     }
 
@@ -83,11 +78,9 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
             Colour = 1
         };
 
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var team = await client.PutAsJsonAsync("api/Team/3", update);
+        var team = await _client.PutAsJsonAsync("api/Team/3", update);
 
-        var updatedTeam = await client.GetFromJsonAsync<TeamDTO>("api/Team/3");
+        var updatedTeam = await _client.GetFromJsonAsync<TeamDTO>("api/Team/3");
 
         Assert.NotNull(updatedTeam);
         if (updatedTeam != null)

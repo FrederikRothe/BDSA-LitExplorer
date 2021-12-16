@@ -3,18 +3,19 @@ namespace Server.Integration.Tests;
 public class PaperTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+    private TestClaimsProvider _provider;
+    private HttpClient _client;
     public PaperTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
+        _provider = TestClaimsProvider.WithUserClaims();
+        _client = _factory.CreateClientWithTestAuth(_provider);
     }
 
     [Fact]
     public async Task get_returns_papers()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var papers = await client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
-
+        var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 
         Assert.NotNull(papers);
         if (papers != null)
@@ -28,9 +29,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task get_returns_papers_with_correct_document()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var papers = await client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
+        var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 
 
         Assert.Contains(papers, c => c.Document == "2");
@@ -40,9 +39,6 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Paper__post_returns_Created_with_location()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        
         var christmasPaper = new PaperCreateDTO
         {
             Document = "3",
@@ -54,7 +50,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
             TagNames = new List<string> {"Free Smoke", "Something to prove"}
         };
 
-        var response = await client.PostAsJsonAsync("/api/Paper", christmasPaper);
+        var response = await _client.PostAsJsonAsync("/api/Paper", christmasPaper);
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

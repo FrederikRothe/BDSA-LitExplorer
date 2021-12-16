@@ -3,18 +3,19 @@ namespace Server.Integration.Tests;
 public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+    private TestClaimsProvider _provider;
+    private HttpClient _client;
     public ConnectionTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
+        _provider = TestClaimsProvider.WithUserClaims();
+        _client = _factory.CreateClientWithTestAuth(_provider);
     }
 
     [Fact]
     public async Task get_returns_connection_with_id_1()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var connection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/1");
-
+        var connection = await _client.GetFromJsonAsync<ConnectionDTO>("api/Connection/1");
 
         Assert.NotNull(connection);
         if (connection != null)
@@ -27,12 +28,11 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task delete_returns_notfound_with_non_excisting_id_720()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.DeleteAsync("api/Connection/720");
+        var response = await _client.DeleteAsync("api/Connection/720");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
+
     [Fact]
     public async Task post_returns_Created()
     {   
@@ -45,10 +45,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
             Description = "Not much to say",
             TeamId = null
         };
-        
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.PostAsJsonAsync("api/Connection", connection);
+        var response = await _client.PostAsJsonAsync("api/Connection", connection);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
     }
@@ -65,12 +62,9 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
             Description = "Alot to say",
             TeamId = null
         };
+        var response = await _client.PostAsJsonAsync("api/Connection", newConnection);
 
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var response = await client.PostAsJsonAsync("api/Connection", newConnection);
-
-        var connection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/4");
+        var connection = await _client.GetFromJsonAsync<ConnectionDTO>("api/Connection/4");
 
         Assert.NotNull(connection);
         if (connection != null)
@@ -94,11 +88,8 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
             TeamIDs = new List<int>()
         };
 
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var connection = await client.PutAsJsonAsync("api/Connection/3", update);
-
-        var updatedConnection = await client.GetFromJsonAsync<ConnectionDTO>("api/Connection/3");
+        var connection = await _client.PutAsJsonAsync("api/Connection/3", update);
+        var updatedConnection = await _client.GetFromJsonAsync<ConnectionDTO>("api/Connection/3");
 
         Assert.NotNull(updatedConnection);
         if (updatedConnection != null) 
@@ -111,9 +102,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task Delete_returns_NoContent_when_successfull()
     {
-        var provider = TestClaimsProvider.WithUserClaims();
-        var client = _factory.CreateClientWithTestAuth(provider);
-        var connection = await client.DeleteAsync("api/Connection/3");
+        var connection = await _client.DeleteAsync("api/Connection/3");
 
         Assert.Equal(HttpStatusCode.NoContent, connection.StatusCode);
     }
