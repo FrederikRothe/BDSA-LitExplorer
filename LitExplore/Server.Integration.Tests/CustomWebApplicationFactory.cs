@@ -8,10 +8,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             var dbContext = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<LitExploreContext>));
 
-            if (dbContext != null)
-            {
-                services.Remove(dbContext);
-            }
+            if (dbContext != null) services.Remove(dbContext);
 
             /* Overriding policies and adding Test Scheme defined in TestAuthHandler */
             services.AddMvc(options =>
@@ -114,18 +111,13 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         ARobert.Papers = new List<Paper>{Obese};
 
-        // Add and save -- Apperently if you dont save after each a circular dependency will arrive
         context.Tags.AddRange(Health);
-        //context.SaveChangesAsync();
         context.Authors.AddRange(ABob, ASuzie, ARobert);
-        //context.SaveChangesAsync();
         context.Papers.AddRange(Fit, Obese);
-        //context.SaveChangesAsync();
         context.Users.AddRange(Bob, Suzie, Robert);
-        //context.SaveChangesAsync();
         context.Connections.AddRange(Math, Science, Physics);
-        //context.SaveChangesAsync();
         context.Teams.AddRange(Potato, Orange, Candy);
+        
         context.SaveChangesAsync();
     }
 }

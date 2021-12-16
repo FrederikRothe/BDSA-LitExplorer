@@ -11,6 +11,7 @@ namespace LitExplore.Server.Controllers;
 public class TeamController : ControllerBase
 {
     private readonly ILogger<TeamController> _logger;
+    
     private readonly ITeamRepository _repository;
 
     public TeamController(ILogger<TeamController> logger, ITeamRepository repository)
@@ -19,7 +20,6 @@ public class TeamController : ControllerBase
         _repository = repository;
     }
 
-    // Create
     [Authorize]
     [HttpPost]
     [ProducesResponseType(typeof(TeamDTO), 201)]
@@ -29,7 +29,6 @@ public class TeamController : ControllerBase
         return CreatedAtAction(nameof(Get), new { created.Id }, created);
     }
 
-    // Read
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(TeamDTO), 200)]
     [ProducesResponseType(401)]
@@ -48,7 +47,6 @@ public class TeamController : ControllerBase
     [HttpGet("users/{id}")]
     public async Task<IReadOnlyCollection<UserDTO>> GetTeamUsers(int id) => await _repository.ReadUsersAsync(id);
 
-    // Update
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]
@@ -67,7 +65,6 @@ public class TeamController : ControllerBase
     [HttpPut("{id}/connection/{connectionId}")]
     public async Task<IActionResult> ShareConnection(int id, int connectionId) => (await _repository.ShareConnectionAsync(id, connectionId)).ToActionResult();
 
-    // Delete
     [ProducesResponseType(404)]
     [ProducesResponseType(204)]
     [ProducesResponseType(401)]

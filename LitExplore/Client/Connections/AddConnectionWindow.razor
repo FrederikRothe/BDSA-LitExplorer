@@ -8,21 +8,21 @@
         <h1 class="modal-title" id="AddConnectionModalLabel">Add a connection</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="clear"></button>
       </div>
-      <EditForm Model="@connection" OnValidSubmit="@HandleValidSubmit">
+      <EditForm Model="@_connection" OnValidSubmit="@HandleValidSubmit">
         <div class="modal-body">
 
           <span style="color: var(--red);">@_errorMessage</span>
           
           <div class="dropdowns">
 
-            <select class="form-select" @bind="connection.PaperOneId" aria-label="paper1select">
+            <select class="form-select" @bind="_connection.PaperOneId" aria-label="paper1select">
               <option disabled selected value> -- select a paper -- </option>
               @foreach (var paper in Graph.allPapers)
                 {
                   <option value=@paper.Id>@paper.Title</option>
                 }
             </select>
-            <select class="form-select" @bind="connection.PaperTwoId" aria-label="paper2select">
+            <select class="form-select" @bind="_connection.PaperTwoId" aria-label="paper2select">
               <option disabled selected value> -- select a paper -- </option>
               @foreach (var paper in Graph.allPapers)
                 {
@@ -34,7 +34,7 @@
 
           <div>
             <h2>Description</h2>
-            <textarea class="form-control" @bind="connection.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
+            <textarea class="form-control" @bind="_connection.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
           </div>
 
           <h2>Share with a team</h2>
@@ -62,34 +62,38 @@
 </div>
 
 @code {
-  private ConnectionCreateDTO connection = new();
+  private ConnectionCreateDTO _connection = new();
+
   private string _errorMessage = string.Empty;
+
   private int? _selectedTeamId;
+
   [Parameter] public EventCallback refreshGraph { get; set; }
 
   protected override void OnParametersSet()
   {
     if (CurrentUser.selectedTeam != null) _selectedTeamId = CurrentUser.selectedTeam.Id;
   }
+
   private async Task HandleValidSubmit()
   {
-    if (connection.PaperOneId == connection.PaperTwoId)
+    if (_connection.PaperOneId == _connection.PaperTwoId)
     {
       _errorMessage = "Please select two different papers.";
       return;
     }
 
-    if (CurrentUser.connectionExists(connection))
+    if (CurrentUser.connectionExists(_connection))
     {
       _errorMessage = "You have already created a connection between these papers.";
       return;
     }
 
-    connection.CreatorId = CurrentUser.userOid;
-    connection.ConnectionType = "other";
-    connection.TeamId = _selectedTeamId;
+    _connection.CreatorId = CurrentUser.userOid;
+    _connection.ConnectionType = "other";
+    _connection.TeamId = _selectedTeamId;
 
-    var response = await Http.PostAsJsonAsync("api/Connection", connection);
+    var response = await Http.PostAsJsonAsync("api/Connection", _connection);
 
     if (response.IsSuccessStatusCode)
     {
@@ -102,13 +106,14 @@
     {
         _errorMessage = $"An error occured.";
     }
+
     clear();
   }
 
   public void clear() 
   {
     _errorMessage = string.Empty;
-    connection = new();
+    _connection = new();
     _selectedTeamId = 0;
   }
 }

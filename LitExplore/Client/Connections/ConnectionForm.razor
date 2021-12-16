@@ -15,17 +15,18 @@
     <input type="submit" value=@_SubmitButtonLabel/>
 </form>
 
-
 @code {
     [Parameter]
     public bool UpdateForm {get;set;} = false;
 
     [Parameter]
     public string? Paper1 {get;set;}
+
     private bool _missingPaper1 { get => Paper1 != null; }
 
     [Parameter]
     public string? Paper2 {get;set;}
+
     private bool _missingPaper2 { get => Paper2 != null; }
 
     private string _SubmitButtonLabel

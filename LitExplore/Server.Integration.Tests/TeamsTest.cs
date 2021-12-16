@@ -3,8 +3,11 @@ namespace Server.Integration.Tests;
 public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+
     private TestClaimsProvider _provider;
+
     private HttpClient _client;
+    
     public TeamsTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;

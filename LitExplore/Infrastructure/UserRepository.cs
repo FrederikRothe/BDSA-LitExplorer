@@ -2,7 +2,6 @@ namespace LitExplore.Infrastructure;
 
 public class UserRepository : IUserRepository
 {
-
     private readonly ILitExploreContext _context;
 
     public UserRepository(ILitExploreContext context)
@@ -73,10 +72,7 @@ public class UserRepository : IUserRepository
     {
         var user = FindUserOid(userId);
 
-        if (user == null)
-        {
-            return new List<TeamDTO>();
-        }
+        if (user == null) return new List<TeamDTO>();
 
         var teams = (await _context.Teams.Where(t => t.Users.Contains(user))
                                 .Select(t => new TeamDTO(
@@ -90,5 +86,6 @@ public class UserRepository : IUserRepository
                                 .AsReadOnly();
         return teams;
     }
+    
     private User? FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
 }

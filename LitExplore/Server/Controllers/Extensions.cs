@@ -1,5 +1,3 @@
-using static LitExplore.DomainServices.Status;
-
 namespace LitExplore.Server.Controllers;
 
 public static class Extensions

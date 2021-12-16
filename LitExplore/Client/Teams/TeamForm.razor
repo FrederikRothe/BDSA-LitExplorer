@@ -10,13 +10,13 @@
                 <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <EditForm Model="@team" OnValidSubmit="@HandleValidSubmit">
+            <EditForm Model="@_team" OnValidSubmit="@HandleValidSubmit">
                 <div class="modal-body">
 
                     <span style="color: var(--red);">@_errorMessage</span>
                     <div>
                         <h2>Team Name</h2>
-                        <input class="form-control" type="text" id="teamname" @bind=team.TeamName/>
+                        <input class="form-control" type="text" id="teamname" @bind=_team.TeamName/>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -29,12 +29,16 @@
 
 @code {
     [Parameter] public string adminId { get; set; } = null!;
-    private TeamCreateDTO team = new();
+    
+    private TeamCreateDTO _team = new();
+    
     private string _errorMessage = string.Empty;
+    
     [Parameter] public EventCallback refreshGraph { get; set; }
+    
     private async Task HandleValidSubmit()
     {
-        if (team.TeamName == null || team.TeamName == "")
+        if (_team.TeamName == null || _team.TeamName == "")
         {
             _errorMessage = "Please enter a team name.";
             return;   
@@ -44,11 +48,11 @@
             _errorMessage = "Too many teams.";
             return;   
         }
-        team.TeamLeaderId = adminId;
+        _team.TeamLeaderId = adminId;
         var rand = new Random();
-        team.Colour = rand.Next(1, 5);
+        _team.Colour = rand.Next(1, 5);
 
-        var response = await Http.PostAsJsonAsync("api/Team", team);
+        var response = await Http.PostAsJsonAsync("api/Team", _team);
 
         if (response.IsSuccessStatusCode)
         {
@@ -69,7 +73,7 @@
     
     private void Clear() {
         _errorMessage = "";
-        team = new();
+        _team = new();
     }
 
 }

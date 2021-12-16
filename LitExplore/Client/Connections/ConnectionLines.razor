@@ -20,9 +20,9 @@
 } 
 <ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh onClose=@closeConnectionInfo/>
 
-
 @code {
     [Parameter] public List<ConnectionDTO> connections { get; set; } = null!;
+
     [Parameter] public List<ConnectionDTO> extraConnections { get; set; } = new List<ConnectionDTO>();
 
     private PaperDTO getPaper(int id) => Graph.allPapers.Where(p => p.Id == id).Single();
@@ -30,6 +30,7 @@
     private bool _showHoverWindow = false;
 
     private double _hoverWindowLeft { get; set; } = 0;
+
     private double _hoverWindowTop { get; set; } = 0;
 
     protected void Mouse_Move(MouseEventArgs e)
@@ -37,17 +38,29 @@
         _hoverWindowLeft = e.ClientX;
         _hoverWindowTop = e.ClientY;
     }
+
     private int colour(ConnectionDTO c) => CurrentUser.selectedTeam != null? CurrentUser.selectedTeam.Colour : 5;
+    
     private (int,int) position1(ConnectionDTO c) => Graph.paperToPositions[c.PaperOneId];
+    
     private (int,int) position2(ConnectionDTO c) => Graph.paperToPositions[c.PaperTwoId];
+    
     private int x1(ConnectionDTO c) => (position1(c).Item1); 
+    
     private int y1(ConnectionDTO c) => (position1(c).Item2); 
+    
     private int x2(ConnectionDTO c) => (position2(c).Item1); 
+    
     private int y2(ConnectionDTO c) => (position2(c).Item2); 
+    
     private string x1s(ConnectionDTO c) => $"{x1(c)}vw"; 
+    
     private string y1s(ConnectionDTO c) => $"{y1(c)}vh";
+    
     private string x2s(ConnectionDTO c) => $"{x2(c)}vw"; 
+    
     private string y2s(ConnectionDTO c) => $"{y2(c)}vh"; 
+    
     private void hoversOn(ConnectionDTO c) {
         _showHoverWindow = !_showHoverWindow;
         _hoverconnection = c;
@@ -67,9 +80,13 @@
     }
 
     private ConnectionDTO _connectionForConnectionWindow = TestEntities.connectionDTO;
+    
     private PaperDTO _paper1 = TestEntities.paperDTO;
+    
     private PaperDTO _paper2 = TestEntities.paperDTO;
+    
     private ConnectionDTO _hoverconnection = TestEntities.connectionDTO;
+    
     [Parameter] public EventCallback refreshGraph { get; set; }
 
     public void Refresh() 

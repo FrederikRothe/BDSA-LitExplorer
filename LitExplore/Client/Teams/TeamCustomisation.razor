@@ -13,7 +13,7 @@
           <button @onclick="Reset" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <EditForm Model="@teamUpdated">
+          <EditForm Model="@_teamUpdated">
             <div class="content">
               <div class="teamName">
                 <p>team name</p>
@@ -85,7 +85,7 @@
 
 @code {
 
-    private TeamUpdateDTO teamUpdated = new();
+    private TeamUpdateDTO _teamUpdated = new();
 
     [Parameter] public TeamDTO team { get; set; } = null!;
 
@@ -158,6 +158,7 @@
     }
 
     [Parameter] public EventCallback refreshGraph { get; set; }
+    
     [Parameter] public EventCallback refreshTeam { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -186,14 +187,14 @@
     
     private async Task Update()
     {
-      teamUpdated = await Http.GetFromJsonAsync<TeamUpdateDTO>($"api/Team/{team.Id}") ?? new();
+      _teamUpdated = await Http.GetFromJsonAsync<TeamUpdateDTO>($"api/Team/{team.Id}") ?? new();
       if(teamName != "")
       {
-        teamUpdated.TeamName = teamName;
+        _teamUpdated.TeamName = teamName;
       }
 
-      teamUpdated.Colour = colour;
-      var response = await Http.PutAsJsonAsync($"api/Team/{teamUpdated.Id}", teamUpdated);
+      _teamUpdated.Colour = colour;
+      var response = await Http.PutAsJsonAsync($"api/Team/{_teamUpdated.Id}", _teamUpdated);
       
       //The purpose of the next three lines is simply to refresh our UI, we know that HTTP calls shouldn't be overused and this is an easy fix.
       CurrentUser.teams.RemoveAll(t => t.Id == team.Id);

@@ -7,6 +7,7 @@ namespace LitExplore.Server.Controllers;
 public class ConnectionController : ControllerBase
 {
     private readonly ILogger<ConnectionController> _logger;
+    
     private readonly IConnectionRepository _repository;
 
     public ConnectionController(ILogger<ConnectionController> logger, IConnectionRepository repository)
@@ -15,7 +16,6 @@ public class ConnectionController : ControllerBase
         _repository = repository;
     }
 
-    // Create
     [Authorize]
     [HttpPost]
     [ProducesResponseType(typeof(ConnectionDTO), 201)]
@@ -25,7 +25,6 @@ public class ConnectionController : ControllerBase
         return CreatedAtAction(nameof(Get), new { created.Id }, created);
     }
     
-    // Read
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(ConnectionDTO), 200)]
@@ -36,14 +35,12 @@ public class ConnectionController : ControllerBase
     [HttpGet]
     public async Task<IReadOnlyCollection<ConnectionDTO>> GetAllConnections() => await _repository.ReadPredefinedAsync();
 
-    // Update
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, ConnectionUpdateDTO ccdto) => (await _repository.UpdateAsync(id, ccdto)).ToActionResult();
 
-    // Delete
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(204)]

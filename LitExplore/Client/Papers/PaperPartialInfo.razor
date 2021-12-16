@@ -1,6 +1,7 @@
 <h2>Authours</h2>
 <p>@_authors</p>
-@if (paper.TagNames != null && paper.TagNames.Count() > 0) {
+@if (paper.TagNames != null && paper.TagNames.Count() > 0) 
+{
     <h2>Tags</h2>
     <p>@_tags</p>
 }
@@ -8,6 +9,7 @@
 @code {
     [Parameter]
     public PaperDTO paper { get; set; } = null!;
+    
     private string _authors 
     {
         get 

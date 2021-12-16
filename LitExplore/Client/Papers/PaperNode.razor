@@ -1,6 +1,7 @@
 <div type="button" class="paper" style="left: @left vw; top: @top vh;" data-bs-toggle="modal" data-bs-target="#paperInfoWindow" @onmouseover="hoversOn" @onmouseout="hoversOn">
     <span class="oi oi-justify-left"></span>
-    @if (showHoverWindow) {
+    @if (showHoverWindow) 
+    {
         <HoverWindow paper=@paper/>
     } 
 </div>
@@ -8,12 +9,16 @@
 @code {
     [Parameter]
     public PaperDTO paper { get; set; } = null!;
+
     public bool showHoverWindow = false;
+    
     private void hoversOn() {
         showHoverWindow = !showHoverWindow;
     }
+    
     [Parameter]
     public int left { get; set; } = 0;
+    
     [Parameter]
     public int top { get; set; } = 0;
 }
