@@ -162,10 +162,16 @@
           if (connection.TeamIDs.Contains(change.Key))
           {
             await Http.DeleteAsync($"api/Team/{change.Key}/connection/{connection.Id}");
+            CurrentUser.shownConnections.RemoveAll(c => c.Id == connection.Id);
+            StateHasChanged();
+            await refreshGraph.InvokeAsync();
           } 
           else
           {
             await Http.PutAsJsonAsync($"api/Team/{change.Key}/connection/{connection.Id}", connection.Id);
+            CurrentUser.shownConnections.Add(connection);
+            StateHasChanged();
+            await refreshGraph.InvokeAsync();
           }
         }
       }

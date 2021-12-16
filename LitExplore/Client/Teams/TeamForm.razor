@@ -14,13 +14,15 @@
                 <div class="modal-body">
 
                     <span style="color: var(--red);">@_errorMessage</span>
+                    <span style="color: var(--green);">@_successMessage</span>
+
                     <div>
                         <h2>Team Name</h2>
                         <input class="form-control" type="text" id="teamname" @bind=_team.TeamName/>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create" data_bs_dismiss="modal"/>
+                    <ButtonIcon type="submit" icon="oi oi-check" tooltip="Create" />
                 </div>
             </EditForm>
         </div>
@@ -28,27 +30,31 @@
 </div>
 
 @code {
-    [Parameter] public string adminId { get; set; } = null!;
+    [Parameter] public string AdminId { get; set; } = null!;
     
     private TeamCreateDTO _team = new();
     
     private string _errorMessage = string.Empty;
-    
+
+    private string _successMessage = string.Empty;
+
     [Parameter] public EventCallback refreshGraph { get; set; }
     
     private async Task HandleValidSubmit()
     {
         if (_team.TeamName == null || _team.TeamName == "")
         {
+            _successMessage = string.Empty;
             _errorMessage = "Please enter a team name.";
             return;   
         }
         if (CurrentUser.teams.Count() >= 7) 
         {
+            _successMessage = string.Empty;
             _errorMessage = "Too many teams.";
             return;   
         }
-        _team.TeamLeaderId = adminId;
+        _team.TeamLeaderId = AdminId;
         var rand = new Random();
         _team.Colour = rand.Next(1, 5);
 
@@ -56,7 +62,8 @@
 
         if (response.IsSuccessStatusCode)
         {
-            _errorMessage = "";
+            _successMessage = "Created!";
+            _errorMessage = string.Empty;
             var created = await response.Content.ReadFromJsonAsync<TeamDTO>();
             if (CurrentUser.teams != null && created != null) 
             {
@@ -68,12 +75,13 @@
         {
             _errorMessage = $"An error occured.";
         }
-        Clear();
+        _errorMessage = string.Empty;
+        _team = new();
     }
     
     private void Clear() {
-        _errorMessage = "";
+        _successMessage = string.Empty;
+        _errorMessage = string.Empty;
         _team = new();
     }
-
 }

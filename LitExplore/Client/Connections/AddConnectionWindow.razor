@@ -6,12 +6,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="AddConnectionModalLabel">Add a connection</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="clear"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="Clear"></button>
       </div>
       <EditForm Model="@_connection" OnValidSubmit="@HandleValidSubmit">
         <div class="modal-body">
 
           <span style="color: var(--red);">@_errorMessage</span>
+          <span style="color: var(--green);">@_successMessage</span>
           
           <div class="dropdowns">
 
@@ -54,7 +55,7 @@
             </select>
         </div>
         <div class="modal-footer">
-          <ButtonIcon  type="submit" icon="oi oi-check" tooltip="Create" data_bs_target="#AddConnectionModal" data_bs_dismiss="modal" />
+          <ButtonIcon  type="submit" icon="oi oi-check" tooltip="Create" data_bs_target="#AddConnectionModal" />
         </div>
         </EditForm>
       </div>
@@ -65,6 +66,8 @@
   private ConnectionCreateDTO _connection = new();
 
   private string _errorMessage = string.Empty;
+
+  private string _successMessage = string.Empty;
 
   private int? _selectedTeamId;
 
@@ -77,6 +80,12 @@
 
   private async Task HandleValidSubmit()
   {
+    if (_connection.PaperOneId == 0 || _connection.PaperTwoId == 0)
+    {
+      _errorMessage = "Please select two papers.";
+      return;
+    }
+
     if (_connection.PaperOneId == _connection.PaperTwoId)
     {
       _errorMessage = "Please select two different papers.";
@@ -97,7 +106,8 @@
 
     if (response.IsSuccessStatusCode)
     {
-        _errorMessage = "";
+        _errorMessage = string.Empty;
+        _successMessage = "Created!";
         var created = await response.Content.ReadFromJsonAsync<ConnectionDTO>();
         if (created != null && (CurrentUser.selectedTeam == null || CurrentUser.selectedTeam.Id == _selectedTeamId)) CurrentUser.shownConnections.Add(created);
         await refreshGraph.InvokeAsync();
@@ -107,11 +117,14 @@
         _errorMessage = $"An error occured.";
     }
 
-    clear();
+    _errorMessage = string.Empty;
+    _connection = new();
+    _selectedTeamId = 0;
   }
 
-  public void clear() 
+  public void Clear() 
   {
+    _successMessage = string.Empty;
     _errorMessage = string.Empty;
     _connection = new();
     _selectedTeamId = 0;
