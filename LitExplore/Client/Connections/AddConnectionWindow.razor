@@ -80,6 +80,12 @@
 
   private async Task HandleValidSubmit()
   {
+    if (_connection.PaperOneId == 0 || _connection.PaperTwoId == 0)
+    {
+      _errorMessage = "Please select two papers.";
+      return;
+    }
+
     if (_connection.PaperOneId == _connection.PaperTwoId)
     {
       _errorMessage = "Please select two different papers.";
@@ -89,12 +95,6 @@
     if (CurrentUser.connectionExists(_connection))
     {
       _errorMessage = "You have already created a connection between these papers.";
-      return;
-    }
-
-    if (_connection.PaperOneId == 0 || _connection.PaperTwoId == 0)
-    {
-      _errorMessage = "Please select two papers.";
       return;
     }
 
