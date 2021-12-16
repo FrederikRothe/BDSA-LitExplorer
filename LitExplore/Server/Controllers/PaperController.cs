@@ -6,6 +6,7 @@ namespace LitExplore.Server.Controllers;
 public class PaperController : ControllerBase
 {
     private readonly ILogger<PaperController> _logger;
+    
     private readonly IPaperRepository _repository;
 
     public PaperController(ILogger<PaperController> logger, IPaperRepository repository)

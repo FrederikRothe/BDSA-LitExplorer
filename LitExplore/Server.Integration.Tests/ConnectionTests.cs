@@ -3,8 +3,11 @@ namespace Server.Integration.Tests;
 public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+
     private TestClaimsProvider _provider;
+
     private HttpClient _client;
+
     public ConnectionTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
@@ -106,6 +109,4 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
 
         Assert.Equal(HttpStatusCode.NoContent, connection.StatusCode);
     }
- 
-
 }   

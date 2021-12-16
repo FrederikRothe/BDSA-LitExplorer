@@ -5,6 +5,7 @@ namespace Server.Integration.Tests;
 internal sealed class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     private readonly IList<Claim> _claims;
+    
     public TestAuthHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,

@@ -1,4 +1,5 @@
 namespace LitExplore.DomainServices;
+
 public record TeamCreateDTO
 {
     [Required]
@@ -10,7 +11,6 @@ public record TeamCreateDTO
 
     [Required]
     public int Colour { get; set; }
-    
 }
 
 public record TeamDTO(int Id, string TeamName, int Colour, string? TeamLeaderId, IEnumerable<string>? UserIDs, IEnumerable<int>? ConnectionIDs);

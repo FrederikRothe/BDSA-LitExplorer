@@ -122,7 +122,9 @@
     }
 
     private bool _dataIsLoaded = false;
+    
     private int getLeftPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item1;
+    
     private int getTopPosPaper(PaperDTO p) => Model.Graph.paperToPositions[p.Id].Item2;
 
     private PaperDTO _selectedPaper = TestEntities.paperDTO;
@@ -134,7 +136,7 @@
             CurrentUser.selectedTeam = null;
             var conns = await Http.GetFromJsonAsync<List<ConnectionDTO>>($"api/User/connections/{CurrentUser.userOid}");
             if (conns != null) CurrentUser.shownConnections = conns;
-        }
+        } 
         else
         {
             CurrentUser.selectedTeam = await Http.GetFromJsonAsync<TeamDTO>($"api/Team/{team.Id}");

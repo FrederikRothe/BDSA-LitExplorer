@@ -5,7 +5,7 @@ public class ConnectionRepositoryTests : IDisposable
     private readonly ILitExploreContext _context;
     private readonly ConnectionRepository _repository;
 
-    private bool disposed;
+    private bool _disposed;
 
     public ConnectionRepositoryTests()
     {
@@ -16,7 +16,6 @@ public class ConnectionRepositoryTests : IDisposable
         var context = new LitExploreContext(builder.Options);
         context.Database.EnsureCreated();
 
-        // Populate In-Memory Database
         context = SeedInMemoryDB(context);
 
         _context = context;
@@ -74,7 +73,6 @@ public class ConnectionRepositoryTests : IDisposable
     [Fact]
     public async Task ReadPredefinedAsync_returns_all_predfined_connections()
     {
-        // There are no predefined connections in the in-memory database
         var conns = new List<ConnectionDTO>().AsReadOnly();
 
         var connections = await _repository.ReadPredefinedAsync();
@@ -139,13 +137,11 @@ public class ConnectionRepositoryTests : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposed)
+        if (!_disposed)
         {
-            if (disposing) {
-                _context.Dispose();
-            }
+            if (disposing) _context.Dispose();
 
-            disposed = true;
+            _disposed = true;
         }    
     }  
 

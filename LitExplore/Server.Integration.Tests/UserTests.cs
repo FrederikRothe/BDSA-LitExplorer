@@ -3,8 +3,11 @@ namespace Server.Integration.Tests;
 public class UserTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+
     private TestClaimsProvider _provider;
+
     private HttpClient _client;
+
     public UserTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
@@ -41,5 +44,4 @@ public class UserTests : IClassFixture<CustomWebApplicationFactory>
         Assert.NotNull(userTeams);
         Assert.Contains(userTeams, u => u.TeamName == "Potato");
     }
-
 }   

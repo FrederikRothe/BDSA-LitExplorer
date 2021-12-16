@@ -13,11 +13,11 @@
     <p><i>@paper1.Title</i> references <i>@paper2.Title</i></p>
 }
 
-
-
 @code {
     [Parameter] public ConnectionDTO connection { get; set; } = null!;
+
     [Parameter] public PaperDTO paper1 { get; set; } = null!;
+    
     [Parameter] public PaperDTO paper2 { get; set; } = null!;
     
     private string _authors 

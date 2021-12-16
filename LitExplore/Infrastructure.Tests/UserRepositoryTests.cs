@@ -4,7 +4,7 @@ public class UserRepositoryTests : IDisposable
     private readonly ILitExploreContext _context;
     private readonly UserRepository _repository;
 
-    private bool disposed;
+    private bool _disposed;
 
     public UserRepositoryTests()
     {
@@ -15,7 +15,6 @@ public class UserRepositoryTests : IDisposable
         var context = new LitExploreContext(builder.Options);
         context.Database.EnsureCreated();
 
-        // Populate In-Memory Database
         context = SeedInMemoryDB(context);
 
         _context = context;
@@ -122,13 +121,11 @@ public class UserRepositoryTests : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposed)
+        if (!_disposed)
         {
-            if (disposing) {
-                _context.Dispose();
-            }
+            if (disposing) _context.Dispose();
 
-            disposed = true;
+            _disposed = true;
         }    
     }  
 

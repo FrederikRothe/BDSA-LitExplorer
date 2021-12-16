@@ -1,4 +1,5 @@
 namespace LitExplore.Infrastructure;
+
 public class ConnectionRepository : IConnectionRepository
 {
 
@@ -46,7 +47,7 @@ public class ConnectionRepository : IConnectionRepository
                             entity.ConnectionType,
                             entity.Description,
                             entity.Teams.Select(t => t.Id)
-                         );
+                        );
     }
 
     public async Task<Option<ConnectionDTO>> ReadAsync(int connectionId)
@@ -84,18 +85,12 @@ public class ConnectionRepository : IConnectionRepository
     {
         var entity = FindConnection(connectionId);
 
-        if (entity == null)
-        {
-            return NotFound;
-        }
-
+        if (entity == null) return NotFound;
+        
         var paper1 = FindPaper(connection.PaperOneId);
         var paper2 = FindPaper(connection.PaperTwoId);
 
-        if (paper1 == null || paper2 == null)
-        {
-            return BadRequest;
-        }
+        if (paper1 == null || paper2 == null) return BadRequest;
 
         entity.Id = connection.Id;
         entity.Paper1 = paper1;
@@ -112,10 +107,7 @@ public class ConnectionRepository : IConnectionRepository
     {
         var entity = FindConnection(connectionId);
 
-        if (entity == null)
-        {
-            return NotFound;
-        }
+        if (entity == null) return NotFound;
 
         _context.Connections.Remove(entity);
         await _context.SaveChangesAsync();
@@ -124,8 +116,10 @@ public class ConnectionRepository : IConnectionRepository
     }
 
     private Paper? FindPaper(int id) => _context.Papers.Where(p => p.Id == id).FirstOrDefault();
-    private Connection? FindConnection(int id) => _context.Connections.Where(c => c.Id == id).FirstOrDefault();
-    private User? FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).FirstOrDefault();
-    private Team? FindTeam(int? id) => _context.Teams.Where(t => t.Id == id).FirstOrDefault();
 
+    private Connection? FindConnection(int id) => _context.Connections.Where(c => c.Id == id).FirstOrDefault();
+
+    private User? FindUser(string userId) => _context.Users.Where(u => u.oid.Equals(userId)).FirstOrDefault();
+
+    private Team? FindTeam(int? id) => _context.Teams.Where(t => t.Id == id).FirstOrDefault();
 }

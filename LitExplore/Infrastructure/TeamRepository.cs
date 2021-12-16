@@ -2,7 +2,6 @@ namespace LitExplore.Infrastructure;
 
 public class TeamRepository : ITeamRepository
 {
-
     private readonly ILitExploreContext _context;
 
     public TeamRepository(ILitExploreContext context)
@@ -60,10 +59,7 @@ public class TeamRepository : ITeamRepository
     {
         var team = FindTeam(teamId);
 
-        if (team == null) 
-        {
-            return new List<ConnectionDTO>().AsReadOnly();
-        }
+        if (team == null) return new List<ConnectionDTO>().AsReadOnly();
 
         var connections = (await _context.Connections
                           .Where(c => c.Teams.Contains(team))
@@ -80,14 +76,12 @@ public class TeamRepository : ITeamRepository
 
         return connections;
     }
+    
     public async Task<IReadOnlyCollection<UserDTO>> ReadUsersAsync(int teamId)
     {
         var team = FindTeam(teamId);
 
-        if (team == null) 
-        {
-            return new List<UserDTO>().AsReadOnly();
-        }
+        if (team == null) return new List<UserDTO>().AsReadOnly();
 
         var users =  (await _context.Users
                             .Where(u => (u.Teams.Contains(team) || u.IsLeaderOf.Contains(team)))
@@ -102,17 +96,16 @@ public class TeamRepository : ITeamRepository
         
         return users;            
     }
+
     public async Task<Status> UpdateAsync(int teamId, TeamUpdateDTO team)
     {        
         var entity = FindTeam(teamId);
 
-        if (entity == null)
-        {
-            return NotFound;
-        }
+        if (entity == null) return NotFound;
 
         entity.TeamLeader = _context.Users.Where(t => t.oid == team.TeamLeaderId).Single();
         entity.TeamName = team.TeamName;
+
         if (team.Colour > 0 && team.Colour < 5) entity.Colour = team.Colour;
         
         await _context.SaveChangesAsync();
@@ -125,12 +118,9 @@ public class TeamRepository : ITeamRepository
         var team = FindTeam(teamId);
         var user = FindUser(userOid);
 
-        if (team == null || user == null)
-        {
-            return NotFound;
-        }
-
+        if (team == null || user == null) return NotFound;
         if (!team.Users.Contains(user)) team.Users.Add(user);
+        
         await _context.SaveChangesAsync();
 
         return Updated;
@@ -141,12 +131,9 @@ public class TeamRepository : ITeamRepository
         var team = FindTeam(teamId);
         var connection = FindConnection(connectionId);
 
-        if (team == null || connection == null)
-        {
-            return NotFound;
-        }
-
+        if (team == null || connection == null) return NotFound;
         if (!team.Connections.Contains(connection)) team.Connections.Add(connection);
+        
         await _context.SaveChangesAsync();
 
         return Updated;
@@ -156,10 +143,7 @@ public class TeamRepository : ITeamRepository
     {        
         var team = FindTeam(teamId);
         
-        if (team == null)
-        {
-            return NotFound;
-        }
+        if (team == null) return NotFound;
 
         _context.Teams.Remove(team);
         await _context.SaveChangesAsync();
@@ -172,10 +156,7 @@ public class TeamRepository : ITeamRepository
         var team = FindTeam(teamId);
         var connection = FindConnection(connectionId); 
 
-        if (team == null || connection == null) 
-        {
-            return NotFound;
-        }
+        if (team == null || connection == null) return NotFound;
 
         if (team.Connections.Contains(connection))
         {
@@ -183,11 +164,11 @@ public class TeamRepository : ITeamRepository
             await _context.SaveChangesAsync();
 
             return Deleted;
-        } else 
+        } 
+        else 
         {
             return BadRequest;
         }
-        
     }
 
     public async Task<Status> RemoveUserAsync(int teamId, string userOid)
@@ -195,10 +176,7 @@ public class TeamRepository : ITeamRepository
         var team = FindTeam(teamId);
         var user = FindUser(userOid);
 
-        if (team == null || user == null)
-        {
-            return NotFound;
-        }
+        if (team == null || user == null) return NotFound;
 
         if (team.Users.Contains(user))
         {
@@ -206,14 +184,17 @@ public class TeamRepository : ITeamRepository
             await _context.SaveChangesAsync();
 
             return Deleted;
-        } else 
+        } 
+        else 
         {
             return BadRequest;
         }
     }
 
     private Team? FindTeam(int teamId) => _context.Teams.Include(t => t.Connections).Include(t => t.Users).Where(t => t.Id == teamId).FirstOrDefault();
+    
     private User? FindUser(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
+    
     private Connection? FindConnection(int connectionId) => _context.Connections.Where(c => c.Id == connectionId).FirstOrDefault();
 }
 

@@ -7,6 +7,7 @@ namespace LitExplore.Server.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
+    
     private readonly IUserRepository _repository;
 
     public UserController(ILogger<UserController> logger, IUserRepository repository)
@@ -15,7 +16,6 @@ public class UserController : ControllerBase
         _repository = repository;
     }
 
-    // Create
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(UserDTO), 201)]
@@ -26,8 +26,6 @@ public class UserController : ControllerBase
         return CreatedAtAction(nameof(Get), new { created.Id }, created);
     }
 
-
-    // Read
     [ProducesResponseType(404)]
     [ProducesResponseType(401)]
     [ProducesResponseType(typeof(UserDTO), 200)]

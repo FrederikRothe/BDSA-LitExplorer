@@ -1,7 +1,8 @@
 namespace LitExplore.Infrastructure;
+
 public class PaperRepository : IPaperRepository
 {
-     private readonly ILitExploreContext _context;
+    private readonly ILitExploreContext _context;
 
     public PaperRepository(ILitExploreContext context)
     {

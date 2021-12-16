@@ -3,8 +3,11 @@ namespace Server.Integration.Tests;
 public class PaperTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
+
     private TestClaimsProvider _provider;
+
     private HttpClient _client;
+
     public PaperTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
@@ -31,7 +34,6 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
     {
         var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 
-
         Assert.Contains(papers, c => c.Document == "2");
     }
 
@@ -54,5 +56,4 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
-
 }
