@@ -88,10 +88,10 @@ nav {
   position: absolute;
   width: 330px;
   height: 100vh;
-  margin: -62px -24px;
+  margin: -42px -24px;
   padding: 5.5rem 2rem;
 
-  background-image: linear-gradient(var(--grey), var(--background));
+  background-image: linear-gradient(var(--grey) 10%, var(--background));
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
 
