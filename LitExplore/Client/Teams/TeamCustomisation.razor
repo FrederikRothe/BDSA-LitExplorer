@@ -129,6 +129,7 @@
       {
         var user = await Http.GetFromJsonAsync<UserDTO>($"api/User/{userOid}");
         if (user != null) members.Add(user);
+        _userAdd = "";
         _msg = "User added";
         _col = "green";
         StateHasChanged();
