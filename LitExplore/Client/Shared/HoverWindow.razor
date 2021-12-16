@@ -14,7 +14,14 @@
         @if (connection.ConnectionType.Contains("other")) 
         {
             <h2>Description</h2>
-            <p>@conndescription</p>
+            @if (conndescription == "" || conndescription == null)
+            {
+                <p>You didn't specify a description.</p>
+            }
+            else
+            {
+                <p>@conndescription</p>
+            }
         }
     }
 </div>
