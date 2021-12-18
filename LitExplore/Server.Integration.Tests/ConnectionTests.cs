@@ -16,7 +16,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task get_returns_connection_with_id_1()
+    public async Task Get_returns_connection_with_id_1()
     {
         var connection = await _client.GetFromJsonAsync<ConnectionDTO>("api/Connection/1");
 
@@ -29,7 +29,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task delete_returns_notfound_with_non_excisting_id_720()
+    public async Task Delete_returns_notfound_with_non_excisting_id_720()
     {
         var response = await _client.DeleteAsync("api/Connection/720");
 
@@ -37,7 +37,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task post_returns_Created()
+    public async Task Post_returns_Created()
     {   
         var connection = new ConnectionCreateDTO
         {
@@ -54,7 +54,7 @@ public class ConnectionTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task post_returns_newly_created_connection()
+    public async Task Post_returns_newly_created_connection()
     {
         var newConnection = new ConnectionCreateDTO
         {

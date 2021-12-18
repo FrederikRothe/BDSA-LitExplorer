@@ -16,7 +16,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task get_returns_papers()
+    public async Task Get_returns_papers()
     {
         var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 
@@ -30,7 +30,7 @@ public class PaperTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task get_returns_papers_with_correct_document()
+    public async Task Get_returns_papers_with_correct_document()
     {
         var papers = await _client.GetFromJsonAsync<PaperDTO[]>("/api/Paper");
 

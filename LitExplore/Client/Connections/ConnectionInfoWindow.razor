@@ -26,11 +26,11 @@
         @if (connection.CreatorId == CurrentUser.userOid)
         {
           <div>
-            <ButtonIcon onButtonClick="startShare" icon="oi oi-people" data_bs_target="#ShareConnectionWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share with team" />
+            <ButtonIcon onButtonClick="StartShare" icon="oi oi-people" data_bs_target="#ShareConnectionWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Share with team" />
           </div>
           <div>
-            <ButtonIcon onButtonClick="delete" icon="oi oi-trash" colour="red" data_bs_dismiss="modal" tooltip="Delete" />
-            <ButtonIcon onButtonClick="startUpdate" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
+            <ButtonIcon onButtonClick="Delete" icon="oi oi-trash" colour="red" data_bs_dismiss="modal" tooltip="Delete" />
+            <ButtonIcon onButtonClick="StartUpdate" icon="oi oi-pencil" data_bs_target="#connectionUpdateWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Update" />
           </div>
         }
       </div>
@@ -44,7 +44,7 @@
         <h1 class="modal-title" id="connectionUpdateWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
         <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <EditForm Model="@_updateDTO" OnValidSubmit="@update">
+      <EditForm Model="@_updateDTO" OnValidSubmit="@Update">
         <div class="modal-body">
           <ConnectionPartialInfo connection=@connection paper1=@paper1 paper2=@paper2 />
           <h2>Description</h2>
@@ -64,7 +64,7 @@
         <h1 class="modal-title" id="ShareConnectionWindowLabel">"@paper1.Title" and "@paper2.Title"</h1>
         <button @onclick="Clear" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <EditForm Model="@connection" OnValidSubmit="@share">
+      <EditForm Model="@connection" OnValidSubmit="@Share">
         <div class="modal-body">
           <h2>Select teams to share the connection</h2>
           @if (connection.TeamIDs != null)
@@ -123,7 +123,7 @@
       await onClose.InvokeAsync();
     }
 
-    private void startShare() 
+    private void StartShare() 
     {
       foreach (var team in CurrentUser.teams) 
       {
@@ -131,12 +131,12 @@
       }
     }
 
-    private async Task startUpdate()
+    private async Task StartUpdate()
     {
         _updateDTO = await Http.GetFromJsonAsync<ConnectionUpdateDTO>($"api/Connection/{connection.Id}") ?? new();
     }
 
-    private async Task delete()
+    private async Task Delete()
     {
       if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete the connection?"))
       {
@@ -147,13 +147,13 @@
       }
     }
 
-    private async Task update()
+    private async Task Update()
     {
       var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
       NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
     }
     
-    private async Task share()
+    private async Task Share()
     {
       foreach (var change in _shareChanges)
       {
