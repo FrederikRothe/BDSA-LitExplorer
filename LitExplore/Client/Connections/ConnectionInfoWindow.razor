@@ -51,7 +51,7 @@
           <textarea class="form-control" @bind="_updateDTO.Description" aria-label="With textarea" placeholder="write here ..."></textarea>
         </div>
         <div class="modal-footer">
-            <ButtonIcon icon="oi oi-check" type="submit" data_bs_target="#connectionInfoWindow" data_bs_toggle="modal" data_bs_dismiss="modal" tooltip="Save" />
+            <ButtonIcon icon="oi oi-check" type="submit" data_bs_dismiss="modal" tooltip="Save" />
         </div>
       </EditForm>
     </div>
@@ -142,15 +142,24 @@
       {
         await Http.DeleteAsync($"api/Connection/{connection.Id}");
         CurrentUser.shownConnections.RemoveAll(c => c.Id == connection.Id);
+
         StateHasChanged();
         await refreshGraph.InvokeAsync();
+        await Clear();
       }
     }
 
     private async Task Update()
     {
       var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
-      NavigationManager.NavigateTo($"{NavigationManager.BaseUri}", forceLoad: true);
+
+      CurrentUser.shownConnections.RemoveAll(c => c.Id == _updateDTO.Id);
+      var value = await Http.GetFromJsonAsync<ConnectionDTO>($"api/Connection/{_updateDTO.Id}");
+
+      StateHasChanged();
+      await refreshGraph.InvokeAsync();
+      await Clear();
+      if (value != null) CurrentUser.connections.Add(value); 
     }
     
     private async Task Share()
