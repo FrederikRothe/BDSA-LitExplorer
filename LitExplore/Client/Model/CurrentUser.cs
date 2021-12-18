@@ -10,7 +10,7 @@ public static class CurrentUser
     
     public static List<ConnectionDTO> shownConnections { get; set; } = new List<ConnectionDTO>();
     
-    public static bool initialised() => userOid != null && teams != null && connections != null;
+    public static bool Initialised() => userOid != null && teams != null && connections != null;
     
     public static TeamDTO? selectedTeam { get; set; }
 

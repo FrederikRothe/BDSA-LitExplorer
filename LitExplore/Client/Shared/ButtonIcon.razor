@@ -1,4 +1,4 @@
-<button class=@colour @onclick="onButtonClicked" type=@type data-bs-target=@data_bs_target data-bs-toggle=@data_bs_toggle data-bs-dismiss=@data_bs_dismiss>
+<button class=@colour @onclick="OnButtonClicked" type=@type data-bs-target=@data_bs_target data-bs-toggle=@data_bs_toggle data-bs-dismiss=@data_bs_dismiss>
     <span class=@icon data-toggle="tooltip" data-placement="top" title=@tooltip />
 </button>
 
@@ -6,7 +6,7 @@
 {
     [Parameter] public EventCallback onButtonClick { get; set; }
     
-    protected async Task onButtonClicked() 
+    protected async Task OnButtonClicked() 
     {
         await onButtonClick.InvokeAsync();
     }

@@ -18,7 +18,7 @@
 @if (_showHoverWindow) {
     <HoverWindow connection=@_hoverconnection left=@_hoverWindowLeft top=@_hoverWindowTop/>
 } 
-<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh onClose=@closeConnectionInfo/>
+<ConnectionInfoWindow connection=@_connectionForConnectionWindow paper1=@_paper1 paper2=@_paper2 refreshGraph=@Refresh onClose=@CloseConnectionInfo/>
 
 @code {
     [Parameter] public List<ConnectionDTO> connections { get; set; } = null!;
@@ -74,7 +74,7 @@
         _paper2 = getPaper(c.PaperTwoId);
     }
 
-    private void closeConnectionInfo() 
+    private void CloseConnectionInfo() 
     {
         _connectionForConnectionWindow = TestEntities.connectionDTO;
     }

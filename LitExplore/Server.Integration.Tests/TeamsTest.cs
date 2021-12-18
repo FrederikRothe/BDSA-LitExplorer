@@ -16,7 +16,7 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task get_by_id_1_returns_correct_team()
+    public async Task Get_by_id_1_returns_correct_team()
     {
         var team = await _client.GetFromJsonAsync<TeamDTO>("/api/Team/1");
 
@@ -28,7 +28,7 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task post_succesfully_creates_new_team()
+    public async Task Post_succesfully_creates_new_team()
     {   
         var newTeam = new TeamCreateDTO
         {
@@ -52,7 +52,7 @@ public class TeamsTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task delete_returns_notfound_with_non_excisting_id_720()
+    public async Task Delete_returns_notfound_with_non_excisting_id_720()
     {
         var response = await _client.DeleteAsync("api/Team/720");
 

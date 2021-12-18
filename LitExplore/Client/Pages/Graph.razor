@@ -79,7 +79,7 @@
         } 
         else 
         {
-            if (!CurrentUser.initialised()) 
+            if (!CurrentUser.Initialised()) 
             {
                 string userId = string.Empty;
                 var claims = user.Claims;
@@ -108,14 +108,14 @@
 
             CurrentUser.shownConnections = CurrentUser.connections;
 
-            if (!Model.Graph.initialised()) 
+            if (!Model.Graph.Initialised()) 
             {
                 var papers = await Http.GetFromJsonAsync<List<PaperDTO>>("api/Paper");
                 if (papers != null) Model.Graph.allPapers = papers;
 
                 var connections = await Http.GetFromJsonAsync<List<ConnectionDTO>>("api/Connection");
                 if (connections != null) Model.Graph.publicConnections = connections;
-                Model.Graph.initialise();
+                Model.Graph.Initialise();
             }
             _dataIsLoaded = true;
         }

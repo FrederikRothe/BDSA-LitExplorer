@@ -16,7 +16,7 @@ public class UserTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task get_returns_users()
+    public async Task Get_returns_users()
     {
         var user = await _client.GetFromJsonAsync<UserDTO>("api/User/1");
 
@@ -28,7 +28,7 @@ public class UserTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task getConnections_returns_correct_list_of_connections()
+    public async Task GetConnections_returns_correct_list_of_connections()
     {
         var userConnections = await _client.GetFromJsonAsync<ConnectionDTO[]>("api/User/connections/1");
 
@@ -37,7 +37,7 @@ public class UserTests : IClassFixture<CustomWebApplicationFactory>
     }
 
     [Fact]
-    public async Task getTeams_returns_correct_list_of_teams()
+    public async Task GetTeams_returns_correct_list_of_teams()
     {
         var userTeams = await _client.GetFromJsonAsync<TeamDTO[]>("api/User/teams/1");
 
