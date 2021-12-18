@@ -153,12 +153,12 @@
     {
       var response = await Http.PutAsJsonAsync($"api/Connection/{_updateDTO.Id}", _updateDTO);
 
-      CurrentUser.shownConnections.RemoveAll(c => c.Id == _updateDTO.Id);
       var value = await Http.GetFromJsonAsync<ConnectionDTO>($"api/Connection/{_updateDTO.Id}");
 
       StateHasChanged();
       await refreshGraph.InvokeAsync();
       await Clear();
+      CurrentUser.shownConnections.RemoveAll(c => c.Id == _updateDTO.Id);
       if (value != null) CurrentUser.connections.Add(value); 
     }
     
