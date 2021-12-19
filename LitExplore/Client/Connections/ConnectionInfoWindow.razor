@@ -156,10 +156,10 @@
       var value = await Http.GetFromJsonAsync<ConnectionDTO>($"api/Connection/{_updateDTO.Id}");
 
       StateHasChanged();
+      CurrentUser.shownConnections.RemoveAll(c => c.Id == _updateDTO.Id);
+      if (value != null) CurrentUser.shownConnections.Add(value); 
       await refreshGraph.InvokeAsync();
       await Clear();
-      CurrentUser.shownConnections.RemoveAll(c => c.Id == _updateDTO.Id);
-      if (value != null) CurrentUser.connections.Add(value); 
     }
     
     private async Task Share()
