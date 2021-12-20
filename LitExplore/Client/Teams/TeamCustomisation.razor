@@ -46,9 +46,12 @@
                     {
                       <li class="userRow">
                         <p>@member.Name</p>
-                        @if(member.oid != team.TeamLeaderId)
+                        @if(!isNotTeamOwner)
                         {
-                          <button disabled=@isNotTeamOwner @onclick="() => RemoveFromTeam(member.oid)" class="oi oi-ban"></button>
+                          @if(member.oid != team.TeamLeaderId)
+                          {
+                            <button disabled=@isNotTeamOwner @onclick="() => RemoveFromTeam(member.oid)" class="oi oi-ban"></button>
+                          }
                         }
                       </li>
                     }
