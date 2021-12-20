@@ -22,7 +22,7 @@ public class UserRepository : IUserRepository
                 oid = user.oid,
                 Name = user.Name == null? "Unknown User" : user.Name,
                 Connections = new List<Connection>(),
-                Teams = new List<Team>()
+                Teams = new List<Team>(){FindTeam(1)}
             };
 
             _context.Users.Add(entity);
@@ -87,5 +87,7 @@ public class UserRepository : IUserRepository
         return teams;
     }
     
+    private Team? FindTeam(int teamId) => _context.Teams.Include(t => t.Connections).Include(t => t.Users).Where(t => t.Id == teamId).FirstOrDefault();
+
     private User? FindUserOid(string userOid) => _context.Users.Where(u => u.oid == userOid).FirstOrDefault();
 }

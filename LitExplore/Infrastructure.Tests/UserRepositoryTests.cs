@@ -36,7 +36,7 @@ public class UserRepositoryTests : IDisposable
         Assert.Equal(user.oid, created.oid);
         Assert.Equal(user.Name, created.Name);
         Assert.Equal(new List<int>(), created.ConnectionIDs);
-        Assert.Equal(new List<int>(), created.TeamIDs);
+        Assert.Equal(new List<int>(){1}, created.TeamIDs);
     }
 
     [Fact]
